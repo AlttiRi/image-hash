@@ -23,6 +23,47 @@ export function hammingDistanceHex(hash1: string, hash2: string) {
     return count;
 }
 
+
+class Hash {
+    public readonly hash: Uint8ClampedArray;
+    constructor(hash: Uint8ClampedArray) {
+        this.hash = new Uint8ClampedArray();
+    }
+    get size(): number {
+        return this.hash.byteLength;
+    }
+    get hex(): string {
+        return ui8aToHex(this.hash);
+    }
+    get binary(): string {
+        return ui8aToBinary(this.hash);
+    }
+
+    // todo
+    // static fromHex(hash: string): Hash {
+    //     return new Hash(new Uint8ClampedArray(hash.length));
+    // }
+    // static fromBinary(hash: string): Hash {
+    //     return new Hash(new Uint8ClampedArray(hash.length));
+    // }
+}
+
+export function ui8aToHex(ui8a: Uint8ClampedArray | Uint8Array): string {
+    const hexes = [];
+    for (const byte of ui8a) {
+        hexes.push(byte.toString(16).padStart(2, "0"));
+    }
+    return hexes.join("");
+}
+
+export function ui8aToBinary(ui8a: Uint8ClampedArray | Uint8Array): string {
+    const hexes = [];
+    for (const byte of ui8a) {
+        hexes.push(byte.toString(2).padStart(8, "0"));
+    }
+    return hexes.join("");
+}
+
 /**
  * 32 bits version. Just for example.
  * Useless. 8x8 hash is 64-bits, and it's more than `Number.MAX_SAFE_INTEGER`
