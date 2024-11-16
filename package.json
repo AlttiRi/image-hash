@@ -30,7 +30,7 @@
     "access": "public"
   },
   "scripts": {
-    "test": "node --require ./node_modules/tsx/dist/loader.cjs ./test/index.ts",
+    "test-tsx": "tsx --tsconfig ./test/tsconfig.json ./test/index.ts",
     "-": "",
     "compile-ts":       "tsc --build",
     "compile-ts-watch": "tsc --build --watch",

@@ -1,0 +1,5 @@
+{
+  "scripts": {
+    "test": "node --import ../node_modules/tsx/dist/loader.cjs ./index.ts"
+  }
+}
