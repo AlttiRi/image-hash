@@ -1,0 +1,54 @@
+{
+  "name": "@alttiri/image-hash",
+  "version": "0.0.0-20241116",
+  "description": "Image hashing functions library",
+  "homepage": "https://github.com/AlttiRi/image-hash",
+  "keywords": [
+    "image-hash",
+    "pixels-hash",
+    "hash",
+    "aHash",
+    "mHash",
+    "dHash",
+    "bHash"
+  ],
+  "license": "MIT",
+  "type": "module",
+  "main": "index.js",
+  "typings": "index.d.ts",
+  "files": [
+    "src/**/*.js",
+    "src/**/*.d.ts",
+    "index.js",
+    "index.d.ts"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/alttiri/image-hash.git"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "test": "node --require ./node_modules/tsx/dist/loader.cjs ./demos/tests.ts",
+    "-": "",
+    "compile-ts":       "tsc --build",
+    "compile-ts-watch": "tsc --build --watch",
+    "clean-ts":         "tsc --build --clean",
+    "#": "",
+    "test-publish": "tsc --build && npm pack",
+    "publish-npm":  "tsc --build && npm publish --registry=https://registry.npmjs.org",
+    "publish-ghp":  "tsc --build && npm publish --registry=https://npm.pkg.github.com",
+    "##": "",
+    "unpublish-npm": "npm unpublish @alttiri/image-hash@0.0.0-20241116 --registry=https://registry.npmjs.org",
+    "###": "",
+    "login-npm": "npm login --registry=https://registry.npmjs.org",
+    "login-ghp": "npm login --registry=https://npm.pkg.github.com"
+  },
+  "devDependencies": {
+    "@alttiri/util-node-js": "2.2.0-20240821",
+    "typescript": "5.5.4",
+    "@types/node": "20.12.12",
+    "tsx": "4.19.2"
+  }
+}
