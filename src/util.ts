@@ -7,7 +7,7 @@
  * }
  * console.log(bitCounts);
  */
-const bitCounts = [0, 1, 1, 2, 1, 2, 2, 3, 1, 2, 2, 3, 2, 3, 3, 4];
+const bitCounts16 = /*#__PURE__*/ [0, 1, 1, 2, 1, 2, 2, 3, 1, 2, 2, 3, 2, 3, 3, 4]; // todo: test tree-shaking
 
 export function hammingDistanceHex(hash1: string, hash2: string) {
     if (hash1.length !== hash2.length) {
@@ -18,7 +18,7 @@ export function hammingDistanceHex(hash1: string, hash2: string) {
     for (let i = 0; i < hash1.length; i++) {
         const value1 = parseInt(hash1[i], 16);
         const value2 = parseInt(hash2[i], 16);
-        count += bitCounts[value1 ^ value2];
+        count += bitCounts16[value1 ^ value2];
     }
     return count;
 }
