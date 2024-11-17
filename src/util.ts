@@ -42,7 +42,7 @@ export function hammingDistance(hash1: UI8A, hash2: UI8A) {
 }
 
 
-class Hash {
+export class Hash {
     public readonly data: Uint8Array;
     constructor(hash: Uint8Array) {
         this.data = hash;
@@ -53,7 +53,7 @@ class Hash {
     get hex(): string {
         return ui8aToHex(this.data);
     }
-    get binary(): string {
+    get binary(): string { // todo: rename to bin
         return ui8aToBinary(this.data);
     }
     diff(hash: Hash): number {
