@@ -65,24 +65,20 @@ export function ui8aToBinary(ui8a: Uint8ClampedArray | Uint8Array): string {
 }
 
 /**
- * 32 bits version. Just for example.
- * Useless. 8x8 hash is 64-bits, and it's more than `Number.MAX_SAFE_INTEGER`
  * 0b11111111_11111111_11111111_11111111_11111111_11111111_11111111_11111111
  * 0xFFFFFFFFFFFFFFFF
- * todo: use ArrayBuffer
  */
-export function hammingDistance32(hash1: number, hash2: number, length = 32) {
-    if (hash1 > 0xFFFFFFFF || hash2 > 0xFFFFFFFF) {
+export function hammingDistance(hash1: Uint8ClampedArray, hash2: Uint8ClampedArray) {
+    if (hash1.length !== hash2.length) {
         return -1;
     }
-
-    let xorResult = hash1 ^ hash2;
-    let distance = 0;
+    let distance = 0, xorDiff, {length} = hash1;
     for (let i = 0; i < length; i++) {
-        distance += xorResult & 1;
-        xorResult >>= 1;
+        xorDiff = hash1[i] ^ hash2[i];
+        while (xorDiff > 0) {
+            distance += xorDiff & 1;
+            xorDiff >>= 1;
+        }
     }
     return distance;
 }
-
-

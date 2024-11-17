@@ -1,8 +1,14 @@
 import {ANSI_BLUE, t} from "../tester.ts";
-import {hammingDistance32} from "@/util.ts";
+import {hammingDistance} from "@/util.ts";
 
-console.log(ANSI_BLUE("--- Hamming Distance UINT32 ---"));
+console.log(ANSI_BLUE("--- Hamming Distance (UINT32) ---"));
 
+function hammingDistance32(uint1: number, uint2: number) {
+    return hammingDistance(
+        new Uint8ClampedArray((new Uint32Array([uint1])).buffer),
+        new Uint8ClampedArray((new Uint32Array([uint2])).buffer)
+    );
+}
 
 t({
     result: hammingDistance32(0b0000, 0b0000),
@@ -108,13 +114,36 @@ t({
     result: hammingDistance32(
         0b1_00000000_00000000_00000000_00000000,
         0b1_00000000_00000000_00000000_00000000),
-    expect: -1
+    expect: 0,
+    name: "33-bits"
 });
 t({
     result: hammingDistance32(
         0b1000_00000000_00000000_00000000_00000000,
         0b0111_00000000_00000000_00000000_00000000),
-    expect: -1
+    expect: 0,
+    name: "33-bits"
+});
+t({
+    result: hammingDistance32(
+        0b1_11110000_00000000_00000000_00000000,
+        0b1_11110000_00000000_00000000_00000000),
+    expect: 0,
+    name: "33-bits"
+});
+t({
+    result: hammingDistance32(
+        0b0_11110000_00000000_00000000_00000000,
+        0b1_11110000_00000000_00000000_00000000),
+    expect: 0,
+    name: "33-bits"
+});
+t({
+    result: hammingDistance32(
+        0b0000_11110000_00000000_00000000_00000000,
+        0b1111_11110000_00000000_00000000_00000000),
+    expect: 0,
+    name: "36-bits"
 });
 
 t({
@@ -133,12 +162,17 @@ t({
     result: hammingDistance32(
         0xFFFFFFFF + 1,
         0xFFFFFFFF + 1),
-    expect: -1
+    expect: 0,
+    name: "33-bits"
 });
 
 t({
     result: hammingDistance32(0xFFFFFFFF, 0),
     expect: 32
+});
+t({
+    result: hammingDistance32(0xFFFFFFFF + 1, 0),
+    expect: 0
 });
 t({
     result: hammingDistance32(0xFFFF, 0),
