@@ -43,18 +43,21 @@ export function hammingDistance(hash1: UI8A, hash2: UI8A) {
 
 
 class Hash {
-    public readonly hash: Uint8Array;
+    public readonly data: Uint8Array;
     constructor(hash: Uint8Array) {
-        this.hash = hash;
+        this.data = hash;
     }
     get size(): number {
-        return this.hash.byteLength;
+        return this.data.byteLength;
     }
     get hex(): string {
-        return ui8aToHex(this.hash);
+        return ui8aToHex(this.data);
     }
     get binary(): string {
-        return ui8aToBinary(this.hash);
+        return ui8aToBinary(this.data);
+    }
+    diff(hash: Hash): number {
+        return hammingDistance(this.data, hash.data);
     }
     static fromHex(hexLine: string): Hash {
         return new Hash(hexToUi8a(hexLine));
