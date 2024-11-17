@@ -101,8 +101,9 @@ export function binaryToUi8a(binary: string): Uint8Array {
     if (binary.length % 8) {
         binary = "0".repeat(8 - binary.length % 8) + binary;
     }
-    const ui8a = new Uint8Array(binary.length / 8);
-    for (let i = 0, k = 0; i < binary.length; i++, k += 8) {
+    const length = binary.length / 8;
+    const ui8a = new Uint8Array(length);
+    for (let i = 0, k = 0; i < length; i++, k += 8) {
         const byteString = binary.slice(k, k + 8);
         ui8a[i] = parseInt(byteString, 2);
     }
