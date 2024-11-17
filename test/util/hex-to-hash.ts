@@ -1,7 +1,7 @@
 import {ANSI_BLUE, t} from "../tester.ts";
 import {hexToUi8a} from "@/util.ts";
 
-console.log(ANSI_BLUE("--- Hash Hex ---"));
+console.log(ANSI_BLUE("--- Hex to Hash ---"));
 
 const h = (hex: string): string => hexToUi8a(hex).join(" ");
 
@@ -149,5 +149,18 @@ t({
 });
 t({
     result: h("0000 abde ffff 0987 cece fafa"),
+    expect: "0 0 171 222 255 255 9 135 206 206 250 250",
+});
+
+t({
+    result: h("ff_ff"),
+    expect: "255 255",
+});
+t({
+    result: h("ff_ff ff_ff"),
+    expect: "255 255 255 255",
+});
+t({
+    result: h("0000_abde ffff_0987 cece_fafa"),
     expect: "0 0 171 222 255 255 9 135 206 206 250 250",
 });

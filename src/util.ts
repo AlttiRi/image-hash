@@ -56,18 +56,12 @@ class Hash {
     get binary(): string {
         return ui8aToBinary(this.hash);
     }
-    static fromHex(hash: string): Hash {
-        return new Hash(hexToUi8a(hash));
+    static fromHex(hexLine: string): Hash {
+        return new Hash(hexToUi8a(hexLine));
     }
-
-    // todo
-    // static fromBinary(hash: string): Hash {
-    //     return new Hash(new Uint8ClampedArray(hash.length));
-    // }
-    /**
-     * from:
-     * 0b11111111_11111111_11111111_11111111_11111111_11111111_11111111_11111111
-     */
+    static fromBinary(binLine: string): Hash {
+        return new Hash(binaryToUi8a(binLine));
+    }
 }
 
 export function ui8aToHex(ui8a: UI8A): string {
@@ -87,14 +81,27 @@ export function ui8aToBinary(ui8a: UI8A): string {
 }
 
 export function hexToUi8a(hex: string): Uint8Array {
-    hex = hex.replace(/\s+/g, "").replace(/^0x/, "");
+    hex = hex.replace(/_|\s+/g, "").replace(/^0x/, "");
     if (hex.length % 2) {
         hex = "0" + hex;
     }
     const length = hex.length / 2;
-    const result = new Uint8Array(length);
+    const ui8a = new Uint8Array(length);
     for (let i = 0, k = 0; i < length; i++, k += 2) {
-        result[i] = parseInt(hex.slice(k, k + 2), 16);
+        ui8a[i] = parseInt(hex.slice(k, k + 2), 16);
     }
-    return result;
+    return ui8a;
+}
+
+export function binaryToUi8a(binary: string): Uint8Array {
+    binary = binary.replace(/_|\s+/g, "").replace(/^0b/, "");
+    if (binary.length % 8) {
+        binary = "0".repeat(8 - binary.length % 8) + binary;
+    }
+    const ui8a = new Uint8Array(binary.length / 8);
+    for (let i = 0, k = 0; i < binary.length; i++, k += 8) {
+        const byteString = binary.slice(k, k + 8);
+        ui8a[i] = parseInt(byteString, 2);
+    }
+    return ui8a;
 }

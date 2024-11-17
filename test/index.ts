@@ -4,3 +4,4 @@ import "./util/hamming-distance-ui8a.ts";
 import "./util/hash-to-hex.ts";
 import "./util/hash-to-bin.ts";
 import "./util/hex-to-hash.ts";
+import "./util/bin-to-hash.ts";
