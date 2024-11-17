@@ -24,6 +24,24 @@ export function hammingDistanceHex(hash1: string, hash2: string) {
 }
 
 
+type UI8A = Uint8Array | Uint8ClampedArray;
+
+export function hammingDistance(hash1: UI8A, hash2: UI8A) {
+    if (hash1.length !== hash2.length) {
+        return -1;
+    }
+    let distance = 0, xorDiff, {length} = hash1;
+    for (let i = 0; i < length; i++) {
+        xorDiff = hash1[i] ^ hash2[i];
+        while (xorDiff > 0) {
+            distance += xorDiff & 1;
+            xorDiff >>= 1;
+        }
+    }
+    return distance;
+}
+
+
 class Hash {
     public readonly hash: Uint8ClampedArray;
     constructor(hash: Uint8ClampedArray) {
@@ -39,6 +57,7 @@ class Hash {
         return ui8aToBinary(this.hash);
     }
 
+
     // todo
     // static fromHex(hash: string): Hash {
     //     return new Hash(new Uint8ClampedArray(hash.length));
@@ -46,6 +65,11 @@ class Hash {
     // static fromBinary(hash: string): Hash {
     //     return new Hash(new Uint8ClampedArray(hash.length));
     // }
+    /**
+     * from:
+     * 0b11111111_11111111_11111111_11111111_11111111_11111111_11111111_11111111
+     * 0xFFFFFFFFFFFFFFFF
+     */
 }
 
 export function ui8aToHex(ui8a: Uint8ClampedArray | Uint8Array): string {
@@ -64,21 +88,3 @@ export function ui8aToBinary(ui8a: Uint8ClampedArray | Uint8Array): string {
     return hexes.join("");
 }
 
-/**
- * 0b11111111_11111111_11111111_11111111_11111111_11111111_11111111_11111111
- * 0xFFFFFFFFFFFFFFFF
- */
-export function hammingDistance(hash1: Uint8ClampedArray, hash2: Uint8ClampedArray) {
-    if (hash1.length !== hash2.length) {
-        return -1;
-    }
-    let distance = 0, xorDiff, {length} = hash1;
-    for (let i = 0; i < length; i++) {
-        xorDiff = hash1[i] ^ hash2[i];
-        while (xorDiff > 0) {
-            distance += xorDiff & 1;
-            xorDiff >>= 1;
-        }
-    }
-    return distance;
-}
