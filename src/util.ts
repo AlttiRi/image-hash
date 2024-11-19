@@ -43,6 +43,7 @@ export function hammingDistance(hash1: UI8A, hash2: UI8A) {
 
 
 export class Hash {
+    // todo?: bits size
     public readonly data: Uint8Array;
     constructor(hash: Uint8Array) {
         this.data = hash;
@@ -66,25 +67,27 @@ export class Hash {
         return hammingDistance(this.data, hash.data);
     }
     toMono() {
-        return new MonoImageData(this.data);
+        return new MonoImageData(bitsToArray(this.data));
     }
 }
 
+
 // ImageData with one channel for black-white or gray-scaled pixels
-class MonoImageData {
+export class MonoImageData {
     public data: Uint8Array;
-    public width:  number;
-    public height: number;
+    public width:  number = 0;
+    public height: number = 0;
     constructor(data: Uint8Array, width?: number, height?: number) {
         this.data = data;
         if (width !== undefined) {
             this.width = width;
             if (height === undefined) {
-                this.height = data.length / width;
+                this.height = Math.trunc(data.length / width);
             } else {
                 this.height = height;
             }
-        } else {
+        }
+        if (this.width * this.height !== data.length) {
             const size = calculateSquareSize(data.length);
             this.width  = size.width;
             this.height = size.height;
@@ -139,7 +142,7 @@ export function hexToUi8a(hex: string): Uint8Array {
     return ui8a;
 }
 
-export function binaryToUi8a(binary: string): Uint8Array {
+export function binaryToUi8a(binary: string): Uint8Array { // todo: rename "to bits"
     binary = binary.replace(/_|\s+/g, "").replace(/^0b/, "");
     if (binary.length % 8) {
         binary = "0".repeat(8 - binary.length % 8) + binary;
@@ -151,4 +154,21 @@ export function binaryToUi8a(binary: string): Uint8Array {
         ui8a[i] = parseInt(byteString, 2);
     }
     return ui8a;
+}
+
+/**
+ * Maps a number' bits:
+ *
+ * 0 -> `0`, 1 -> `255`
+ * @example
+ * new Uint8Array([0b0000_0111]) -> new Uint8Array([0,0,0,0, 0,255,255,255])
+ */
+export function bitsToArray(hash: Uint8Array): Uint8Array {
+    const result: number[] = [];
+    for (const byte of hash) {
+        for (let i = 7; i >= 0; i--) {
+            result.push((byte >> i) & 1 ? 255 : 0);
+        }
+    }
+    return new Uint8Array(result);
 }
