@@ -66,9 +66,10 @@ export class Hash {
         return hammingDistance(this.data, hash.data);
     }
     toMono() {
-
+        return new MonoImageData(this.data);
     }
 }
+
 // ImageData with one channel for black-white or gray-scaled pixels
 class MonoImageData {
     public data: Uint8Array;
