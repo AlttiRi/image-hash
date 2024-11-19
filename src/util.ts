@@ -47,6 +47,12 @@ export class Hash {
     constructor(hash: Uint8Array) {
         this.data = hash;
     }
+    static fromHex(hexLine: string): Hash {
+        return new Hash(hexToUi8a(hexLine));
+    }
+    static fromBinary(binLine: string): Hash {
+        return new Hash(binaryToUi8a(binLine));
+    }
     get size(): number {
         return this.data.byteLength;
     }
@@ -59,12 +65,48 @@ export class Hash {
     diff(hash: Hash): number {
         return hammingDistance(this.data, hash.data);
     }
-    static fromHex(hexLine: string): Hash {
-        return new Hash(hexToUi8a(hexLine));
+    toMono() {
+
     }
-    static fromBinary(binLine: string): Hash {
-        return new Hash(binaryToUi8a(binLine));
+}
+// ImageData with one channel for black-white or gray-scaled pixels
+class MonoImageData {
+    public data: Uint8Array;
+    public width:  number;
+    public height: number;
+    constructor(data: Uint8Array, width?: number, height?: number) {
+        this.data = data;
+        if (width !== undefined) {
+            this.width = width;
+            if (height === undefined) {
+                this.height = data.length / width;
+            } else {
+                this.height = height;
+            }
+        } else {
+            const size = calculateSquareSize(data.length);
+            this.width  = size.width;
+            this.height = size.height;
+        }
     }
+}
+
+/**
+ * Finds a square size from the count of pixels.
+ * Width may be a bit (by 1 pixel) bigger than height.
+ * Either returns `0` for both sides.
+ */
+export function calculateSquareSize(pixelCount: number) {
+    const sqrt = Math.sqrt(pixelCount);
+    if (sqrt % 1 === 0) {
+        return {width: sqrt, height: sqrt};
+    }
+    const h = Math.trunc(sqrt);
+    const w = pixelCount / h;
+    if (w !== h + 1) {
+        return {width: 0, height: 0};
+    }
+    return {width: w, height: h};
 }
 
 export function ui8aToHex(ui8a: UI8A): string {

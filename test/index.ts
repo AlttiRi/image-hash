@@ -7,3 +7,4 @@ import "./util/hex-to-hash.ts";
 import "./util/bin-to-hash.ts";
 import "./util/hex-bin-transforms.ts";
 import "./util/hash-diff.ts";
+import "./util/calc-square-size.ts";
