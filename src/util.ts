@@ -69,6 +69,9 @@ export class Hash {
     toMono() {
         return new MonoImageData(bitsToArray(this.data));
     }
+    static fromMono(mono: MonoImageData) {
+        return new Hash(arrayToBits(mono.data));
+    }
 }
 
 
@@ -171,4 +174,23 @@ export function bitsToArray(hash: Uint8Array): Uint8Array {
         }
     }
     return new Uint8Array(result);
+}
+
+/** Reverse version of `bitsToArray` */
+export function arrayToBits(bits: Uint8Array): Uint8Array {
+    const byteArray: number[] = [];
+
+    let currentByte = 0;
+    for (let i = 0; i < bits.length; i++) {
+        const bit = bits[i] === 255 ? 1 : 0;
+        currentByte = (currentByte << 1) | bit;
+        if ((i + 1) % 8 === 0) {
+            byteArray.push(currentByte);
+            currentByte = 0;
+        }
+    }
+    if (bits.length % 8) {
+        byteArray.push(currentByte);
+    }
+    return new Uint8Array(byteArray);
 }

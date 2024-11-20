@@ -10,4 +10,5 @@ import "./util/hash-diff.ts";
 import "./util/calc-square-size.ts";
 import "./util/bits-to-array.ts";
 import "./util/mono-image-data.ts";
+import "./util/array-to-bits.ts";
 
