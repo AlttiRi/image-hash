@@ -1,3 +1,5 @@
+import {MonoImageData} from "../src/mono-image-data";
+
 /**
  * 16 bit counts for values from 0b0000 to 0b1111 (from 0 to 15 including both end)
  * @example
@@ -42,20 +44,21 @@ export function hammingDistance(hash1: UI8A, hash2: UI8A) {
 }
 
 
-export class Hash {
+export class HashBinary {
     // todo?: bits size
     public readonly data: Uint8Array;
     constructor(hash: Uint8Array) {
         this.data = hash;
     }
-    static fromHex(hexLine: string): Hash {
-        return new Hash(hexToUi8a(hexLine));
+    static fromHex(hexLine: string): HashBinary {
+        return new HashBinary(hexToUi8a(hexLine));
     }
-    static fromBinary(binLine: string): Hash {
-        return new Hash(binaryToUi8a(binLine));
+    static fromBinary(binLine: string): HashBinary {
+        return new HashBinary(binaryToUi8a(binLine));
     }
+    /** Bits size */
     get size(): number {
-        return this.data.byteLength;
+        return this.data.byteLength * 8;
     }
     get hex(): string {
         return ui8aToHex(this.data);
@@ -63,57 +66,15 @@ export class Hash {
     get binary(): string { // todo: rename to bin
         return ui8aToBinary(this.data);
     }
-    diff(hash: Hash): number {
+    diff(hash: HashBinary): number {
         return hammingDistance(this.data, hash.data);
     }
     toMono() {
         return new MonoImageData(bitsToArray(this.data));
     }
     static fromMono(mono: MonoImageData) {
-        return new Hash(arrayToBits(mono.data));
+        return new HashBinary(arrayToBits(mono.data));
     }
-}
-
-
-// ImageData with one channel for black-white or gray-scaled pixels
-export class MonoImageData {
-    public data: Uint8Array;
-    public width:  number = 0;
-    public height: number = 0;
-    constructor(data: Uint8Array, width?: number, height?: number) {
-        this.data = data;
-        if (width !== undefined) {
-            this.width = width;
-            if (height === undefined) {
-                this.height = Math.trunc(data.length / width);
-            } else {
-                this.height = height;
-            }
-        }
-        if (this.width * this.height !== data.length) {
-            const size = calculateSquareSize(data.length);
-            this.width  = size.width;
-            this.height = size.height;
-        }
-    }
-}
-
-/**
- * Finds a square size from the count of pixels.
- * Width may be a bit (by 1 pixel) bigger than height.
- * Either returns `0` for both sides.
- */
-export function calculateSquareSize(pixelCount: number) {
-    const sqrt = Math.sqrt(pixelCount);
-    if (sqrt % 1 === 0) {
-        return {width: sqrt, height: sqrt};
-    }
-    const h = Math.trunc(sqrt);
-    const w = pixelCount / h;
-    if (w !== h + 1) {
-        return {width: 0, height: 0};
-    }
-    return {width: w, height: h};
 }
 
 export function ui8aToHex(ui8a: UI8A): string {
@@ -193,4 +154,22 @@ export function arrayToBits(bits: Uint8Array): Uint8Array {
         byteArray.push(currentByte);
     }
     return new Uint8Array(byteArray);
+}
+
+/**
+ * Finds a square size from the count of pixels.
+ * Width may be a bit (by 1 pixel) bigger than height.
+ * Either returns `0` for both sides.
+ */
+export function calculateSquareSize(pixelCount: number) {
+    const sqrt = Math.sqrt(pixelCount);
+    if (sqrt % 1 === 0) {
+        return {width: sqrt, height: sqrt};
+    }
+    const h = Math.trunc(sqrt);
+    const w = pixelCount / h;
+    if (w !== h + 1) {
+        return {width: 0, height: 0};
+    }
+    return {width: w, height: h};
 }

@@ -1,5 +1,5 @@
-import {ANSI_BLUE, t} from "../tester.ts";
-import {hexToUi8a} from "@/util.ts";
+import {ANSI_BLUE, t} from "../../test/tester.ts";
+import {hexToUi8a} from "../util.ts";
 
 console.log(ANSI_BLUE("--- Hex to Hash ---"));
 

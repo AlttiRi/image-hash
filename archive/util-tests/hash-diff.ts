@@ -1,11 +1,11 @@
-import {ANSI_BLUE, t} from "../tester.ts";
-import {Hash} from "@/util.ts";
+import {ANSI_BLUE, t} from "../../test/tester.ts";
+import {HashBinary} from "../util.ts";
 
 console.log(ANSI_BLUE("--- Hash diff ---"));
 
 const b = (bin1: string, bin2: string): number => {
-    const h1 = Hash.fromBinary(bin1);
-    const h2 = Hash.fromBinary(bin2);
+    const h1 = HashBinary.fromBinary(bin1);
+    const h2 = HashBinary.fromBinary(bin2);
     return h1.diff(h2);
 };
 

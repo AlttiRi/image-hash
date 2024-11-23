@@ -1,5 +1,5 @@
-import {ANSI_BLUE, t} from "../tester.ts";
-import {hammingDistanceHex} from "@/util.ts";
+import {ANSI_BLUE, t} from "../../test/tester.ts";
+import {hammingDistanceHex} from "../util.ts";
 
 console.log(ANSI_BLUE("--- Hamming Distance HEX ---"));
 

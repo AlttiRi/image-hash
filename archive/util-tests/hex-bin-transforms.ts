@@ -1,12 +1,12 @@
-import {ANSI_BLUE, t} from "../tester.ts";
-import {Hash} from "@/util.ts";
+import {ANSI_BLUE, t} from "../../test/tester.ts";
+import {HashBinary} from "../util.ts";
 
 console.log(ANSI_BLUE("--- Hash: Bin <-> Hex ---"));
 
 
 
-const b = (bin: string): string => Hash.fromBinary(bin).hex;
-const h = (hex: string): string => Hash.fromHex(hex).binary;
+const b = (bin: string): string => HashBinary.fromBinary(bin).hex;
+const h = (hex: string): string => HashBinary.fromHex(hex).binary;
 t({
     result: b("0"),
     expect: "00",

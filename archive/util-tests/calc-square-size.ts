@@ -1,5 +1,5 @@
-import {ANSI_BLUE, t} from "../tester.ts";
-import {calculateSquareSize} from "@/util.ts";
+import {ANSI_BLUE, t} from "../../test/tester.ts";
+import {calculateSquareSize} from "../../src/mono-image-data.ts";
 
 console.log(ANSI_BLUE("--- Calc size ---"));
 

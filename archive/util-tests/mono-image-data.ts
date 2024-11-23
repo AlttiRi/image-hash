@@ -1,5 +1,6 @@
-import {ANSI_BLUE, t} from "../tester.ts";
-import {binaryToUi8a, hexToUi8a, MonoImageData} from "@/util.ts";
+import {ANSI_BLUE, t} from "../../test/tester.ts";
+import {binaryToUi8a, hexToUi8a} from "../util.ts";
+import {MonoImageData} from "../../src/mono-image-data.ts";
 
 
 console.log(ANSI_BLUE("--- MonoImageData (extra) ---"));
