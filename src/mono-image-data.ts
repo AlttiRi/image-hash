@@ -5,7 +5,8 @@ export class MonoImageData {
     public height: number;
     constructor(data: Uint8Array, width: number, height: number) {
         this.data = data;
-        if (width * height !== data.length) {
+        const mult = width * height;
+        if (mult !== data.length || !mult) {
             throw new Error("Incorrect data");
         }
         this.width  = width;

@@ -28,6 +28,11 @@ export class ImageHash {
     private static from(biUi8a: Uint8Array, width?: number, height?: number): ImageHash {
         if (!width || !height) {
             ({width, height} = calculateSquareSize(biUi8a.length));
+        } else {
+            const square = width * height;
+            if (square < biUi8a.length && square + 8 > biUi8a.length) {
+                biUi8a = biUi8a.slice(biUi8a.length - square);
+            }
         }
         const mono = new BiImageData(biUi8a, width, height);
         return ImageHash.fromMono(mono);
