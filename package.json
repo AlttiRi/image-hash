@@ -30,7 +30,7 @@
     "access": "public"
   },
   "scripts": {
-    "test-tsx": "tsx --tsconfig ./test/tsconfig.json ./test/index.ts",
+    "test-tsx": "tsx --tsconfig ./test/tsconfig.json test/index.t.ts",
     "-": "",
     "compile-ts":       "tsc --build",
     "compile-ts-watch": "tsc --build --watch",
