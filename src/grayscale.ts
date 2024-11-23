@@ -42,9 +42,9 @@ export function getGrayData(imageData: {
     height: number
 }) {
     const {data, width, height, data: {length}} = imageData;
-    const array = new Uint8Array(length / 4); // todo: use Uint32Array
+    const array = new Uint8Array(length / 4);
 
-    const dw = new DataView(data.buffer);
+    const dw = new DataView(data.buffer); // todo?: use Uint32Array // upd: seems there is no perf diff
     const calculateLuminance = getCalculateBT601(dw);
 
     // It runs 25_000_000 iterations for 5000x5000 image,
