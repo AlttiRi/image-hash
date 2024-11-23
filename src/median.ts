@@ -55,12 +55,3 @@ export function calculateMedianByCountSorting(ui8ca: Uint8Array): number {
 
     throw new Error("Unreachable code was reached");
 }
-
-// let a = new Uint8ClampedArray([255,3,45,56,5,5,56,4,6,3,2,6,7,3,5,6,3,4,5,6,3,33,66,88]);
-// // a = new Uint8ClampedArray([2, 2, 2,  3, 4,   5, 5, 5]);
-// a = new Uint8ClampedArray([ ]);
-// console.log(
-//     calculateMedianByCountSorting(a) === calculateMedianBySorting(a),
-//     calculateMedianByCountSorting(a),
-//     calculateMedianBySorting(a),
-// );
