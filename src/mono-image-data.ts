@@ -4,11 +4,11 @@ export class MonoImageData {
     public width:  number;
     public height: number;
     constructor(data: Uint8Array, width: number, height: number) {
-        this.data = data;
         const mult = width * height;
         if (mult !== data.length || !mult) {
             throw new Error("Incorrect data");
         }
+        this.data   = data;
         this.width  = width;
         this.height = height;
     }
