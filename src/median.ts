@@ -28,8 +28,9 @@ export function calculateMedianByCountSorting(ui8ca: Uint8ClampedArray): number 
         counts = new Uint8Array(256);
     }
 
-    for (const value of ui8ca) {
-        counts[value]++;
+    const to = ui8ca.length;
+    for (let i = 0; i < to; i++) { // do not use slow `for of` loop
+        counts[ui8ca[i]]++;
     }
 
     const middle = ui8ca.length / 2;
