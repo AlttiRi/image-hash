@@ -1,4 +1,5 @@
 import {GrayImageData} from "./mono-image-data.js";
+import {ImageDataLike} from "./types.js";
 
 /**
  * Using of 1 `getUint32 is faster than 3 accesses by index (`array[N]`).
@@ -11,7 +12,7 @@ import {GrayImageData} from "./mono-image-data.js";
  *   than using `dw.getUint32` in a loop and passing `uint` directly to the function.
  * Do not change the get functions' signature.
  */
-function getCalculateBT601(dw: DataView) {
+export function getCalculateBT601(dw: DataView) {
     return function calculateBT601(i: number) {
         const uint = dw.getUint32(i);
         return ((uint >> 24) & 0xFF) * 0.299
@@ -19,7 +20,7 @@ function getCalculateBT601(dw: DataView) {
             +  ((uint >>  8) & 0xFF) * 0.114;
     };
 }
-function getCalculateAverage(dw: DataView) {
+export function getCalculateAverage(dw: DataView) {
     return function calculateAverage(i: number) {
         const uint = dw.getUint32(i);
         return (((uint >> 24) & 0xFF)
@@ -27,7 +28,7 @@ function getCalculateAverage(dw: DataView) {
              +  ((uint >>  8) & 0xFF)) / 3;
     };
 }
-function getCalculateBT709(dw: DataView) {
+export function getCalculateBT709(dw: DataView) {
     return function calculateBT709(i: number) {
         const uint = dw.getUint32(i);
         return ((uint >> 24) & 0xFF) * 0.2126
@@ -36,16 +37,12 @@ function getCalculateBT709(dw: DataView) {
     };
 }
 
-export function getGrayData(imageData: {
-    data:   Uint8ClampedArray
-    width:  number
-    height: number
-}) {
+export function getGrayData(imageData: ImageDataLike, getFunc = getCalculateBT601): GrayImageData {
     const {data, width, height, data: {length}} = imageData;
     const array = new Uint8Array(length / 4);
 
     const dw = new DataView(data.buffer); // todo?: use Uint32Array // upd: seems there is no perf diff
-    const calculateLuminance = getCalculateBT601(dw);
+    const calculateLuminance = getFunc(dw);
 
     // It runs 25_000_000 iterations for 5000x5000 image,
     // so, don't use `i < data.length`, but `i < length`.
