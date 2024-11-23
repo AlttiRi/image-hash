@@ -2,9 +2,9 @@
 // calculateMedianBySorting
 export const calculateMedian = calculateMedianByCountSorting;
 
-export function calculateMedianBySorting(arr: Uint8ClampedArray, copy = true) {
+export function calculateMedianBySorting(arr: Uint8Array, copy = true) {
     if (copy) {
-        arr = Uint8ClampedArray.from(arr);
+        arr = Uint8Array.from(arr);
     }
     const mid = Math.trunc(arr.length / 2);
     arr.sort((a, b) => a - b);
@@ -15,7 +15,7 @@ export function calculateMedianBySorting(arr: Uint8ClampedArray, copy = true) {
     }
 }
 
-export function calculateMedianByCountSorting(ui8ca: Uint8ClampedArray): number {
+export function calculateMedianByCountSorting(ui8ca: Uint8Array): number {
     let counts: Uint8Array | Uint16Array | Uint32Array/* | number[] */;
     if (ui8ca.length > 256) {
         // counts = Array.from({length: 256}, () => 0);

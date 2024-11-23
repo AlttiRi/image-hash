@@ -1,10 +1,10 @@
 import {calculateMedian} from "./median.js";
 
 /** Gray 1D array */
-export function scaleDownLinear(orig: {data: Uint8ClampedArray, height: number, width: number},
+export function scaleDownLinear(orig: {data: Uint8Array, height: number, width: number},
                                 width: number, height: number,
                                 median = false,
-): Uint8ClampedArray {
+): Uint8Array {
 
     if (median) {
         return scaleDownMedian(orig, width, height);
@@ -13,7 +13,7 @@ export function scaleDownLinear(orig: {data: Uint8ClampedArray, height: number, 
     console.log("scaleDown2...");
     console.time("scaleDown2");
 
-    let dest = new Uint8ClampedArray(width * height);
+    let dest = new Uint8Array(width * height);
 
     const yScale = orig.height / height;
     const xScale = orig.width / width;
@@ -52,13 +52,13 @@ export function scaleDownLinear(orig: {data: Uint8ClampedArray, height: number, 
     return dest;
 }
 
-function scaleDownMedian(orig: {data: Uint8ClampedArray, height: number, width: number},
+function scaleDownMedian(orig: {data: Uint8Array, height: number, width: number},
                          width: number, height: number,
-): Uint8ClampedArray {
+): Uint8Array {
     console.log("scaleDownMedian...");
     console.time("scaleDownMedian");
 
-    let dest = new Uint8ClampedArray(width * height);
+    let dest = new Uint8Array(width * height);
 
     const yScale = orig.height / height;
     const xScale = orig.width / width;
@@ -75,7 +75,7 @@ function scaleDownMedian(orig: {data: Uint8ClampedArray, height: number, width: 
             const count = (toY - fromY) * (toX - fromX);
 
             const value = cache.get(count);
-            const medianArray = value || new Uint8ClampedArray(count);
+            const medianArray = value || new Uint8Array(count);
             if (!value) {
                 cache.set(count, medianArray);
             }
@@ -105,7 +105,7 @@ function scaleDownMedian(orig: {data: Uint8ClampedArray, height: number, width: 
     return dest;
 }
 
-function printArray(array: number[] | Uint8ClampedArray, columns: number) {
+function printArray(array: number[] | Uint8Array, columns: number) {
     // @ts-ignore
     console.log(array.reduce((acc: number[][], cur: number, i: number) => {
         if (i % columns === 0) {

@@ -1,3 +1,5 @@
+import {GrayImageData} from "./mono-image-data.js";
+
 /**
  * Using of 1 `getUint32 is faster than 3 accesses by index (`array[N]`).
  * `getCalculateBT601` is faster than:
@@ -40,7 +42,7 @@ export function getGrayData(imageData: {
     height: number
 }) {
     const {data, width, height, data: {length}} = imageData;
-    const array = new Uint8ClampedArray(length / 4); // todo: use Uint32Array
+    const array = new Uint8Array(length / 4); // todo: use Uint32Array
 
     const dw = new DataView(data.buffer);
     const calculateLuminance = getCalculateBT601(dw);
@@ -50,5 +52,5 @@ export function getGrayData(imageData: {
     for (let i = 0; i < length; i += 4) {
         array[i / 4] = calculateLuminance(i);
     }
-    return {data: array, width, height};
+    return new GrayImageData(array, width, height);
 }
