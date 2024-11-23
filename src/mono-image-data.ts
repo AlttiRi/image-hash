@@ -16,10 +16,10 @@ export class MonoImageData {
 
 /** "binary"/"black-white" image pixels (`0` and `255` values) */
 export class BiImageData extends MonoImageData {
-    type = "binary";
+    type: "binary" = "binary";
 }
 
 /** "gray-scaled" image pixels (values from `0` up to `255`) */
 export class GrayImageData extends MonoImageData {
-    type = "gray-scaled";
+    type: "gray-scaled" = "gray-scaled";
 }

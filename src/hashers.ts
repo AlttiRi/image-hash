@@ -1,9 +1,12 @@
 import {calculateAverage, calculateMedian} from "./median.js";
 import {ImageHash} from "./image-hash.js";
-import {BiImageData} from "./mono-image-data.js";
+import {BiImageData, GrayImageData} from "./mono-image-data.js";
+
+// todo: change sigs
+//  use "core" postfix
 
 /** difference hash */
-function dHash(data: Uint8Array, width: number, height: number): ImageHash {
+function dHash({data, width, height}: GrayImageData): ImageHash {
     const _width = width - 1;
     const hash = new Uint8Array(_width * height);
     for (let y = 0; y < height; y++) {
@@ -15,7 +18,7 @@ function dHash(data: Uint8Array, width: number, height: number): ImageHash {
 }
 
 /** average hash */
-export function aHash(data: Uint8Array, width: number, height: number): ImageHash {
+export function aHash({data, width, height}: GrayImageData): ImageHash {
     const mean = calculateAverage(data);
     const hash = new Uint8Array(width * height);
     for (let y = 0; y < height; y++) {
@@ -27,7 +30,7 @@ export function aHash(data: Uint8Array, width: number, height: number): ImageHas
 }
 
 /** median hash */
-export function mHash(data: Uint8Array, width: number, height: number): ImageHash {
+export function mHash({data, width, height}: GrayImageData): ImageHash {
     const hash = _mHash(data, width, height);
     return ImageHash.fromMono(new BiImageData(hash, width, height));
 }
@@ -44,7 +47,7 @@ function _mHash(data: Uint8Array, width: number, height: number): Uint8Array {
 }
 
 /** block hash */
-export function bHash(data: Uint8Array, width: number, height: number): ImageHash {
+export function bHash({data, width, height}: GrayImageData): ImageHash {
     const bandHeight = 2;
     const bandCount    = height / bandHeight;
     const pixelsInBand = width  * bandHeight;

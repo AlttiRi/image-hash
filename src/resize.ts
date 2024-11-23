@@ -2,6 +2,7 @@ import {calculateMedian} from "./median.js";
 import {GrayImageData} from "./mono-image-data.js";
 
 
+// todo change sig
 export function scaleDownLinear(orig: GrayImageData, width: number, height: number, median = false): Uint8Array {
     if (median) {
         return scaleDownMedian(orig, width, height);
