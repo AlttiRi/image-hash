@@ -1,7 +1,9 @@
 import {calculateAverage, calculateMedian} from "./median.js";
+import {ImageHash} from "./image-hash.js";
+import {BiImageData} from "./mono-image-data.js";
 
 /** difference hash */
-function dHash(data: Uint8Array, width: number, height: number) {
+function dHash(data: Uint8Array, width: number, height: number): ImageHash {
     const _width = width - 1;
     const hash = new Uint8Array(_width * height);
     for (let y = 0; y < height; y++) {
@@ -9,11 +11,11 @@ function dHash(data: Uint8Array, width: number, height: number) {
             hash[y * _width + x] = data[y * width + x + 1] > data[y * width + x] ? 255 : 0;
         }
     }
-    return hash;
+    return ImageHash.fromMono(new BiImageData(hash, width, height));
 }
 
 /** average hash */
-export function aHash(data: Uint8Array, width: number, height: number) {
+export function aHash(data: Uint8Array, width: number, height: number): ImageHash {
     const mean = calculateAverage(data);
     const hash = new Uint8Array(width * height);
     for (let y = 0; y < height; y++) {
@@ -21,11 +23,16 @@ export function aHash(data: Uint8Array, width: number, height: number) {
             hash[y * width + x] = data[y * width + x] > mean ? 255 : 0;
         }
     }
-    return hash;
+    return ImageHash.fromMono(new BiImageData(hash, width, height));
 }
 
 /** median hash */
-export function mHash(data: Uint8Array, width: number, height: number) {
+export function mHash(data: Uint8Array, width: number, height: number): ImageHash {
+    const hash = _mHash(data, width, height);
+    return ImageHash.fromMono(new BiImageData(hash, width, height));
+}
+
+function _mHash(data: Uint8Array, width: number, height: number): Uint8Array {
     const median = calculateMedian(data);
     const hash = new Uint8Array(width * height);
     for (let y = 0; y < height; y++) {
@@ -37,7 +44,7 @@ export function mHash(data: Uint8Array, width: number, height: number) {
 }
 
 /** block hash */
-export function bHash(data: Uint8Array, width: number, height: number) {
+export function bHash(data: Uint8Array, width: number, height: number): ImageHash {
     const bandHeight = 2;
     const bandCount    = height / bandHeight;
     const pixelsInBand = width  * bandHeight;
@@ -53,7 +60,7 @@ export function bHash(data: Uint8Array, width: number, height: number) {
             length = data.length - byteOffset;
         }
         const view = new Uint8Array(data.buffer, byteOffset, length);
-        const hash = mHash(view, width, bandHeight);
+        const hash = _mHash(view, width, bandHeight);
         hashes.push(hash);
     }
 
@@ -64,6 +71,6 @@ export function bHash(data: Uint8Array, width: number, height: number) {
         }
     }
 
-    return hash;
+    return ImageHash.fromMono(new BiImageData(hash, width, height));
 }
 
