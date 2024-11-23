@@ -1,58 +1,58 @@
-const data1 = [
-    11, 11, 14, 14, 66, 78,
-    11, 11, 14, 14, 66, 78,
-    12, 12, 11, 55,  8,  8,
-    12, 12, 11, 55,  8,  8,
-    19, 91, 44, 28,  2,  2,
-    19, 91, 44, 28,  2,  2,
-] as unknown as Uint8ClampedArray;
-const data2 = [
-    11, 11, 14, 14, 66, 78, 255, 255, 255,
-    11, 11, 14, 14, 66, 78, 255, 255, 255,
-    12, 12, 11, 55,  8,  8, 255, 255, 255,
-    12, 12, 11, 55,  8,  8,   1,   1,   1,
-    19, 91, 44, 28,  2,  2,   1,   1,   1,
-    19, 91, 44, 28,  2,  2,   1,   1,   1,
-    5,  5,  5,   0,  0,  0,   9,   9,   9,
-    5,  5,  5,   0,  0,  0,   9,   9,   9,
-    5,  5,  5,   0,  0,  0,   9,   9,   9,
-] as unknown as Uint8ClampedArray;
-const inputData1 = {data: data1, height: 6, width: 6};
-const inputData2 = {data: data2, height: 9, width: 9};
-const to = 3;
-scaleDown1(inputData1, to, to); // wrong result when 255, 255, 255 pixels and % !== 0
 
-export function scaleDown1(orig: {data: Uint8ClampedArray, height: number, width: number}, width: number, height: number): number[] {
-    if (orig.height % height !== 0 || orig.width % width !== 0) {
-        throw "% ! 0";
-    }
-    console.time("scaleDown1");
+/** Gray 1D array */
+export function scaleDownLinear(orig: {data: Uint8ClampedArray, height: number, width: number},
+                                width: number, height: number,
+                                median = false,
+): Uint8ClampedArray {
 
-    let dest = Array.from({ length: (width * height)}, () => 0);
+    // if (median) {
+    //     return scaleDownMedian(orig, width, height);
+    // }
 
-    for (let y = 0; y < orig.height; y++) {
-        for (let x = 0; x < orig.width; x++) {
-            const indexY = Math.trunc(y * height / orig.height);
-            const indexX = Math.trunc(x * width  / orig.width);
-            const index = indexY * width + indexX;
-            const value = orig.data[y * orig.width + x];
+    console.log("scaleDown2...");
+    console.time("scaleDown2");
 
-            dest[index] = (dest[index] + value);
+    let dest = new Uint8ClampedArray(width * height);
+
+    const yScale = orig.height / height;
+    const xScale = orig.width / width;
+    console.log({yScale, xScale});
+
+
+    for (let y = 0; y < height; y++) {
+        for (let x = 0; x < width; x++) {
+            const fromY = Math.trunc(yScale * y);
+            const fromX = Math.trunc(xScale * x);
+            const toY   = Math.trunc(yScale * (y + 1));
+            const toX   = Math.trunc(xScale * (x + 1));
+            const count = (toY - fromY) * (toX - fromX);
+
+            let value = 0;
+            for (let iy = fromY; iy < toY; iy++) {
+                for (let ix = fromX; ix < toX; ix++) {
+                    value += orig.data[iy * orig.width + ix];
+                }
+            }
+
+            const meanValue = value / count;
+            const index = y * width + x;
+            dest[index] = Math.round(meanValue);
         }
     }
-    const size = (orig.width / width * orig.height / height);
-    console.log(size);
-    dest = dest.map(value => Math.round(value / size));
 
-    console.timeEnd("scaleDown1");
+    console.timeEnd("scaleDown2");
 
-    printArray([...dest], width);
-    console.log(dest.reduce((a, b) => a + b, 0) / dest.length);
+    if (width <= 32) {
+        printArray([...dest], width);
+    }
+    console.log(     dest.reduce((a, b) => a + b, 0) / dest.length);
+    console.log(orig.data.reduce((a, b) => a + b, 0) / orig.data.length, "orig");
+
     return dest;
 }
 
-
-function printArray(array: number[], columns: number) {
+function printArray(array: number[] | Uint8ClampedArray, columns: number) {
+    // @ts-ignore
     console.log(array.reduce((acc: number[][], cur: number, i: number) => {
         if (i % columns === 0) {
             acc.push([]);
