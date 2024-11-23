@@ -7,15 +7,15 @@ export function scaleDownLinear(orig: GrayImageData, width: number, height: numb
         return scaleDownMedian(orig, width, height);
     }
 
-    console.time("scaleDownLinear");
     if (width * height >= orig.width * orig.height) {
         return orig.data;
     }
+    // console.time("scaleDownLinear");
 
     const dest = new Uint8Array(width * height);
     const yScale = orig.height / height;
     const xScale = orig.width  / width;
-    console.log({yScale, xScale});
+    // console.log({yScale, xScale});
 
     for (let y = 0; y < height; y++) {
         for (let x = 0; x < width; x++) {
@@ -38,27 +38,27 @@ export function scaleDownLinear(orig: GrayImageData, width: number, height: numb
         }
     }
 
-    console.timeEnd("scaleDownLinear");
+    // console.timeEnd("scaleDownLinear");
 
-    if (width <= 32) {
-        printArray([...dest], width);
-    }
-    console.log(     dest.reduce((a, b) => a + b, 0) / dest.length);
-    console.log(orig.data.reduce((a, b) => a + b, 0) / orig.data.length, "orig");
+    // if (width <= 32) {
+    //     printArray([...dest], width);
+    // }
+    // console.log(     dest.reduce((a, b) => a + b, 0) / dest.length);
+    // console.log(orig.data.reduce((a, b) => a + b, 0) / orig.data.length, "orig");
 
     return dest;
 }
 
-function scaleDownMedian(orig: GrayImageData, width: number, height: number): Uint8Array {
-    console.time("scaleDownMedian");
+export function scaleDownMedian(orig: GrayImageData, width: number, height: number): Uint8Array {
     if (width * height >= orig.width * orig.height) {
         return orig.data;
     }
+    // console.time("scaleDownMedian");
 
     const dest = new Uint8Array(width * height);
     const yScale = orig.height / height;
     const xScale = orig.width  / width;
-    console.log({yScale, xScale, height, width});
+    // console.log({yScale, xScale, height, width});
 
     const cache = new Map();
 
@@ -90,24 +90,29 @@ function scaleDownMedian(orig: GrayImageData, width: number, height: number): Ui
         }
     }
 
-    console.timeEnd("scaleDownMedian");
-
-    if (width <= 32) {
-        printArray([...dest], width);
-    }
-    console.log(     dest.reduce((a, b) => a + b, 0) / dest.length);
-    console.log(orig.data.reduce((a, b) => a + b, 0) / orig.data.length, "orig");
+    // console.timeEnd("scaleDownMedian");
+    //
+    // if (width <= 32) {
+    //     printArray([...dest], width);
+    // }
+    // console.log(     dest.reduce((a, b) => a + b, 0) / dest.length);
+    // console.log(orig.data.reduce((a, b) => a + b, 0) / orig.data.length, "orig");
 
     return dest;
 }
 
+
 function printArray(array: number[] | Uint8Array, columns: number) {
+    console.log(getPrintedArray(array, columns));
+}
+
+export function getPrintedArray(array: number[] | Uint8Array, columns: number) {
     // @ts-ignore
-    console.log(array.reduce((acc: number[][], cur: number, i: number) => {
+    return array.reduce((acc: number[][], cur: number, i: number) => {
         if (i % columns === 0) {
             acc.push([]);
         }
         acc[Math.trunc(i / columns)].push(cur);
         return acc;
-    }, []).map((a: number[]) => a.map(d => d.toString().padStart(3)).join(" ")).join("\n"));
+    }, []).map((a: number[]) => a.map(d => d.toString().padStart(3)).join(" ")).join("\n")
 }
