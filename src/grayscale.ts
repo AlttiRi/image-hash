@@ -22,9 +22,9 @@ function getCalculateBT601(dw: DataView) {
 function getCalculateAverage(dw: DataView) {
     return function calculateAverage(i: number) {
         const uint = dw.getUint32(i);
-        return ((uint >> 24) & 0xFF)
-            +  ((uint >> 16) & 0xFF)
-            +  ((uint >>  8) & 0xFF) / 3;
+        return (((uint >> 24) & 0xFF)
+             +  ((uint >> 16) & 0xFF)
+             +  ((uint >>  8) & 0xFF)) / 3;
     };
 }
 function getCalculateBT709(dw: DataView) {
