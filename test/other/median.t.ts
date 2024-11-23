@@ -1,5 +1,5 @@
 import {ANSI_BLUE, t} from "../tester.ts";
-import {calculateMedianByCountSorting, calculateMedianBySorting} from "@/median.ts";
+import {calculateAverage, calculateMedianByCountSorting, calculateMedianBySorting} from "@/median.ts";
 
 
 console.log(ANSI_BLUE("--- calculateMedian ---"));
@@ -131,4 +131,39 @@ t({
     result: calculateMedianByCountSorting(new Uint8Array([255,250,250,250,241,240,50,0])),
     expect: 245.5,
 });
+
+
+t({
+    result: calculateAverage(new Uint8Array([255,250,250,250,241,240,50,0])),
+    expect: 192,
+});
+t({
+    result: calculateAverage(new Uint8Array([0])),
+    expect: 0,
+});
+t({
+    result: calculateAverage(new Uint8Array([0, 0, 0, 1])),
+    expect: 0.25,
+});
+t({
+    result: calculateAverage(new Uint8Array([0, 1, 1, 1])),
+    expect: 0.75,
+});
+t({
+    result: calculateAverage(new Uint8Array([1, 1, 1, 1])),
+    expect: 1,
+});
+t({
+    result: calculateAverage(new Uint8Array([1, 1, 1, 1, 0])),
+    expect: 0.8,
+});
+t({
+    result: calculateAverage(new Uint8Array([0, 255])),
+    expect: 127.5,
+});
+t({
+    result: calculateAverage(new Uint8Array([0, 255, 0])),
+    expect: 85,
+});
+
 

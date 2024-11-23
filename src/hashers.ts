@@ -1,4 +1,4 @@
-import {calculateMedian} from "./median.js";
+import {calculateAverage, calculateMedian} from "./median.js";
 
 /** difference hash */
 function dHash(data: Uint8Array, width: number, height: number) {
@@ -14,7 +14,7 @@ function dHash(data: Uint8Array, width: number, height: number) {
 
 /** average hash */
 export function aHash(data: Uint8Array, width: number, height: number) {
-    const mean = data.reduce((acc, cur) => acc + cur, 0) / data.length;
+    const mean = calculateAverage(data);
     const hash = new Uint8Array(width * height);
     for (let y = 0; y < height; y++) {
         for (let x = 0; x < width; x++) {

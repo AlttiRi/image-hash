@@ -55,3 +55,11 @@ export function calculateMedianByCountSorting(ui8ca: Uint8Array): number {
 
     throw new Error("Unreachable code was reached");
 }
+
+export function calculateAverage(ui8ca: Uint8Array): number {
+    let sum = 0;
+    for (let i = 0; i < ui8ca.length; i++) {
+        sum += ui8ca[i];
+    }
+    return sum / ui8ca.length;
+}
