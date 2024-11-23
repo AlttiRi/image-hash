@@ -1,24 +1,21 @@
 import {calculateMedian} from "./median.js";
+import {GrayImageData} from "./mono-image-data.js";
 
-/** Gray 1D array */
-export function scaleDownLinear(orig: {data: Uint8Array, height: number, width: number},
-                                width: number, height: number,
-                                median = false,
-): Uint8Array {
 
+export function scaleDownLinear(orig: GrayImageData, width: number, height: number, median = false): Uint8Array {
     if (median) {
         return scaleDownMedian(orig, width, height);
     }
 
-    console.log("scaleDown2...");
-    console.time("scaleDown2");
+    console.time("scaleDownLinear");
+    if (width * height >= orig.width * orig.height) {
+        return orig.data;
+    }
 
-    let dest = new Uint8Array(width * height);
-
+    const dest = new Uint8Array(width * height);
     const yScale = orig.height / height;
-    const xScale = orig.width / width;
+    const xScale = orig.width  / width;
     console.log({yScale, xScale});
-
 
     for (let y = 0; y < height; y++) {
         for (let x = 0; x < width; x++) {
@@ -41,7 +38,7 @@ export function scaleDownLinear(orig: {data: Uint8Array, height: number, width: 
         }
     }
 
-    console.timeEnd("scaleDown2");
+    console.timeEnd("scaleDownLinear");
 
     if (width <= 32) {
         printArray([...dest], width);
@@ -52,16 +49,15 @@ export function scaleDownLinear(orig: {data: Uint8Array, height: number, width: 
     return dest;
 }
 
-function scaleDownMedian(orig: {data: Uint8Array, height: number, width: number},
-                         width: number, height: number,
-): Uint8Array {
-    console.log("scaleDownMedian...");
+function scaleDownMedian(orig: GrayImageData, width: number, height: number): Uint8Array {
     console.time("scaleDownMedian");
+    if (width * height >= orig.width * orig.height) {
+        return orig.data;
+    }
 
-    let dest = new Uint8Array(width * height);
-
+    const dest = new Uint8Array(width * height);
     const yScale = orig.height / height;
-    const xScale = orig.width / width;
+    const xScale = orig.width  / width;
     console.log({yScale, xScale, height, width});
 
     const cache = new Map();
