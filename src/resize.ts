@@ -1,16 +1,27 @@
 import {calculateMedian} from "./median.js";
 import {GrayImageData} from "./mono-image-data.js";
 
+type ScaleOpts = {
+    width:  number
+    height: number
+    median?: boolean
+}
 
-// todo change sig
-export function scaleDownLinear(orig: GrayImageData, width: number, height: number, median = false): Uint8Array {
-    if (median) {
-        return scaleDownMedian(orig, width, height);
-    }
-
+export function scaleDownLinear(orig: GrayImageData, {width, height, median = false}: ScaleOpts): GrayImageData {
     if (width * height >= orig.width * orig.height) {
-        return orig.data;
+        return orig;
     }
+    let data: Uint8Array;
+    if (median) {
+        data = scaleDownLinearMedian(orig, width, height);
+    } else {
+        data = scaleDownLinearAverage(orig, width, height);
+    }
+    return new GrayImageData(data, width, height);
+}
+
+
+export function scaleDownLinearAverage(orig: GrayImageData, width: number, height: number): Uint8Array {
     // console.time("scaleDownLinear");
 
     const dest = new Uint8Array(width * height);
@@ -50,10 +61,7 @@ export function scaleDownLinear(orig: GrayImageData, width: number, height: numb
     return dest;
 }
 
-export function scaleDownMedian(orig: GrayImageData, width: number, height: number): Uint8Array {
-    if (width * height >= orig.width * orig.height) {
-        return orig.data;
-    }
+export function scaleDownLinearMedian(orig: GrayImageData, width: number, height: number): Uint8Array {
     // console.time("scaleDownMedian");
 
     const dest = new Uint8Array(width * height);

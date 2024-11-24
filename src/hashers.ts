@@ -1,79 +1,71 @@
-import {calculateAverage, calculateMedian} from "./median.js";
 import {ImageHash} from "./image-hash.js";
 import {BiImageData, GrayImageData} from "./mono-image-data.js";
+import {ImageDataLike} from "./types.js";
+import {getGrayData} from "./grayscale.js";
+import {scaleDownLinear} from "./resize.js";
+import {aHashCore, bHashCore, dHashCore, mHashCore} from "./hashers-core.js";
 
-// todo: change sigs
-//  use "core" postfix
+type HashOpts = {
+    width?:  number
+    height?: number
+    median?: boolean
+    grayData?: GrayImageData
+    grayDataScaled?: GrayImageData
+};
+type HashOptsPrivate = {
+    scaleWidth?:  number
+    scaleHeight?: number
+}
+type Hasher     = (imageData: ImageDataLike, opts: HashOpts) => ImageHash;
+type HasherCore = (grayImageData: GrayImageData) => Uint8Array;
+
+const defaultSize = 8;
 
 /** difference hash */
-function dHash({data, width, height}: GrayImageData): ImageHash {
-    const _width = width - 1;
-    const hash = new Uint8Array(_width * height);
-    for (let y = 0; y < height; y++) {
-        for (let x = 0; x < _width; x++) {
-            hash[y * _width + x] = data[y * width + x + 1] > data[y * width + x] ? 255 : 0;
-        }
-    }
-    return ImageHash.fromMono(new BiImageData(hash, width, height));
-}
+export const dHash: Hasher = (imageData: ImageDataLike, opts: HashOpts) => {
+    const {width = defaultSize} = opts;
+    return hash(dHashCore, imageData, {...opts, scaleWidth: width + 1});
+};
 
 /** average hash */
-export function aHash({data, width, height}: GrayImageData): ImageHash {
-    const mean = calculateAverage(data);
-    const hash = new Uint8Array(width * height);
-    for (let y = 0; y < height; y++) {
-        for (let x = 0; x < width; x++) {
-            hash[y * width + x] = data[y * width + x] > mean ? 255 : 0;
-        }
-    }
-    return ImageHash.fromMono(new BiImageData(hash, width, height));
-}
+export const aHash: Hasher = (imageData: ImageDataLike, opts: HashOpts) => hash(aHashCore, imageData, opts);
 
 /** median hash */
-export function mHash({data, width, height}: GrayImageData): ImageHash {
-    const hash = _mHash(data, width, height);
-    return ImageHash.fromMono(new BiImageData(hash, width, height));
-}
-
-function _mHash(data: Uint8Array, width: number, height: number): Uint8Array {
-    const median = calculateMedian(data);
-    const hash = new Uint8Array(width * height);
-    for (let y = 0; y < height; y++) {
-        for (let x = 0; x < width; x++) {
-            hash[y * width + x] = data[y * width + x] > median ? 255 : 0;
-        }
-    }
-    return hash;
-}
+export const mHash: Hasher = (imageData: ImageDataLike, opts: HashOpts) => hash(mHashCore, imageData, opts);
 
 /** block hash */
-export function bHash({data, width, height}: GrayImageData): ImageHash {
-    const bandHeight = 2;
-    const bandCount    = height / bandHeight;
-    const pixelsInBand = width  * bandHeight;
-    const hashes: Uint8Array[] = [];
+export const bHash: Hasher = (imageData: ImageDataLike, opts: HashOpts) => hash(bHashCore, imageData, opts);
 
-    // console.log({bandCount, pixelsInBand});
 
-    for (let i = 0; i < bandCount; i++) {
-        const byteOffset = pixelsInBand * i;
-        let length = pixelsInBand * i + pixelsInBand - pixelsInBand * i;
+// todo: if target res is lower
+function hash(hash: HasherCore, imageData: ImageDataLike, opts: HashOpts & HashOptsPrivate = {}): ImageHash {
+    const {
+        width  = defaultSize,
+        height = defaultSize,
+        scaleWidth  = (opts.width  || defaultSize),
+        scaleHeight = (opts.height || defaultSize),
+    } = opts;
 
-        if (byteOffset + length > data.length) { // when pixels count is even (like 9x9)
-            length = data.length - byteOffset;
-        }
-        const view = new Uint8Array(data.buffer, byteOffset, length);
-        const hash = _mHash(view, width, bandHeight);
-        hashes.push(hash);
-    }
+    let grayData:       GrayImageData;
+    let grayDataScaled: GrayImageData;
+    let ready = false;
 
-    const hash = new Uint8Array(width * height);
-    for (let i = 0; i < bandCount; i++) {
-        for (let j = 0; j < hashes[i].length; j++) {
-            hash[i * hashes[i].length + j] = hashes[i][j];
+    if ("grayDataScaled" in opts) {
+        grayDataScaled = opts.grayDataScaled!; // ts! // wtf is wrong with ts?
+        if (grayDataScaled.width === scaleWidth && grayDataScaled.height === scaleHeight) {
+            ready = true;
         }
     }
+    if (!ready) {
+        if ("grayData" in opts) {
+            grayData = opts.grayData!; // ts!
+        } else {
+            grayData = getGrayData(imageData);
+        }
+        grayDataScaled = scaleDownLinear(grayData, {...opts, width: scaleWidth, height: scaleHeight});
+    }
 
-    return ImageHash.fromMono(new BiImageData(hash, width, height));
+    const hashRaw = hash(grayDataScaled!); // ts! // stupid af
+    const biImageData = new BiImageData(hashRaw, width, height);
+    return ImageHash.fromMono(biImageData);
 }
-
