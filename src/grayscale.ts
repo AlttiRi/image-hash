@@ -1,5 +1,5 @@
 import {GrayImageData} from "./mono-image-data.js";
-import {ImageDataLike} from "./types.js";
+import {GrayScalerGetter, ImageDataLike} from "./types.js";
 
 /**
  * Using of 1 `getUint32 is faster than 3 accesses by index (`array[N]`).
@@ -37,7 +37,7 @@ export function getCalculateBT709(dw: DataView) {
     };
 }
 
-export function getGrayData(imageData: ImageDataLike, getFunc = getCalculateBT601): GrayImageData {
+export function getGrayData(imageData: ImageDataLike, getFunc: GrayScalerGetter = getCalculateBT601): GrayImageData {
     const {data, width, height, data: {length}} = imageData;
     const array = new Uint8Array(length / 4);
 

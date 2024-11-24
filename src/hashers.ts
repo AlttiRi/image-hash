@@ -1,6 +1,6 @@
 import {ImageHash} from "./image-hash.js";
 import {BiImageData, GrayImageData} from "./mono-image-data.js";
-import {ImageDataLike} from "./types.js";
+import {GrayScalerGetter, ImageDataLike} from "./types.js";
 import {getGrayData} from "./grayscale.js";
 import {scaleDownLinear} from "./resize.js";
 import {aHashCore, bHashCore, dHashCore, mHashCore} from "./hashers-core.js";
@@ -11,6 +11,7 @@ type HashOpts = {
     median?: boolean
     grayData?: GrayImageData
     grayDataScaled?: GrayImageData
+ // grayScaler?: GrayScalerGetter // todo: use it
 };
 type HashOptsPrivate = {
     scaleWidth?:  number

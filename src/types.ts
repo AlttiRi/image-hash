@@ -3,3 +3,5 @@ export type ImageDataLike = {
     width:  number
     height: number
 };
+
+export type GrayScalerGetter = (dw: DataView) => (i: number) => number;
