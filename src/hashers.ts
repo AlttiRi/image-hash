@@ -37,7 +37,6 @@ export const mHash: Hasher = (imageData: ImageDataLike, opts: HashOpts) => hash(
 export const bHash: Hasher = (imageData: ImageDataLike, opts: HashOpts) => hash(bHashCore, imageData, opts);
 
 
-// todo: if target res is lower
 function hash(hash: HasherCore, imageData: ImageDataLike, opts: HashOpts & HashOptsPrivate = {}): ImageHash {
     const {
         width  = defaultSize,
@@ -45,6 +44,12 @@ function hash(hash: HasherCore, imageData: ImageDataLike, opts: HashOpts & HashO
         scaleWidth  = (opts.width  || defaultSize),
         scaleHeight = (opts.height || defaultSize),
     } = opts;
+
+    if (imageData.width < scaleWidth || imageData.height < scaleHeight) {
+        // when the input is lower than 8x8 (9x8)
+        // todo: add simple integer up-scaling
+        throw new Error("Up-scaling is not supported");
+    }
 
     let grayData:       GrayImageData;
     let grayDataScaled: GrayImageData;
