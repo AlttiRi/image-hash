@@ -1,0 +1,8 @@
+{
+  "name": "@alttiri/image-hash-demo",
+  "type": "module",
+  "devDependencies": {
+    "jpeg-js": "0.4.4",
+    "png-js": "1.0.0"
+  }
+}

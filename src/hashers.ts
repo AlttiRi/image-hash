@@ -17,25 +17,25 @@ type HashOptsPrivate = {
     scaleWidth?:  number
     scaleHeight?: number
 }
-type Hasher     = (imageData: ImageDataLike, opts: HashOpts) => ImageHash;
+type Hasher     = (imageData: ImageDataLike, opts?: HashOpts) => ImageHash;
 type HasherCore = (grayImageData: GrayImageData) => Uint8Array;
 
 const defaultSize = 8;
 
 /** difference hash */
-export const dHash: Hasher = (imageData: ImageDataLike, opts: HashOpts) => {
+export const dHash: Hasher = (imageData: ImageDataLike, opts: HashOpts = {}) => {
     const {width = defaultSize} = opts;
     return hash(dHashCore, imageData, {...opts, scaleWidth: width + 1});
 };
 
 /** average hash */
-export const aHash: Hasher = (imageData: ImageDataLike, opts: HashOpts) => hash(aHashCore, imageData, opts);
+export const aHash: Hasher = (imageData: ImageDataLike, opts?: HashOpts) => hash(aHashCore, imageData, opts);
 
 /** median hash */
-export const mHash: Hasher = (imageData: ImageDataLike, opts: HashOpts) => hash(mHashCore, imageData, opts);
+export const mHash: Hasher = (imageData: ImageDataLike, opts?: HashOpts) => hash(mHashCore, imageData, opts);
 
 /** block hash */
-export const bHash: Hasher = (imageData: ImageDataLike, opts: HashOpts) => hash(bHashCore, imageData, opts);
+export const bHash: Hasher = (imageData: ImageDataLike, opts?: HashOpts) => hash(bHashCore, imageData, opts);
 
 
 function hash(hash: HasherCore, imageData: ImageDataLike, opts: HashOpts & HashOptsPrivate = {}): ImageHash {
