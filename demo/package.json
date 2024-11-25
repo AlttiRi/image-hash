@@ -3,6 +3,10 @@
   "type": "module",
   "devDependencies": {
     "jpeg-js": "0.4.4",
-    "png-js": "1.0.0"
+    "png-js": "1.0.0",
+    "pngjs": "7.0.0",
+    "@types/pngjs": "6.0.5",
+    "canvas": "2.11.2",
+    "sharp": "0.33.5"
   }
 }
