@@ -12,3 +12,7 @@ https://github.com/jaehl/blockhash
 
 orthocanna-500x500.jpg
 https://github.com/commonsmachinery/blockhash-python/issues/4
+
+peppers-600x600.png
+imagehash-1200x600.png
+https://github.com/JohannesBuchner/imagehash/tree/master/tests/data

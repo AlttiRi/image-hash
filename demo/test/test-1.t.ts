@@ -202,3 +202,47 @@ console.log(ANSI_BLUE("--- Hash demos (hashes from articles) ---"));
         });
     }
 }
+
+// https://github.com/JohannesBuchner/imagehash/blob/master/tests/test_hash_is_constant.py
+{
+    const iData = await readFileImageData("../img/imagehash-1200x600.png");
+    {
+        const hash = aHash(iData);
+        t({
+            result: hash.hex,
+            expect: "ffd7f58181c1ffff",
+        });
+        t({
+            result: hash.diff(ImageHash.fromHex("ffd7918181c9ffff")),
+            expect: 4,
+            name: "from-site"
+        });
+    }
+    {
+        const hash = dHash(iData);
+        t({
+            result: hash.hex,
+            expect: "002643332b15550c",
+        });
+        t({
+            result: hash.diff(ImageHash.fromHex("0026273b2b19550e")),
+            expect: 7,
+            name: "from-site"
+        });
+    }
+
+    {
+        const hash = mHash(iData);
+        t({
+            result: hash.hex,
+            expect: "ffd391818181a5e7",
+        });
+    }
+    {
+        const hash = bHash(iData);
+        t({
+            result: hash.hex,
+            expect: "0000f58181cf85c7",
+        });
+    }
+}
