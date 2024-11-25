@@ -2,15 +2,37 @@ import fs from "node:fs";
 import {readFile} from "node:fs/promises";
 import jpeg from "jpeg-js";
 // @ts-ignore (no types)
-import PNG from "png-js";
-import {PNG as PNGjs} from "pngjs";
+import PNG_Old from "png-js";
+import {PNG} from "pngjs";
 import sharp from "sharp";
 import {createCanvas, ImageData, loadImage} from "canvas";
+import getPixels from "get-pixels";
 import {ImageDataLike} from "@/types.ts";
 
 
-// getImageDataWithSharp getImageDataWithCanvas readFileImageDataEx
+// getImageDataWithSharp   getImageDataWithCanvas
+// readFileImageDataEx (getImageDataWithGetPixels)   readFileImageDataExOld (old png)
 export const readFileImageData = readFileImageDataEx;
+
+// "get-pixels"
+// same as "jpeg-js" (very slow and incorrect)
+// same as "pngjs" (slower than "sharp" or "canvas")
+export async function getImageDataWithGetPixels(filePath: string): Promise<ImageDataLike> {
+    // console.time("get-pixels");
+    return new Promise((resolve, reject) =>
+        getPixels(filePath, (err, ndarray) => {
+            if (err) {
+                reject(err);
+            }
+            // console.timeEnd("get-pixels");
+            resolve({
+                data: new Uint8ClampedArray(ndarray.data),
+                width: ndarray.shape[0],
+                height: ndarray.shape[1],
+            });
+        })
+    );
+}
 
 // "sharp"
 async function getImageDataWithSharp(imagePath: string) {
@@ -45,7 +67,7 @@ export async function getImageDataWithCanvas(imagePath: string): Promise<ImageDa
 async function parsePng(filePath: string): Promise<ImageDataLike> {
     return new Promise(async (resolve, reject) => {
         fs.createReadStream(filePath)
-            .pipe(new PNGjs())
+            .pipe(new PNG())
             .on("parsed", function(this: any) {
                 const {width, height, data} = this;
                 resolve({width, height, data: new Uint8ClampedArray(data)});
@@ -56,7 +78,7 @@ async function parsePng(filePath: string): Promise<ImageDataLike> {
 // 2 secs // 400 ms sharp // 600 canvas
 async function parsePngOld(filePath: string): Promise<ImageDataLike> {
     const data = await readFile(filePath);
-    const png = new PNG(data);
+    const png = new PNG_Old(data);
     const imgData = {
         width: png.width,
         height: png.height,
@@ -91,9 +113,24 @@ export async function readFileImageDataEx(filePath: string): Promise<ImageDataLi
         // console.time("parsePng");
         idata = await parsePng(filePath);
         // console.timeEnd("parsePng");
+    }
+    if (idata!) { // ts!
+        return idata;
+    }
+    throw new Error("Unsupported image extension");
+}
 
+/** with the old png parser */
+export async function readFileImageDataExOld(filePath: string): Promise<ImageDataLike> {
+    let idata: ImageDataLike;
+    if (filePath.endsWith(".jpg") || filePath.endsWith(".jpeg")) {
+        // console.time("parseJpeg");
+        idata = await parseJpeg(filePath);
+        // console.timeEnd("parseJpeg");
+    }
+    if (filePath.endsWith(".png")) {
         // console.time("parsePngOld");
-        // idata = await parsePngOld(filePath);
+        idata = await parsePngOld(filePath);
         // console.timeEnd("parsePngOld");
     }
     if (idata!) { // ts!
