@@ -8,7 +8,6 @@ import {aHashCore, bHashCore, dHashCore, mHashCore} from "./hashers-core.js";
 type HashOpts = {
     width?:  number
     height?: number
-    median?: boolean
     grayData?: GrayImageData
     grayDataScaled?: GrayImageData
  // grayScaler?: GrayScalerGetter // todo: use it
@@ -67,8 +66,10 @@ function hash(hash: HasherCore, imageData: ImageDataLike, opts: HashOpts & HashO
             grayData = opts.grayData!; // ts!
         } else {
             grayData = getGrayData(imageData);
+            // console.log("getGrayData..."); // todo: add tests and delete
         }
         grayDataScaled = scaleDownLinear(grayData, {...opts, width: scaleWidth, height: scaleHeight});
+        // console.log("scaleDownLinear...");
     }
 
     const hashRaw = hash(grayDataScaled!); // ts! // stupid af
