@@ -1,8 +1,11 @@
+import {ImageDataLikeEx} from "./types.js";
+
 /** ImageData fot only one channel (luminance). */
-export class MonoImageData {
+export class MonoImageData implements ImageDataLikeEx {
     public data: Uint8Array;
     public width:  number;
     public height: number;
+    public channels: 1 = 1;
     constructor(data: Uint8Array, width: number, height: number) {
         const mult = width * height;
         if (mult !== data.length || !mult) {

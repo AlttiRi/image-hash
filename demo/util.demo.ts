@@ -7,7 +7,19 @@ import {PNG} from "pngjs";
 import sharp from "sharp";
 import {createCanvas, ImageData, loadImage} from "canvas";
 import getPixels from "get-pixels";
-import {ImageDataLike} from "@/types.ts";
+import {ImageDataLike, ImageDataLikeEx} from "@/types.ts";
+
+
+export function saveImageData(imageData: ImageDataLikeEx, outputFilePath: string, channels: 4 | 1 | 2 | 3 = 4): Promise<sharp.OutputInfo> {
+    const image: sharp.Sharp = sharp(imageData.data, {
+        raw: {
+            width: imageData.width,
+            height: imageData.height,
+            channels: imageData.channels ? imageData.channels : channels,
+        }
+    });
+    return image.toFile(outputFilePath);
+}
 
 
 // getImageDataWithSharp   getImageDataWithCanvas
