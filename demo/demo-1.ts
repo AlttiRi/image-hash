@@ -1,4 +1,4 @@
-import {readFileImageData} from "./util.js";
+import {readFileImageData} from "./util.demo.js";
 import {aHash, bHash, dHash, mHash} from "@/hashers.ts";
 
 

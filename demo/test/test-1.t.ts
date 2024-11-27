@@ -1,5 +1,5 @@
 import {ANSI_BLUE, t} from "../../test/tester.ts";
-import {readFileImageData} from "../util.ts";
+import {readFileImageData} from "../util.demo.ts";
 import {aHash, bHash, dHash, mHash} from "@/hashers.ts";
 import {ImageHash} from "@/image-hash.ts";
 import {getCalculateAverage, getGrayData} from "@/grayscale.ts";
@@ -172,7 +172,7 @@ console.log(ANSI_BLUE("--- Hash demos (hashes from articles) ---"));
 
 // https://github.com/commonsmachinery/blockhash-python/issues/4
 {
-    const iData = await readFileImageData("../img/orthocanna-500x500.jpg");
+    const iData = await readFileImageData("../img/black-bg-orthocanna-500x500.jpg");
     {
         const hash = bHash(iData);
         t({
