@@ -8,17 +8,50 @@ import sharp from "sharp";
 import {createCanvas, ImageData, loadImage} from "canvas";
 import getPixels from "get-pixels";
 import {ImageDataLike, ImageDataLikeEx} from "@/types.ts";
+import {MonoImageData} from "@/mono-image-data.ts";
 
 
-export function saveImageData(imageData: ImageDataLikeEx, outputFilePath: string, channels: 4 | 1 | 2 | 3 = 4): Promise<sharp.OutputInfo> {
+// saveImageDataWithSharp saveImageDataWithCanvas
+export const saveImageData = saveImageDataWithSharp;
+
+export function saveImageDataWithSharp(imageData: ImageDataLikeEx, outputFilePath: string): Promise<sharp.OutputInfo> {
     const image: sharp.Sharp = sharp(imageData.data, {
         raw: {
             width: imageData.width,
             height: imageData.height,
-            channels: imageData.channels ? imageData.channels : channels,
+            channels: imageData.channels ? imageData.channels : 4,
         }
     });
     return image.toFile(outputFilePath);
+}
+
+// very slow ~5 secs vs ~1.2 (sharp)
+function saveImageDataWithCanvas(imageData: ImageDataLikeEx, outputFilePath: string) {
+    const canvas = createCanvas(imageData.width, imageData.height);
+    const ctx = canvas.getContext("2d");
+    let iData: ImageData;
+    if (imageData.channels === 1) {
+        iData = toImageDataFromMono(imageData as MonoImageData); // todo?: add `isMono` guard function
+    } else {
+        if (imageData.channels) {
+            throw new Error("Unsupported transform");
+        }
+        iData = new ImageData(new Uint8ClampedArray(imageData.data), imageData.width, imageData.height);
+    }
+    ctx.putImageData(iData, 0, 0);
+    const png = canvas.toBuffer();
+    return fs.promises.writeFile(outputFilePath, png);
+}
+export function toImageDataFromMono(imageData: MonoImageData): ImageData {
+    const array = imageData.data;
+    const data = new Uint8ClampedArray(array.length * 4);
+    for (let i = 0; i < array.length; i++) {
+        data[i * 4] = array[i];
+        data[i * 4 + 1] = array[i];
+        data[i * 4 + 2] = array[i];
+        data[i * 4 + 3] = 255;
+    }
+    return new ImageData(data, imageData.width, imageData.height);
 }
 
 
