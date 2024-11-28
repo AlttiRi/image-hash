@@ -1,13 +1,56 @@
 import {ANSI_BLUE, t} from "../tester.ts";
-import {getPrintedArray, scaleDownLinear, scaleDownMedian} from "@/resize.ts";
+import {
+    getPrintedArray,
+    scaleDownLinear,
+    scaleDownLinearAverage,
+    scaleDownLinearMedian,
+    scaleUpIntegerTwice,
+} from "@/resize.ts";
 import {GrayImageData} from "@/mono-image-data.ts";
 import {calculateMedian} from "@/median.ts";
 
 
-console.log(ANSI_BLUE("--- scaleDownLinear / scaleDownMedian ---"));
+console.log(ANSI_BLUE("--- scaleDownLinearAverage / scaleDownLinearMedian ---"));
 
 t({
     result: scaleDownLinear(new GrayImageData(
+        new Uint8Array([
+            1, 2,  3,
+            4, 5,  6,
+            7, 8, 99,
+        ]),
+        3,
+        3
+    ), {width: 3, height: 3, median: false}).data.toString(),
+    expect: "1,2,3,4,5,6,7,8,99",
+});
+t({
+    result: scaleDownLinear(new GrayImageData(
+        new Uint8Array([
+            1, 2,  3,
+            4, 5,  6,
+            7, 8, 99,
+        ]),
+        3,
+        3
+    ), {width: 1, height: 1}).data.toString(),
+    expect: "15",
+});
+t({
+    result: scaleDownLinear(new GrayImageData(
+        new Uint8Array([
+            1, 2,  3,
+            4, 5,  6,
+            7, 8, 99,
+        ]),
+        3,
+        3
+    ), {width: 1, height: 1, median: true}).data.toString(),
+    expect: "5",
+});
+
+t({
+    result: scaleDownLinearAverage(new GrayImageData(
         new Uint8Array([
             1, 2, 3,
             4, 5, 6,
@@ -19,7 +62,7 @@ t({
     expect: "1,2,3,4,5,6,7,8,9",
 });
 t({
-    result: scaleDownLinear(new GrayImageData(
+    result: scaleDownLinearAverage(new GrayImageData(
         new Uint8Array([
             1, 2, 3,
             4, 5, 6,
@@ -31,7 +74,7 @@ t({
     expect: "5",
 });
 t({
-    result: scaleDownLinear(new GrayImageData(
+    result: scaleDownLinearMedian(new GrayImageData(
         new Uint8Array([
             1, 2, 3,
             4, 5, 6,
@@ -39,7 +82,7 @@ t({
         ]),
         3,
         3,
-    ), 1, 1, true).toString(),
+    ), 1, 1).toString(),
     expect: "5",
 });
 
@@ -52,14 +95,14 @@ const data1 = [
     19, 91, 44, 28,  2,  2,
 ];
 t({
-    result: getPrintedArray(scaleDownLinear(new GrayImageData(new Uint8Array(data1), 6, 6), 3, 3), 3).trim(),
+    result: getPrintedArray(scaleDownLinearAverage(new GrayImageData(new Uint8Array(data1), 6, 6), 3, 3), 3).trim(),
     expect: `
  11  14  72
  12  33   8
  55  36   2`.trim(),
 });
 t({
-    result: getPrintedArray(scaleDownMedian(new GrayImageData(new Uint8Array(data1), 6, 6), 3, 3), 3).trim(),
+    result: getPrintedArray(scaleDownLinearMedian(new GrayImageData(new Uint8Array(data1), 6, 6), 3, 3), 3).trim(),
     expect: `
  11  14  72
  12  33   8
@@ -68,28 +111,28 @@ t({
 
 t({
     result: (() => { try {
-        return scaleDownLinear(new GrayImageData(new Uint8Array(data1), 4, 4), 1, 1, ).toString();
+        return scaleDownLinearAverage(new GrayImageData(new Uint8Array(data1), 4, 4), 1, 1, ).toString();
     } catch (e) { return (e as Error).message; }})(),
     expect: "Incorrect data",
 });
 t({
     result: (() => { try {
-        return scaleDownLinear(new GrayImageData(new Uint8Array(data1), 1, 1), 1, 1, ).toString();
+        return scaleDownLinearAverage(new GrayImageData(new Uint8Array(data1), 1, 1), 1, 1).toString();
     } catch (e) { return (e as Error).message; }})(),
     expect: "Incorrect data",
 });
 
 t({
-    result: scaleDownLinear(new GrayImageData(new Uint8Array(data1), 12, 3), 1, 1, ).toString(),
+    result: scaleDownLinearAverage(new GrayImageData(new Uint8Array(data1), 12, 3), 1, 1).toString(),
     expect: "27",
 });
 
 t({
-    result: scaleDownLinear(new GrayImageData(new Uint8Array(data1), 6, 6), 1, 1, ).toString(),
+    result: scaleDownLinearAverage(new GrayImageData(new Uint8Array(data1), 6, 6), 1, 1).toString(),
     expect: "27",
 });
 t({
-    result: scaleDownLinear(new GrayImageData(new Uint8Array(data1), 6, 6), 1, 1, true).toString(),
+    result: scaleDownLinearMedian(new GrayImageData(new Uint8Array(data1), 6, 6), 1, 1).toString(),
     expect: "13",
 });
 t({
@@ -98,29 +141,29 @@ t({
 });
 
 t({
-    result: scaleDownLinear(new GrayImageData(new Uint8Array(data1), 6, 6), 2, 2, ).toString(),
+    result: scaleDownLinearAverage(new GrayImageData(new Uint8Array(data1), 6, 6), 2, 2).toString(),
     expect: "12,43,38,15",
 });
 t({
-    result: scaleDownLinear(new GrayImageData(new Uint8Array(data1), 6, 6), 2, 2, true).toString(),
+    result: scaleDownLinearMedian(new GrayImageData(new Uint8Array(data1), 6, 6), 2, 2).toString(),
     expect: "11,55,19,8",
 });
 
 t({
-    result: scaleDownLinear(new GrayImageData(new Uint8Array(data1), 6, 6), 3, 3, ).toString(),
+    result: scaleDownLinearAverage(new GrayImageData(new Uint8Array(data1), 6, 6), 3, 3).toString(),
     expect: "11,14,72,12,33,8,55,36,2",
 });
 t({
-    result: scaleDownLinear(new GrayImageData(new Uint8Array(data1), 6, 6), 3, 3, true).toString(),
+    result: scaleDownLinearMedian(new GrayImageData(new Uint8Array(data1), 6, 6), 3, 3).toString(),
     expect: "11,14,72,12,33,8,55,36,2",
 });
 
 t({
-    result: scaleDownLinear(new GrayImageData(new Uint8Array(data1), 6, 6), 4, 4, ).toString(),
+    result: scaleDownLinearAverage(new GrayImageData(new Uint8Array(data1), 6, 6), 4, 4).toString(),
     expect: "11,13,14,72,12,12,35,40,12,12,55,8,19,68,28,2",
 });
 t({
-    result: scaleDownLinear(new GrayImageData(new Uint8Array(data1), 6, 6), 4, 4, true).toString(),
+    result: scaleDownLinearMedian(new GrayImageData(new Uint8Array(data1), 6, 6), 4, 4).toString(),
     expect: "11,13,14,72,12,12,35,37,12,12,55,8,19,68,28,2",
 });
 
@@ -136,14 +179,14 @@ const data2 = [
     5,  5,  5,   0,  0,  0,   9,   9,   9,
 ];
 t({
-    result: getPrintedArray(scaleDownLinear(new GrayImageData(new Uint8Array(data2), 9, 9), 3, 3), 3).trim(),
+    result: getPrintedArray(scaleDownLinearAverage(new GrayImageData(new Uint8Array(data2), 9, 9), 3, 3), 3).trim(),
     expect: `
  12  43 255
  38  15   1
   5   0   9`.trim(),
 });
 t({
-    result: getPrintedArray(scaleDownMedian(new GrayImageData(new Uint8Array(data2), 9, 9), 3, 3), 3).trim(),
+    result: getPrintedArray(scaleDownLinearMedian(new GrayImageData(new Uint8Array(data2), 9, 9), 3, 3), 3).trim(),
     expect: `
  11  55 255
  19   8   1
@@ -151,20 +194,20 @@ t({
 });
 
 t({
-    result: scaleDownLinear(new GrayImageData(new Uint8Array(data2), 9, 9), 3, 3, ).toString(),
+    result: scaleDownLinearAverage(new GrayImageData(new Uint8Array(data2), 9, 9), 3, 3).toString(),
     expect: "12,43,255,38,15,1,5,0,9",
 });
 t({
-    result: scaleDownLinear(new GrayImageData(new Uint8Array(data2), 9, 9), 3, 3, true).toString(),
+    result: scaleDownLinearMedian(new GrayImageData(new Uint8Array(data2), 9, 9), 3, 3).toString(),
     expect: "11,55,255,19,8,1,5,0,9",
 });
 
 t({
-    result: scaleDownLinear(new GrayImageData(new Uint8Array(data2), 9, 9), 1, 1, ).toString(),
+    result: scaleDownLinearAverage(new GrayImageData(new Uint8Array(data2), 9, 9), 1, 1).toString(),
     expect: "42",
 });
 t({
-    result: scaleDownLinear(new GrayImageData(new Uint8Array(data2), 9, 9), 1, 1, true).toString(),
+    result: scaleDownLinearMedian(new GrayImageData(new Uint8Array(data2), 9, 9), 1, 1).toString(),
     expect: "9",
 });
 t({
@@ -181,14 +224,14 @@ const data3 = [
     19, 19, 44, 28,  7,  8,
 ];
 t({
-    result: getPrintedArray(scaleDownLinear(new GrayImageData(new Uint8Array(data3), 6, 6), 3, 3), 3).trim(),
+    result: getPrintedArray(scaleDownLinearAverage(new GrayImageData(new Uint8Array(data3), 6, 6), 3, 3), 3).trim(),
     expect: `
  69  14  58
  12  22   3
  37  36   7`.trim(),
 });
 t({
-    result: getPrintedArray(scaleDownMedian(new GrayImageData(new Uint8Array(data3), 6, 6), 3, 3), 3).trim(),
+    result: getPrintedArray(scaleDownLinearMedian(new GrayImageData(new Uint8Array(data3), 6, 6), 3, 3), 3).trim(),
     expect: `
  11  14  72
  12  11   3
@@ -202,7 +245,7 @@ t({
         name: "avg luminance"
     });
     {
-        const ui8a = scaleDownLinear(new GrayImageData(new Uint8Array(data3), 6, 6), 3, 3)
+        const ui8a = scaleDownLinearAverage(new GrayImageData(new Uint8Array(data3), 6, 6), 3, 3)
         t({
             result: ui8a.reduce((a, b) => a + b, 0) / ui8a.length,
             expect: 28.666666666666668,
@@ -210,7 +253,7 @@ t({
         });
     }
     {
-        const ui8a = scaleDownMedian(new GrayImageData(new Uint8Array(data3), 6, 6), 3, 3)
+        const ui8a = scaleDownLinearMedian(new GrayImageData(new Uint8Array(data3), 6, 6), 3, 3)
         t({
             result: ui8a.reduce((a, b) => a + b, 0) / ui8a.length,
             expect: 20.555555555555557,
@@ -237,7 +280,7 @@ t({
         name: "avg luminance"
     });
     {
-        const ui8a = scaleDownLinear(new GrayImageData(new Uint8Array(data), 9, 9), 3, 3)
+        const ui8a = scaleDownLinearAverage(new GrayImageData(new Uint8Array(data), 9, 9), 3, 3)
         t({
             result: ui8a.reduce((a, b) => a + b, 0) / ui8a.length,
             expect: 42, // same when (integer down-scaling)
@@ -245,7 +288,7 @@ t({
         });
     }
     {
-        const ui8a = scaleDownMedian(new GrayImageData(new Uint8Array(data), 9, 9), 3, 3)
+        const ui8a = scaleDownLinearMedian(new GrayImageData(new Uint8Array(data), 9, 9), 3, 3)
         t({
             result: ui8a.reduce((a, b) => a + b, 0) / ui8a.length,
             expect: 40.333333333333336,
@@ -254,3 +297,44 @@ t({
     }
 }
 
+{
+    const input = new GrayImageData(new Uint8Array([1, 2, 3, 4]), 2, 2);
+    const result1 = scaleUpIntegerTwice(input);
+    const result2 = scaleUpIntegerTwice(result1);
+    t({
+        result: input.data.toString(),
+        expect: "1,2,3,4",
+    });
+    t({
+        result: result1.data.toString(),
+        expect: "1,1,2,2,1,1,2,2,3,3,4,4,3,3,4,4",
+    });
+    t({
+        result: getPrintedArray(input.data, input.width).trim(),
+        expect: `
+  1   2
+  3   4
+`.trim(),
+    });
+    t({
+        result: getPrintedArray(result1.data, result1.width).trim(),
+        expect: `
+  1   1   2   2
+  1   1   2   2
+  3   3   4   4
+  3   3   4   4`.trim(),
+    });
+    t({
+        result: getPrintedArray(result2.data, result2.width).trim(),
+        expect: `
+  1   1   1   1   2   2   2   2
+  1   1   1   1   2   2   2   2
+  1   1   1   1   2   2   2   2
+  1   1   1   1   2   2   2   2
+  3   3   3   3   4   4   4   4
+  3   3   3   3   4   4   4   4
+  3   3   3   3   4   4   4   4
+  3   3   3   3   4   4   4   4`.trim(),
+    });
+
+}
