@@ -3,13 +3,18 @@ import {readFileImageData} from "../util.demo.ts";
 import {aHash, bHash, dHash, mHash} from "@/hashers.ts";
 import {ImageHash} from "@/image-hash.ts";
 import {getCalculateAverage, getGrayData} from "@/grayscale.ts";
+import path from "node:path";
+
+function resolve(str: string) {
+    return path.resolve(import.meta.dirname, str);
+}
 
 
 console.log(ANSI_BLUE("--- Hash demos (hashes from articles) ---"));
 
 // https://content-blockchain.org/research/testing-different-image-hash-functions/
 {
-    const iData = await readFileImageData("../img/kittens-3264x2448.jpg");
+    const iData = await readFileImageData(resolve(`../img/kittens-3264x2448.jpg`));
 
     // AVERAGE HASH
     {
@@ -103,7 +108,7 @@ console.log(ANSI_BLUE("--- Hash demos (hashes from articles) ---"));
 
 // https://web.archive.org/web/20150809161817/https://www.safaribooksonline.com/blog/2013/11/26/image-hashing-with-python/
 {
-    const iData = await readFileImageData("../img/bridge-500x320.jpg");
+    const iData = await readFileImageData(resolve(`../img/bridge-500x320.jpg`));
 
     // Average Hash
     {
@@ -122,7 +127,7 @@ console.log(ANSI_BLUE("--- Hash demos (hashes from articles) ---"));
 
 // https://web.archive.org/web/20241119132106/https://www.hackerfactor.com/blog/index.php?/archives/529-Kind-of-Like-That.html
 {
-    const iData = await readFileImageData("../img/alyson_hannigan_500x500.jpg");
+    const iData = await readFileImageData(resolve(`../img/alyson_hannigan_500x500.jpg`));
 
     {
         const hash = dHash(iData);
@@ -140,7 +145,7 @@ console.log(ANSI_BLUE("--- Hash demos (hashes from articles) ---"));
 
 // https://github.com/jaehl/blockhash
 {
-    const iData = await readFileImageData("../img/rabbit-320x192.png");
+    const iData = await readFileImageData(resolve(`../img/rabbit-320x192.png`));
 
     {
         const hash = bHash(iData);
@@ -172,7 +177,7 @@ console.log(ANSI_BLUE("--- Hash demos (hashes from articles) ---"));
 
 // https://github.com/commonsmachinery/blockhash-python/issues/4
 {
-    const iData = await readFileImageData("../img/black-bg-orthocanna-500x500.jpg");
+    const iData = await readFileImageData(resolve(`../img/black-bg-orthocanna-500x500.jpg`));
     {
         const hash = bHash(iData);
         t({
@@ -205,7 +210,7 @@ console.log(ANSI_BLUE("--- Hash demos (hashes from articles) ---"));
 
 // https://github.com/JohannesBuchner/imagehash/blob/master/tests/test_hash_is_constant.py
 {
-    const iData = await readFileImageData("../img/imagehash-1200x600.png");
+    const iData = await readFileImageData(resolve(`../img/imagehash-1200x600.png`));
     {
         const hash = aHash(iData);
         t({
