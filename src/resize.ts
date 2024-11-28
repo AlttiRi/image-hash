@@ -129,26 +129,21 @@ export function getPrintedArray(array: number[] | Uint8Array, columns: number) {
 }
 
 export function scaleUpIntegerTwice(orig: GrayImageData): GrayImageData {
+    return scaleUpNearestNeighbor(orig, orig.width * 2, orig.height * 2);
+}
+
+function scaleUpNearestNeighbor(orig: GrayImageData, newWidth: number, newHeight: number): GrayImageData {
     const {data, width, height} = orig;
+    const dest = new Uint8Array(newWidth * newHeight);
+    const xScale = width  / newWidth;
+    const yScale = height / newHeight;
 
-    const newWidth  = orig.width  * 2;
-    const newHeight = orig.height * 2;
-    const newData = new Uint8Array(newWidth * newHeight);
-
-    for (let y = 0; y < height; y++) {
-        for (let x = 0; x < width; x++) {
-            const pixelValue = data[y * width + x];
-            const x1 = x * 2;
-            const y1 = y * 2;
-            const x2 = x1 + 1;
-            const y2 = y1 + 1;
-
-            newData[y1 * newWidth + x1] = pixelValue;
-            newData[y1 * newWidth + x2] = pixelValue;
-            newData[y2 * newWidth + x1] = pixelValue;
-            newData[y2 * newWidth + x2] = pixelValue;
+    for (let newY = 0; newY < newHeight; newY++) {
+        for (let newX = 0; newX < newWidth; newX++) {
+            const x = Math.trunc(newX * xScale);
+            const y = Math.trunc(newY * yScale);
+            dest[newY * newWidth + newX] = data[y * width + x];
         }
     }
-
-    return new GrayImageData(newData, newWidth, newHeight);
+    return new GrayImageData(dest, newWidth, newHeight);
 }
