@@ -1,7 +1,7 @@
 import {ImageHash} from "./image-hash.js";
 import {BiImageData, GrayImageData} from "./mono-image-data.js";
 import {GrayScalerGetter, ImageDataLike} from "./types.js";
-import {getGrayData} from "./grayscale.js";
+import {getCalculateBT601, getGrayData} from "./grayscale.js";
 import {scaleDownLinear, scaleUpNearestNeighbor} from "./resize.js";
 import {aHashCore, bHashCore, dHashCore, mHashCore} from "./hashers-core.js";
 
@@ -11,7 +11,7 @@ type HashOpts = {
     grayData?: GrayImageData
     grayDataScaled?: GrayImageData
     ignore?: boolean
- // grayScaler?: GrayScalerGetter // todo: use it
+    grayScaler?: GrayScalerGetter
 };
 type HashOptsPrivate = {
     scaleWidth?:  number
@@ -46,6 +46,7 @@ function hash(hash: HasherCore, imageData: ImageDataLike, opts: HashOpts & HashO
     const hashHeight = opts.height || defaultSize;
     let scaleWidth  = opts.scaleWidth  || hashWidth;
     let scaleHeight = opts.scaleHeight || hashHeight;
+    let grayScaler  = opts.grayScaler || getCalculateBT601;
 
     const upScale: boolean = imageData.width < scaleWidth || imageData.height < scaleHeight;
     let origScales;
@@ -76,12 +77,12 @@ function hash(hash: HasherCore, imageData: ImageDataLike, opts: HashOpts & HashO
                 if (!opts.ignore) {
                     throw new Error("Wrong grayData input");
                 }
-                grayData = getGrayData(imageData);
+                grayData = getGrayData(imageData, grayScaler);
             } else {
                 grayData = _grayData;
             }
         } else {
-            grayData = getGrayData(imageData);
+            grayData = getGrayData(imageData, grayScaler);
             // console.log("getGrayData..."); // todo: add tests and delete
         }
         grayDataScaled = scaleDownLinear(grayData, {...opts, width: scaleWidth, height: scaleHeight});

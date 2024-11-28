@@ -27,6 +27,6 @@ export class BiImageData extends MonoImageData {
 }
 
 /** "gray-scaled" image pixels (values from `0` up to `255`) */
-export class GrayImageData extends MonoImageData {
+export class GrayImageData extends MonoImageData { // todo?: store `calculateLuminance.name` and verify it
     type: "gray-scaled" = "gray-scaled";
 }
