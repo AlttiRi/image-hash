@@ -9,9 +9,7 @@ type ScaleOpts = {
 
 export function scaleDownLinear(orig: GrayImageData, {width, height, median = false}: ScaleOpts): GrayImageData {
     if (width > orig.width || height > orig.height) {
-        // Dummy scale-up support for tiny input
-        // However, dhash looks bad with this up scaling
-        return scaleDownLinear(scaleUpIntegerTwice(orig), {width, height, median});
+        throw new Error("Up-scaling is not supported");
     }
     let data: Uint8Array;
     if (median) {
