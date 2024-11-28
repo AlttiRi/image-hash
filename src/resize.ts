@@ -23,62 +23,61 @@ export function scaleDownLinear(orig: GrayImageData, {width, height, median = fa
 }
 
 
-export function scaleDownLinearAverage(orig: GrayImageData, width: number, height: number): Uint8Array {
-    // console.time("scaleDownLinear");
+export function scaleDownLinearAverage(orig: GrayImageData, newWidth: number, newHeight: number): Uint8Array {
+    // console.time("scaleDownLinearAverage");
 
-    const dest = new Uint8Array(width * height);
-    const yScale = orig.height / height;
-    const xScale = orig.width  / width;
-    // console.log({yScale, xScale});
+    const {data, width, height} = orig;
+    const dest = new Uint8Array(newWidth * newHeight);
+    const xScale = width  / newWidth;
+    const yScale = height / newHeight;
+    // console.log({xScale, yScale});
 
-    for (let y = 0; y < height; y++) {
-        for (let x = 0; x < width; x++) {
-            const fromY = Math.trunc(yScale * y);
-            const fromX = Math.trunc(xScale * x);
-            const toY   = Math.trunc(yScale * (y + 1));
-            const toX   = Math.trunc(xScale * (x + 1));
+    for (let newY = 0; newY < newHeight; newY++) {
+        for (let newX = 0; newX < newWidth; newX++) {
+            const fromY = Math.trunc(yScale * newY);
+            const fromX = Math.trunc(xScale * newX);
+            const toY   = Math.trunc(yScale * (newY + 1));
+            const toX   = Math.trunc(xScale * (newX + 1));
             const count = (toY - fromY) * (toX - fromX);
 
             let value = 0;
-            for (let iy = fromY; iy < toY; iy++) {
-                for (let ix = fromX; ix < toX; ix++) {
-                    value += orig.data[iy * orig.width + ix];
+            for (let y = fromY; y < toY; y++) {
+                for (let x = fromX; x < toX; x++) {
+                    value += data[y * width + x];
                 }
             }
 
-            const meanValue = value / count;
-            const index = y * width + x;
-            dest[index] = Math.round(meanValue);
+            dest[newY * newWidth + newX] = Math.round(value / count);
         }
     }
 
-    // console.timeEnd("scaleDownLinear");
+    // console.timeEnd("scaleDownLinearAverage");
 
     // if (width <= 32) {
     //     printArray([...dest], width);
     // }
-    // console.log(     dest.reduce((a, b) => a + b, 0) / dest.length);
-    // console.log(orig.data.reduce((a, b) => a + b, 0) / orig.data.length, "orig");
+    // console.log(dest.reduce((a, b) => a + b, 0) / dest.length);
+    // console.log(data.reduce((a, b) => a + b, 0) / data.length, "orig");
 
     return dest;
 }
 
-export function scaleDownLinearMedian(orig: GrayImageData, width: number, height: number): Uint8Array {
-    // console.time("scaleDownMedian");
+export function scaleDownLinearMedian(orig: GrayImageData, newWidth: number, newHeight: number): Uint8Array {
+    // console.time("scaleDownLinearMedian");
 
-    const dest = new Uint8Array(width * height);
-    const yScale = orig.height / height;
-    const xScale = orig.width  / width;
-    // console.log({yScale, xScale, height, width});
+    const {data, width, height} = orig;
+    const dest = new Uint8Array(newWidth * newHeight);
+    const xScale = width  / newWidth;
+    const yScale = height / newHeight;
+    // console.log({xScale, yScale, newWidth, newHeight});
 
     const cache = new Map();
-
-    for (let y = 0; y < height; y++) {
-        for (let x = 0; x < width; x++) {
-            const fromY = Math.trunc(yScale * y);
-            const fromX = Math.trunc(xScale * x);
-            const toY   = Math.trunc(yScale * (y + 1));
-            const toX   = Math.trunc(xScale * (x + 1));
+    for (let newY = 0; newY < newHeight; newY++) {
+        for (let newX = 0; newX < newWidth; newX++) {
+            const fromY = Math.trunc(yScale * newY);
+            const fromX = Math.trunc(xScale * newX);
+            const toY   = Math.trunc(yScale * (newY + 1));
+            const toX   = Math.trunc(xScale * (newX + 1));
             const count = (toY - fromY) * (toX - fromX);
 
             const value = cache.get(count);
@@ -88,26 +87,24 @@ export function scaleDownLinearMedian(orig: GrayImageData, width: number, height
             }
 
             let i = 0;
-            for (let iy = fromY; iy < toY; iy++) {
-                for (let ix = fromX; ix < toX; ix++) {
-                    medianArray[i++] = orig.data[iy * orig.width + ix];
+            for (let y = fromY; y < toY; y++) {
+                for (let x = fromX; x < toX; x++) {
+                    medianArray[i++] = data[y * width + x];
                 }
             }
 
             const medianValue = calculateMedian(medianArray);
-
-            const index = y * width + x;
-            dest[index] = Math.round(medianValue);
+            dest[newY * newWidth + newX] = Math.round(medianValue);
         }
     }
 
-    // console.timeEnd("scaleDownMedian");
+    // console.timeEnd("scaleDownLinearMedian");
     //
-    // if (width <= 32) {
-    //     printArray([...dest], width);
+    // if (newWidth <= 32) {
+    //     printArray([...dest], newWidth);
     // }
-    // console.log(     dest.reduce((a, b) => a + b, 0) / dest.length);
-    // console.log(orig.data.reduce((a, b) => a + b, 0) / orig.data.length, "orig");
+    // console.log(dest.reduce((a, b) => a + b, 0) / dest.length);
+    // console.log(data.reduce((a, b) => a + b, 0) / data.length, "orig");
 
     return dest;
 }
