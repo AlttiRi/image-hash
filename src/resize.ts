@@ -57,14 +57,6 @@ export function scaleDownLinearAverage(orig: GrayImageData, newWidth: number, ne
         }
     }
 
-    // console.timeEnd("scaleDownLinearAverage");
-
-    // if (width <= 32) {
-    //     printArray([...dest], width);
-    // }
-    // console.log(dest.reduce((a, b) => a + b, 0) / dest.length);
-    // console.log(data.reduce((a, b) => a + b, 0) / data.length, "orig");
-
     return dest;
 }
 
@@ -103,14 +95,6 @@ export function scaleDownLinearMedian(orig: GrayImageData, newWidth: number, new
             dest[newY * newWidth + newX] = Math.round(medianValue);
         }
     }
-
-    // console.timeEnd("scaleDownLinearMedian");
-    //
-    // if (newWidth <= 32) {
-    //     printArray([...dest], newWidth);
-    // }
-    // console.log(dest.reduce((a, b) => a + b, 0) / dest.length);
-    // console.log(data.reduce((a, b) => a + b, 0) / data.length, "orig");
 
     return dest;
 }

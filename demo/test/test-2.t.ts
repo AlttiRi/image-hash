@@ -8,7 +8,7 @@ function resolve(str: string) {
     return path.resolve(import.meta.dirname, str);
 }
 
-console.log(ANSI_BLUE("--- Tests 2 ---"));
+console.log(ANSI_BLUE("--- Tests `grayScaler`s ---"));
 
 const iData = await readFileImageData(resolve(`../img/wallpaper-dark-purple-2560x1600.jpg`));
 const hex1_c4e4f05879797e3e = "c4e4f05879797e3e";
