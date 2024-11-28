@@ -8,7 +8,7 @@ type ScaleOpts = {
 }
 
 export function scaleDownLinear(orig: GrayImageData, {width, height, median = false}: ScaleOpts): GrayImageData {
-    if (width * height >= orig.width * orig.height) {
+    if (width > orig.width || height > orig.height) {
         // Dummy scale-up support for tiny input
         return scaleDownLinear(scaleUpIntegerTwice(orig), {width, height, median});
     }
