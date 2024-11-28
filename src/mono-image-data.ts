@@ -15,6 +15,10 @@ export class MonoImageData implements ImageDataLikeEx {
         this.width  = width;
         this.height = height;
     }
+    newInstance<T extends MonoImageData>(data: Uint8Array, width: number, height: number): T {
+        // @ts-ignore
+        return new this.constructor(data, width, height);
+    }
 }
 
 /** "binary"/"black-white" image pixels (`0` and `255` values) */

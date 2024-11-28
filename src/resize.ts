@@ -1,14 +1,22 @@
 import {calculateMedian} from "./median.js";
-import {GrayImageData} from "./mono-image-data.js";
+import {GrayImageData, MonoImageData} from "./mono-image-data.js";
 
 type ScaleOpts = {
     width:  number
     height: number
     median?: boolean
+    ignore?: boolean
 }
 
-export function scaleDownLinear(orig: GrayImageData, {width, height, median = false}: ScaleOpts): GrayImageData {
+export function scaleDownLinear(orig: GrayImageData, opts: ScaleOpts): GrayImageData {
+    const {width, height, median = false, ignore = false} = opts;
+    if (width === orig.width || height === orig.height) {
+        return orig;
+    }
     if (width > orig.width || height > orig.height) {
+        if (ignore) {
+            return orig;
+        }
         throw new Error("Up-scaling is not supported");
     }
     let data: Uint8Array;
@@ -123,11 +131,11 @@ export function getPrintedArray(array: number[] | Uint8Array, columns: number) {
     }, []).map((a: number[]) => a.map(d => d.toString().padStart(3)).join(" ")).join("\n")
 }
 
-export function scaleUpIntegerTwice(orig: GrayImageData): GrayImageData {
+export function scaleUpIntegerTwice<T extends MonoImageData>(orig: T): T {
     return scaleUpNearestNeighbor(orig, orig.width * 2, orig.height * 2);
 }
 
-function scaleUpNearestNeighbor(orig: GrayImageData, newWidth: number, newHeight: number): GrayImageData {
+export function scaleUpNearestNeighbor<T extends MonoImageData>(orig: T, newWidth: number, newHeight: number): T {
     const {data, width, height} = orig;
     const dest = new Uint8Array(newWidth * newHeight);
     const xScale = width  / newWidth;
@@ -140,5 +148,5 @@ function scaleUpNearestNeighbor(orig: GrayImageData, newWidth: number, newHeight
             dest[newY * newWidth + newX] = data[y * width + x];
         }
     }
-    return new GrayImageData(dest, newWidth, newHeight);
+    return orig.newInstance<T>(dest, newWidth, newHeight);
 }

@@ -1,7 +1,7 @@
-import {GrayImageData} from "./mono-image-data.js";
+import {BiImageData, GrayImageData} from "./mono-image-data.js";
 import {calculateAverage, calculateMedian} from "./median.js";
 
-export function dHashCore({data, width, height}: GrayImageData): Uint8Array {
+export function dHashCore({data, width, height}: GrayImageData): BiImageData {
     const _width = width - 1;
     const hash = new Uint8Array(_width * height);
     for (let y = 0; y < height; y++) {
@@ -9,10 +9,10 @@ export function dHashCore({data, width, height}: GrayImageData): Uint8Array {
             hash[y * _width + x] = data[y * width + x + 1] > data[y * width + x] ? 255 : 0;
         }
     }
-    return hash;
+    return new BiImageData(hash, _width, height);
 }
 
-export function aHashCore({data, width, height}: GrayImageData): Uint8Array {
+export function aHashCore({data, width, height}: GrayImageData): BiImageData {
     const mean = calculateAverage(data);
     const hash = new Uint8Array(width * height);
     for (let y = 0; y < height; y++) {
@@ -20,11 +20,12 @@ export function aHashCore({data, width, height}: GrayImageData): Uint8Array {
             hash[y * width + x] = data[y * width + x] > mean ? 255 : 0;
         }
     }
-    return hash;
+    return new BiImageData(hash, width, height);
 }
 
-export function mHashCore({data, width, height}: GrayImageData): Uint8Array {
-    return _mHashCore(data, width, height);
+export function mHashCore({data, width, height}: GrayImageData): BiImageData {
+    const hash = _mHashCore(data, width, height);
+    return new BiImageData(hash, width, height);
 }
 
 function _mHashCore(data: Uint8Array, width: number, height: number): Uint8Array {
@@ -38,7 +39,7 @@ function _mHashCore(data: Uint8Array, width: number, height: number): Uint8Array
     return hash;
 }
 
-export function bHashCore({data, width, height}: GrayImageData): Uint8Array {
+export function bHashCore({data, width, height}: GrayImageData): BiImageData {
     const bandHeight = 2;
     const bandCount    = height / bandHeight;
     const pixelsInBand = width  * bandHeight;
@@ -64,5 +65,5 @@ export function bHashCore({data, width, height}: GrayImageData): Uint8Array {
             hash[i * hashes[i].length + j] = hashes[i][j];
         }
     }
-    return hash;
+    return new BiImageData(hash, width, height);
 }

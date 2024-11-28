@@ -6,7 +6,7 @@ import {
     scaleDownLinearMedian,
     scaleUpIntegerTwice,
 } from "@/resize.ts";
-import {GrayImageData} from "@/mono-image-data.ts";
+import {BiImageData, GrayImageData} from "@/mono-image-data.ts";
 import {calculateMedian} from "@/median.ts";
 
 
@@ -336,5 +336,39 @@ t({
   3   3   3   3   4   4   4   4
   3   3   3   3   4   4   4   4`.trim(),
     });
+}
 
+{
+    const input = new GrayImageData(new Uint8Array([1, 2, 3, 4]), 2, 2);
+    const result = scaleUpIntegerTwice(input);
+    t({
+        result: input.data.toString(),
+        expect: "1,2,3,4",
+    });
+    t({
+        result: result.data.toString(),
+        expect: "1,1,2,2,1,1,2,2,3,3,4,4,3,3,4,4",
+    });
+    t({
+        result: result.type,
+        expect: "gray-scaled",
+        name: "newInstance test",
+    });
+}
+{
+    const input = new BiImageData(new Uint8Array([1, 2, 3, 4]), 2, 2);
+    const result = scaleUpIntegerTwice(input);
+    t({
+        result: input.data.toString(),
+        expect: "1,2,3,4",
+    });
+    t({
+        result: result.data.toString(),
+        expect: "1,1,2,2,1,1,2,2,3,3,4,4,3,3,4,4",
+    });
+    t({
+        result: result.type,
+        expect: "binary",
+        name: "newInstance test",
+    });
 }

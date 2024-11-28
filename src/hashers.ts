@@ -2,7 +2,7 @@ import {ImageHash} from "./image-hash.js";
 import {BiImageData, GrayImageData} from "./mono-image-data.js";
 import {GrayScalerGetter, ImageDataLike} from "./types.js";
 import {getGrayData} from "./grayscale.js";
-import {scaleDownLinear} from "./resize.js";
+import {scaleDownLinear, scaleUpNearestNeighbor} from "./resize.js";
 import {aHashCore, bHashCore, dHashCore, mHashCore} from "./hashers-core.js";
 
 type HashOpts = {
@@ -10,6 +10,7 @@ type HashOpts = {
     height?: number
     grayData?: GrayImageData
     grayDataScaled?: GrayImageData
+    ignore?: boolean
  // grayScaler?: GrayScalerGetter // todo: use it
 };
 type HashOptsPrivate = {
@@ -17,7 +18,7 @@ type HashOptsPrivate = {
     scaleHeight?: number
 }
 type Hasher     = (imageData: ImageDataLike, opts?: HashOpts) => ImageHash;
-type HasherCore = (grayImageData: GrayImageData) => Uint8Array;
+type HasherCore = (grayImageData: GrayImageData) => BiImageData;
 
 const defaultSize = 8;
 
@@ -41,12 +42,18 @@ export const bHash: Hasher = (imageData: ImageDataLike, opts?: HashOpts) => hash
  * @see `scaleUpIntegerTwice`
  */
 function hash(hash: HasherCore, imageData: ImageDataLike, opts: HashOpts & HashOptsPrivate = {}): ImageHash {
-    const {
-        width  = defaultSize,
-        height = defaultSize,
-        scaleWidth  = (opts.width  || defaultSize),
-        scaleHeight = (opts.height || defaultSize),
-    } = opts;
+    const hashWidth  = opts.width  || defaultSize;
+    const hashHeight = opts.height || defaultSize;
+    let scaleWidth  = opts.scaleWidth  || hashWidth;
+    let scaleHeight = opts.scaleHeight || hashHeight;
+
+    const upScale: boolean = imageData.width < scaleWidth || imageData.height < scaleHeight;
+    let origScales;
+    if (upScale) {
+        origScales = {scaleWidth, scaleHeight};
+        scaleWidth  = imageData.width;
+        scaleHeight = imageData.height;
+    }
 
     let grayData:       GrayImageData;
     let grayDataScaled: GrayImageData;
@@ -56,11 +63,23 @@ function hash(hash: HasherCore, imageData: ImageDataLike, opts: HashOpts & HashO
         grayDataScaled = opts.grayDataScaled!; // ts! // wtf is wrong with ts?
         if (grayDataScaled.width === scaleWidth && grayDataScaled.height === scaleHeight) {
             ready = true;
+        } else {
+            if (!opts.ignore) {
+                throw new Error("Wrong grayDataScaled input");
+            }
         }
     }
     if (!ready) {
         if ("grayData" in opts) {
-            grayData = opts.grayData!; // ts!
+            const _grayData = opts.grayData!; // ts!
+            if (_grayData.height !== imageData.height || _grayData.width !== imageData.width) {
+                if (!opts.ignore) {
+                    throw new Error("Wrong grayData input");
+                }
+                grayData = getGrayData(imageData);
+            } else {
+                grayData = _grayData;
+            }
         } else {
             grayData = getGrayData(imageData);
             // console.log("getGrayData..."); // todo: add tests and delete
@@ -69,7 +88,11 @@ function hash(hash: HasherCore, imageData: ImageDataLike, opts: HashOpts & HashO
         // console.log("scaleDownLinear...");
     }
 
-    const hashRaw = hash(grayDataScaled!); // ts! // stupid af
-    const biImageData = new BiImageData(hashRaw, width, height);
+    const biImageData = hash(grayDataScaled!); // ts! // stupid af
+    if (upScale && origScales) {
+        const {scaleWidth, scaleHeight} = origScales;
+        const hashUpScaled: BiImageData = scaleUpNearestNeighbor(biImageData, scaleWidth, scaleHeight);
+        return ImageHash.fromMono(hashUpScaled);
+    }
     return ImageHash.fromMono(biImageData);
 }
