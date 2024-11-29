@@ -37,7 +37,7 @@ export function scaleDownLinearAverage(orig: GrayImageData, newWidth: number, ne
 
     for (let newY = 0; newY < newHeight; newY++) {
         for (let newX = 0; newX < newWidth; newX++) {
-            const fromY = Math.trunc(yScale * newY);
+            const fromY = Math.trunc(yScale * newY); // todo: test `ceil`
             const fromX = Math.trunc(xScale * newX);
             const toY   = Math.trunc(yScale * (newY + 1));
             const toX   = Math.trunc(xScale * (newX + 1));
@@ -67,7 +67,7 @@ export function scaleDownLinearMedian(orig: GrayImageData, newWidth: number, new
     const cache = new Map();
     for (let newY = 0; newY < newHeight; newY++) {
         for (let newX = 0; newX < newWidth; newX++) {
-            const fromY = Math.trunc(yScale * newY); // todo: test `ceil`
+            const fromY = Math.trunc(yScale * newY);
             const fromX = Math.trunc(xScale * newX);
             const toY   = Math.trunc(yScale * (newY + 1));
             const toX   = Math.trunc(xScale * (newX + 1));
