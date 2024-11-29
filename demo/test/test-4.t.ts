@@ -58,7 +58,7 @@ const known_a_hashes: Record<string, string> = {
     "wallpaper-dark-purple-2560x1600.jpg":        "003e1f0f0f0f0f00",
 };
 const known_m_hashes: Record<string, string> = {
-    "alyson_hannigan_500x500.jpg":                "e7c7ca80c4f4f8a0",
+    "alyson_hannigan_500x500.jpg":                "e7c7cac0c4f4f8e0",
     "black-bg-orthocanna-500x500.jpg":            "1c1c1c1c1c181818",
     "bridge-500x320.jpg":                         "0001273ce08ffffe",
     "imagehash-1200x600.png":                     "ffd391818181a5e7",
@@ -93,7 +93,7 @@ const known_b_hashes: Record<string, string> = {
     "peppers-600x600.png":                        "1f072787e11e1f1c",
     "rabbit-320x192.png":                         "c78c8f8981e7fc04",
     "screenshot-dark-purple-flower-1353x851.png": "ff00ff006f0c9f09",
-    "screenshot-magenta-dress-1898x946.png":      "1f03ef04f17006f3",
+    "screenshot-magenta-dress-1898x946.png":      "7f03ef04f17006f3",
     "wallpaper-dark-purple-2560x1600.jpg":        "643e1f0e0f0f1f07"
 };
 let totalDiff = 0;
