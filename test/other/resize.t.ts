@@ -280,7 +280,7 @@ t({
         name: "avg luminance"
     });
     {
-        const ui8a = scaleDownLinearAverage(new GrayImageData(new Uint8Array(data), 9, 9), 3, 3)
+        const ui8a = scaleDownLinearAverage(new GrayImageData(new Uint8Array(data), 9, 9), 3, 3);
         t({
             result: ui8a.reduce((a, b) => a + b, 0) / ui8a.length,
             expect: 42, // same when (integer down-scaling)
@@ -288,7 +288,7 @@ t({
         });
     }
     {
-        const ui8a = scaleDownLinearMedian(new GrayImageData(new Uint8Array(data), 9, 9), 3, 3)
+        const ui8a = scaleDownLinearMedian(new GrayImageData(new Uint8Array(data), 9, 9), 3, 3);
         t({
             result: ui8a.reduce((a, b) => a + b, 0) / ui8a.length,
             expect: 40.333333333333336,
@@ -370,5 +370,96 @@ t({
         result: result.type,
         expect: "binary",
         name: "newInstance test",
+    });
+}
+
+
+
+{
+    const data = [1, 10, 90];
+    const ui8a = scaleDownLinearAverage(new GrayImageData(new Uint8Array(data), 3, 1), 1, 1);
+    t({
+        result: ui8a.toString(),
+        expect: "34",
+    });
+}
+{
+    const data = [1, 10, 90];
+    const ui8a = scaleDownLinearAverage(new GrayImageData(new Uint8Array(data), 3, 1), 2, 1);
+    t({
+        result: ui8a.toString(),
+        expect: "1,50",
+    });
+}
+{
+    const data = [1, 10, 90];
+    const ui8a = scaleDownLinearAverage(new GrayImageData(new Uint8Array(data), 3, 1), 3, 1);
+    t({
+        result: ui8a.toString(),
+        expect: "1,10,90",
+    });
+}
+{
+    const data = [11, 11, 14, 14, 66, 78];
+    const ui8a = scaleDownLinearAverage(new GrayImageData(new Uint8Array(data), 6, 1), 4, 1);
+    t({
+        result: ui8a.toString(),
+        expect: "11,13,14,72",
+    });
+}
+{
+    const data = [19, 91, 44, 28,  2,  2];
+    const ui8a = scaleDownLinearAverage(new GrayImageData(new Uint8Array(data), 6, 1), 4, 1);
+    t({
+        result: ui8a.toString(),
+        expect: "19,68,28,2",
+    });
+}
+{
+    const data = [1, 11, 22, 33, 44, 55];
+    const ui8a = scaleDownLinearAverage(new GrayImageData(new Uint8Array(data), 6, 1), 4, 1);
+    t({
+        result: ui8a.toString(),
+        expect: "1,17,33,50",
+    });
+}
+{
+    const data = [1, 11, 22, 33, 44, 55];
+    const ui8a = scaleDownLinearAverage(new GrayImageData(new Uint8Array(data), 6, 1), 5, 1);
+    t({
+        result: ui8a.toString(),
+        expect: "1,11,22,33,50",
+    });
+}
+{
+    const data = [1, 11, 22, 33, 44, 55, 66];
+    const ui8a = scaleDownLinearAverage(new GrayImageData(new Uint8Array(data), 7, 1), 4, 1);
+    t({
+        result: ui8a.toString(),
+        expect: "1,17,39,61",
+    });
+}
+{
+    const data = [1, 11, 22, 33, 44, 55, 66];
+    const ui8a = scaleDownLinearAverage(new GrayImageData(new Uint8Array(data), 7, 1), 5, 1);
+    t({
+        result: ui8a.toString(),
+        expect: "1,11,28,44,61",
+    });
+}
+{
+    const data = [1, 11, 22, 33, 44, 55, 66];
+    const ui8a = scaleDownLinearAverage(new GrayImageData(new Uint8Array(data), 7, 1), 6, 1);
+    t({
+        result: ui8a.toString(),
+        expect: "1,11,22,33,44,61",
+    });
+}
+{
+    const data = [1, 11, 22, 33, 44, 55, 66];
+    const ui8a = scaleDownLinearAverage(new GrayImageData(new Uint8Array(data), 7, 1), 7, 1);
+    t({
+        result: ui8a.toString(),
+        expect: "1,11,22,33,44,55,66",
     });
 }

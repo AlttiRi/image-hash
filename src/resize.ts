@@ -28,9 +28,7 @@ export function scaleDownLinear(orig: GrayImageData, opts: ScaleOpts = {}): Gray
     return new GrayImageData(data, width, height);
 }
 
-
 export function scaleDownLinearAverage(orig: GrayImageData, newWidth: number, newHeight: number): Uint8Array {
-    // console.time("scaleDownLinearAverage");
 
     const {data, width, height} = orig;
     const dest = new Uint8Array(newWidth * newHeight);
@@ -60,7 +58,6 @@ export function scaleDownLinearAverage(orig: GrayImageData, newWidth: number, ne
 }
 
 export function scaleDownLinearMedian(orig: GrayImageData, newWidth: number, newHeight: number): Uint8Array {
-    // console.time("scaleDownLinearMedian");
 
     const {data, width, height} = orig;
     const dest = new Uint8Array(newWidth * newHeight);
@@ -70,7 +67,7 @@ export function scaleDownLinearMedian(orig: GrayImageData, newWidth: number, new
     const cache = new Map();
     for (let newY = 0; newY < newHeight; newY++) {
         for (let newX = 0; newX < newWidth; newX++) {
-            const fromY = Math.trunc(yScale * newY);
+            const fromY = Math.trunc(yScale * newY); // todo: test `ceil`
             const fromX = Math.trunc(xScale * newX);
             const toY   = Math.trunc(yScale * (newY + 1));
             const toX   = Math.trunc(xScale * (newX + 1));
