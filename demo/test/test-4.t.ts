@@ -116,6 +116,7 @@ tt(a_hashes, known_a_hashes, "a");
 tt(m_hashes, known_m_hashes, "m");
 tt(d_hashes, known_d_hashes, "d");
 tt(b_hashes, known_b_hashes, "b");
+console.log("---");
 t({
     result: totalDiff,
     expect: 0,
@@ -170,6 +171,7 @@ tt_py(a_hashes, known_a_py_hashes, "a_py");
 tt_py(d_hashes, known_d_py_hashes, "d_py");
 const totalPyDiffExpect = 96;
 const countPy = Object.keys(known_a_py_hashes).length + Object.keys(known_d_py_hashes).length;
+console.log("---");
 t({
     result: countPy,
     expect: 22,
@@ -184,6 +186,7 @@ t({
     expect: totalPyDiffExpect / countPy,
     name: `total diff_py avg (${totalPyDiffExpect / countPy})`
 });
+console.log("---");
 
 //
 // "imagehash" python library with `ANTIALIAS = Image.Resampling.BOX`
@@ -233,6 +236,7 @@ tt_py_box(d_hashes, known_d_py_box_hashes, "d_py_box");
 
 const totalPyDiffExpectBox = 12;
 const countPyBox = Object.keys(known_a_py_box_hashes).length + Object.keys(known_d_py_box_hashes).length;
+console.log("---");
 t({
     result: countPyBox,
     expect: 22,
