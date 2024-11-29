@@ -10,7 +10,7 @@ type ScaleOpts = {
 
 export function scaleDownLinear(orig: GrayImageData, opts: ScaleOpts = {}): GrayImageData {
     const {width = 8, height = 8, median = false, ignore = false} = opts;
-    if (width === orig.width || height === orig.height) {
+    if (width === orig.width && height === orig.height) {
         return orig;
     }
     if (width > orig.width || height > orig.height) {
