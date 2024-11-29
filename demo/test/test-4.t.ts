@@ -2,6 +2,8 @@ import {ANSI_BLUE, t} from "../../test/tester.ts";
 import path from "node:path";
 import {aHash, bHash, dHash, mHash} from "@/hashers.ts";
 import {getImageDataFromFS} from "../util.demo.ts";
+import {getGrayData} from "@/grayscale.ts";
+import {scaleDownLinear} from "@/resize.ts";
 function resolve(...strs: string[]) {
     return path.resolve(import.meta.dirname, ...strs);
 }
@@ -33,10 +35,12 @@ const d_hashes: Record<string, string> = {};
 const b_hashes: Record<string, string> = {};
 for (const entry of entries) {
     const iData = await getImageDataFromFS(entry.filepath);
-    a_hashes[entry.name] = aHash(iData).hex;
-    m_hashes[entry.name] = mHash(iData).hex;
-    d_hashes[entry.name] = dHash(iData).hex;
-    b_hashes[entry.name] = bHash(iData).hex;
+    const grayData       = getGrayData(iData);
+    const grayDataScaled = scaleDownLinear(grayData);
+    a_hashes[entry.name] = aHash(iData, {grayData, grayDataScaled}).hex;
+    m_hashes[entry.name] = mHash(iData, {grayData, grayDataScaled}).hex;
+    d_hashes[entry.name] = dHash(iData, {grayData, grayDataScaled, ignore: true}).hex;
+    b_hashes[entry.name] = bHash(iData, {grayData, grayDataScaled}).hex;
 }
 
 const known_a_hashes: Record<string, string> = {
