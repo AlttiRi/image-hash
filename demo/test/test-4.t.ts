@@ -123,6 +123,7 @@ t({
     name: "total diff"
 });
 console.log("---");
+console.log();
 
 //
 // "imagehash" python library with `ANTIALIAS = Image.Resampling.LANCZOS` (default)
@@ -186,6 +187,8 @@ t({
     expect: totalPyDiffExpect / countPy,
     name: `total diff_py avg (${totalPyDiffExpect / countPy})`
 });
+console.log("---");
+console.log();
 console.log("---");
 
 //
