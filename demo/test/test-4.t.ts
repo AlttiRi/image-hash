@@ -122,3 +122,130 @@ t({
     expect: 0,
     name: "total diff"
 });
+
+
+//
+// "imagehash" python library with `ANTIALIAS = Image.Resampling.LANCZOS` (default)
+//
+let totalPyDiff = 0;
+function tt_py(hashes: Record<string, string>, known_hashes: Record<string, [string, number]>, prefix: string) {
+    for (const [filename, hash] of Object.entries(hashes)) {
+        const diff = ImageHash.diffHex(hash, known_hashes[filename][0]);
+        totalPyDiff += diff;
+        t({
+            result: diff,
+            expect: known_hashes[filename][1],
+            name: `${prefix}: ` + filename + (diff ? ` (diff: ${diff})` : "")
+        });
+    }
+}
+const known_a_py_hashes: Record<string, [string, number]> = {
+    "alyson_hannigan_500x500.jpg":                ["e7c7dac2c6fcfae8", 4],
+    "black-bg-orthocanna-500x500.jpg":            ["0c0c1c1c18181810", 0],
+    "bridge-500x320.jpg":                         ["00010e3ce08ffffe", 2],
+    "imagehash-1200x600.png":                     ["ffd7918181c9ffff", 4],
+    "kittens-3264x2448.jpg":                      ["001000204286fffe", 3],
+    "kittens-minicrop-3258x2448.jpg":             ["001000204286fffe", 3],
+    "peppers-600x600.png":                        ["9f172786e71f1e00", 2],
+    "rabbit-320x192.png":                         ["efcf8f8180c67e00", 4],
+    "screenshot-dark-purple-flower-1353x851.png": ["ffffef000c0c0d01", 3],
+    "screenshot-magenta-dress-1898x946.png":      ["ffefef0c706006e2", 5],
+    "wallpaper-dark-purple-2560x1600.jpg":        ["203e1f0f0f0f0700", 1]
+};
+const known_d_py_hashes: Record<string, [string, number]> = {
+    "alyson_hannigan_500x500.jpg":                ["8f94b616b4245452", 4],
+    "black-bg-orthocanna-500x500.jpg":            ["59593938b2b2b0b4", 15],
+    "bridge-500x320.jpg":                         ["fdffeef0c03e96c0", 4],
+    "imagehash-1200x600.png":                     ["0026273b2b19550e", 7],
+    "kittens-3264x2448.jpg":                      ["e030b8ce864c8e8e", 5],
+    "kittens-minicrop-3258x2448.jpg":             ["e030b8ce864cae8e", 4],
+    "peppers-600x600.png":                        ["3a7ece1c9df4fcb9", 2],
+    "rabbit-320x192.png":                         ["0c18383b3b8cc858", 6],
+    "screenshot-dark-purple-flower-1353x851.png": ["6a95cdccd8d839a9", 7],
+    "screenshot-magenta-dress-1898x946.png":      ["d09c9dd9c3c22a82", 6],
+    "wallpaper-dark-purple-2560x1600.jpg":        ["cce4f058797b7e3e", 2]
+}
+
+
+tt_py(a_hashes, known_a_py_hashes, "a_py");
+tt_py(d_hashes, known_d_py_hashes, "d_py");
+const totalPyDiffExpect = 93;
+const countPy = Object.keys(known_a_py_hashes).length + Object.keys(known_d_py_hashes).length;
+t({
+    result: countPy,
+    expect: 22,
+});
+t({
+    result: totalPyDiff,
+    expect: totalPyDiffExpect,
+    name: `total diff_py (${totalPyDiffExpect})`
+});
+t({
+    result: totalPyDiff / countPy,
+    expect: totalPyDiffExpect / countPy,
+    name: `total diff_py avg (${totalPyDiffExpect / countPy})`
+});
+
+//
+// "imagehash" python library with `ANTIALIAS = Image.Resampling.BOX`
+//
+let totalPyDiffBox = 0;
+function tt_py_box(hashes: Record<string, string>, known_hashes: Record<string, [string, number]>, prefix: string) {
+    for (const [filename, hash] of Object.entries(hashes)) {
+        const diff = ImageHash.diffHex(hash, known_hashes[filename][0]);
+        totalPyDiffBox += diff;
+        t({
+            result: diff,
+            expect: known_hashes[filename][1],
+            name: `${prefix}: ` + filename + (diff ? ` (diff: ${diff})` : "")
+        });
+    }
+}
+const known_a_py_box_hashes: Record<string, [string, number]> = {
+    "alyson_hannigan_500x500.jpg":                ["e7c7cbc2c4f4f8e8", 1],
+    "black-bg-orthocanna-500x500.jpg":            ["0c0c1c1c18181810", 0],
+    "bridge-500x320.jpg":                         ["0001063c608ffffe", 0],
+    "imagehash-1200x600.png":                     ["ffd7f78181c1ffff", 1],
+    "kittens-3264x2448.jpg":                      ["000000004286fefe", 0],
+    "kittens-minicrop-3258x2448.jpg":             ["000000004286fefe", 0],
+    "peppers-600x600.png":                        ["9f1f0786e51f1e00", 1],
+    "rabbit-320x192.png":                         ["efcf8f8180427c04", 0],
+    "screenshot-dark-purple-flower-1353x851.png": ["fff7ff000c080d01", 0],
+    "screenshot-magenta-dress-1898x946.png":      ["ffefff04f06000c2", 1],
+    "wallpaper-dark-purple-2560x1600.jpg":        ["003e1f0f0f0f0700", 0]
+};
+const known_d_py_box_hashes: Record<string, [string, number]> = {
+    "alyson_hannigan_500x500.jpg":                ["8f94b43434245452", 0],
+    "black-bg-orthocanna-500x500.jpg":            ["1818181030303030", 0],
+    "bridge-500x320.jpg":                         ["ffffeef0c07e96d2", 0],
+    "imagehash-1200x600.png":                     ["002643332b15550c", 0],
+    "kittens-3264x2448.jpg":                      ["e020acce864cae8a", 0],
+    "kittens-minicrop-3258x2448.jpg":             ["e020acce864cae8a", 0],
+    "peppers-600x600.png":                        ["ba7ece1cddf4fcb9", 0],
+    "rabbit-320x192.png":                         ["0c1c383b3b8d88d5", 1],
+    "screenshot-dark-purple-flower-1353x851.png": ["e8d5ddccd8dc29a5", 1],
+    "screenshot-magenta-dress-1898x946.png":      ["d09c9999c3c22a02", 3],
+    "wallpaper-dark-purple-2560x1600.jpg":        ["c4e4f05879797e3e", 0]
+};
+
+
+tt_py_box(a_hashes, known_a_py_box_hashes, "a_py_box");
+tt_py_box(d_hashes, known_d_py_box_hashes, "d_py_box");
+
+const totalPyDiffExpectBox = 9;
+const countPyBox = Object.keys(known_a_py_box_hashes).length + Object.keys(known_d_py_box_hashes).length;
+t({
+    result: countPyBox,
+    expect: 22,
+});
+t({
+    result: totalPyDiffBox,
+    expect: totalPyDiffExpectBox,
+    name: `total diff_py_box (${totalPyDiffExpectBox})`
+});
+t({
+    result: totalPyDiffBox / countPyBox,
+    expect: totalPyDiffExpectBox / countPyBox,
+    name: `total diff_py_box avg (${totalPyDiffExpectBox / countPyBox})`
+});
+
