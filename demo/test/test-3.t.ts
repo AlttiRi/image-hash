@@ -1,11 +1,11 @@
 import {ANSI_BLUE, t} from "../../test/tester.ts";
-import {readFileImageData} from "../util.demo.ts";
+import {getImageDataFromFS} from "../util.demo.ts";
 import path from "node:path";
 import {getCalculateAverage, getCalculateBT601, getCalculateBT709, getGrayData} from "@/grayscale.ts";
 import {scaleDownLinear} from "@/resize.ts";
 import {GrayScalerGetter, ImageDataLike} from "@/types.ts";
-function resolve(str: string) {
-    return path.resolve(import.meta.dirname, str);
+function resolve(...strs: string[]) {
+    return path.resolve(import.meta.dirname, ...strs);
 }
 
 console.log(ANSI_BLUE("--- Tests compare luminance value before and after down-scaling ---"));
@@ -18,7 +18,7 @@ type Opts = {
     iData?: ImageDataLike
 }
 async function getLumus(imgPath: string, opts: Opts = {}) {
-    const iData = opts.iData || await readFileImageData(resolve(imgPath));
+    const iData = opts.iData || await getImageDataFromFS(resolve(imgPath));
     const grayData = getGrayData(iData, opts.getFunc);
     const avgLuminanceOrig = grayData.data.reduce((a, b) => a + b, 0) / grayData.data.length;
     const grayDataScaled = scaleDownLinear(grayData, {width: 8, height: 8, ...opts});
@@ -72,7 +72,7 @@ async function getLumus(imgPath: string, opts: Opts = {}) {
 }
 
 {
-    const iData = await readFileImageData(resolve(`../img/alyson_hannigan_500x500.jpg`));
+    const iData = await getImageDataFromFS(resolve(`../img/alyson_hannigan_500x500.jpg`));
     {
         const {avgLuminanceOrig, avgLuminanceScaled} = await getLumus(`../img/alyson_hannigan_500x500.jpg`, {
             getFunc: getCalculateBT601, iData, width: 32, height: 32,
@@ -167,7 +167,7 @@ async function getLumus(imgPath: string, opts: Opts = {}) {
 }
 
 {
-    const iData = await readFileImageData(resolve(`../img/rabbit-320x192.png`));
+    const iData = await getImageDataFromFS(resolve(`../img/rabbit-320x192.png`));
     {
         const {avgLuminanceOrig, avgLuminanceScaled} = await getLumus(`../img/rabbit-320x192.png`, {
             getFunc: getCalculateBT601, iData, width: 32, height: 32,

@@ -2,14 +2,14 @@ import {calculateMedian} from "./median.js";
 import {GrayImageData, MonoImageData} from "./mono-image-data.js";
 
 type ScaleOpts = {
-    width:  number
-    height: number
+    width?:  number
+    height?: number
     median?: boolean
     ignore?: boolean
 }
 
-export function scaleDownLinear(orig: GrayImageData, opts: ScaleOpts): GrayImageData {
-    const {width, height, median = false, ignore = false} = opts;
+export function scaleDownLinear(orig: GrayImageData, opts: ScaleOpts = {}): GrayImageData {
+    const {width = 8, height = 8, median = false, ignore = false} = opts;
     if (width === orig.width || height === orig.height) {
         return orig;
     }

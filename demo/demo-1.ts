@@ -1,8 +1,8 @@
-import {readFileImageData} from "./util.demo.js";
+import {getImageDataFromFS} from "./util.demo.js";
 import {aHash, bHash, dHash, mHash} from "@/hashers.ts";
 
 
-const iData = await readFileImageData("./img/kittens-3264x2448.jpg");
+const iData = await getImageDataFromFS("./img/kittens-3264x2448.jpg");
 
 console.log(aHash(iData).hex); // 000000004286fefe
 console.log(mHash(iData).hex); // 00981e634287fffe

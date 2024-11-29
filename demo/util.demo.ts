@@ -56,8 +56,8 @@ export function toImageDataFromMono(imageData: MonoImageData): ImageData {
 
 
 // getImageDataWithSharp   getImageDataWithCanvas
-// readFileImageDataEx (getImageDataWithGetPixels)   readFileImageDataExOld (old png)
-export const readFileImageData = readFileImageDataEx;
+// readFileImageDataEx (getImageDataWithGetPixels)   readFileImageDataExOld (old png) // wrong jpg // todo: use sharp
+export const getImageDataFromFS = readFileImageDataEx;
 
 // "get-pixels"
 // same as "jpeg-js" (very slow and incorrect)
