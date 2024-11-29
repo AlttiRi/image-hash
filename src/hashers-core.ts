@@ -36,13 +36,13 @@ export function mHashCore({data, width, height}: GrayImageData): BiImageData {
 function _mHashCore(data: Uint8Array, width: number, height: number): Uint8Array {
     const median = calculateMedian(data);
     const hash = new Uint8Array(width * height);
-    if (median < 128) {
+    if (median < 128) { // if value === median -> 0
         for (let y = 0; y < height; y++) {
             for (let x = 0; x < width; x++) {
                 hash[y * width + x] = data[y * width + x] > median ? 255 : 0;
             }
         }
-    } else {
+    } else {            // if value === median -> 255
         for (let y = 0; y < height; y++) {
             for (let x = 0; x < width; x++) {
                 hash[y * width + x] = data[y * width + x] < median ? 0 : 255;
