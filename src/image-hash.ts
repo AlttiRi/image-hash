@@ -53,6 +53,18 @@ export class ImageHash {
     diff(hash: ImageHash): number {
         return hammingDistanceBiUi8a(this.mono.data, hash.mono.data);
     }
+    diffHex(hex: string): number {
+        return hammingDistanceBiUi8a(this.mono.data, ImageHash.fromHex(hex).mono.data);
+    }
+    diffBin(bin: string): number {
+        return hammingDistanceBiUi8a(this.mono.data, ImageHash.fromBin(bin).mono.data);
+    }
+    static diffHex(hex1: string, hex2: string) {
+        return ImageHash.fromHex(hex1).diffHex(hex2);
+    }
+    static diffBin(bin1: string, bin2: string) {
+        return ImageHash.fromBin(bin1).diffBin(bin2);
+    }
 
 }
 

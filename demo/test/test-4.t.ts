@@ -4,6 +4,7 @@ import {aHash, bHash, dHash, mHash} from "@/hashers.ts";
 import {getImageDataFromFS} from "../util.demo.ts";
 import {getGrayData} from "@/grayscale.ts";
 import {scaleDownLinear} from "@/resize.ts";
+import {ImageHash} from "@/image-hash.ts";
 function resolve(...strs: string[]) {
     return path.resolve(import.meta.dirname, ...strs);
 }
@@ -95,32 +96,24 @@ const known_b_hashes: Record<string, string> = {
     "screenshot-magenta-dress-1898x946.png":      "1f03ef04f17006f3",
     "wallpaper-dark-purple-2560x1600.jpg":        "643e1f0e0f0f1f07"
 };
-for (const [filename, hash] of Object.entries(a_hashes)) {
-    t({
-        result: hash,
-        expect: known_a_hashes[filename],
-        name: "a: " + filename
-    });
-}
-for (const [filename, hash] of Object.entries(m_hashes)) {
-    t({
-        result: hash,
-        expect: known_m_hashes[filename],
-        name: "m: " + filename
-    });
-}
-for (const [filename, hash] of Object.entries(d_hashes)) {
-    t({
-        result: hash,
-        expect: known_d_hashes[filename],
-        name: "d: " + filename
-    });
-}
-for (const [filename, hash] of Object.entries(b_hashes)) {
-    t({
-        result: hash,
-        expect: known_b_hashes[filename],
-        name: "b: " + filename
-    });
+let totalDiff = 0;
+function tt(hashes: Record<string, string>,known_hashes: Record<string, string>, prefix: string) {
+    for (const [filename, hash] of Object.entries(hashes)) {
+        let diff = 0 ;
+        if (hash !== known_hashes[filename]) {
+            diff = ImageHash.diffHex(hash, known_hashes[filename]);
+            totalDiff += diff;
+        }
+        t({
+            result: hash,
+            expect: known_hashes[filename],
+            name: `${prefix}: ` + filename + (diff ? ` (diff: ${diff})` : "")
+        });
+    }
 }
 
+tt(a_hashes, known_a_hashes, "a");
+tt(m_hashes, known_m_hashes, "m");
+tt(d_hashes, known_d_hashes, "d");
+tt(b_hashes, known_b_hashes, "b");
+totalDiff && console.log(`(diff: ${totalDiff})`);
