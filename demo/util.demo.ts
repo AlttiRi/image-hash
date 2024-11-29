@@ -80,7 +80,7 @@ export async function getImageDataWithGetPixels(filePath: string): Promise<Image
 }
 
 // "sharp"
-export async function getImageDataWithSharp(imagePath: string) {
+export async function getImageDataWithSharp(imagePath: string): Promise<ImageDataLike> {
     // console.time("sharp");
     const imageData = await sharp(imagePath)
         .ensureAlpha()
@@ -109,7 +109,7 @@ export async function getImageDataWithCanvas(imagePath: string): Promise<ImageDa
 
 // "pngjs"
 // 1 sec // 400 ms sharp // 600 canvas
-async function parsePng(filePath: string): Promise<ImageDataLike> {
+async function getImageDataForPngWithPngjs(filePath: string): Promise<ImageDataLike> {
     return new Promise(async (resolve, reject) => {
         fs.createReadStream(filePath)
             .pipe(new PNG())
@@ -121,7 +121,7 @@ async function parsePng(filePath: string): Promise<ImageDataLike> {
 }
 // "png-js"
 // 2 secs // 400 ms sharp // 600 canvas
-async function parsePngOld(filePath: string): Promise<ImageDataLike> {
+async function getImageDataForPngWithPngJs_Old(filePath: string): Promise<ImageDataLike> {
     const data = await readFile(filePath);
     const png = new PNG_Old(data);
     const imgData = {
@@ -141,7 +141,7 @@ async function parsePngOld(filePath: string): Promise<ImageDataLike> {
 // "jpeg-js"
 // 3 secs // ~450 ms sharp // ~550 canvas
 // very slow and result is different a bit
-async function parseJpeg(filePath: string): Promise<ImageDataLike> {
+async function getImageDataForJpgWithJpegJs(filePath: string): Promise<ImageDataLike> {
     const data = await readFile(filePath);
     const jiData = jpeg.decode(data);
     return {...jiData, data: new Uint8ClampedArray(jiData.data)};
@@ -150,14 +150,14 @@ async function parseJpeg(filePath: string): Promise<ImageDataLike> {
 export async function readFileImageDataEx(filePath: string): Promise<ImageDataLike> {
     let idata: ImageDataLike;
     if (filePath.endsWith(".jpg") || filePath.endsWith(".jpeg")) {
-        // console.time("parseJpeg");
-        idata = await parseJpeg(filePath);
-        // console.timeEnd("parseJpeg");
+        // console.time("JpegJs");
+        idata = await getImageDataForJpgWithJpegJs(filePath);
+        // console.timeEnd("JpegJs");
     }
     if (filePath.endsWith(".png")) {
-        // console.time("parsePng");
-        idata = await parsePng(filePath);
-        // console.timeEnd("parsePng");
+        // console.time("Pngjs");
+        idata = await getImageDataForPngWithPngjs(filePath);
+        // console.timeEnd("Pngjs");
     }
     if (idata!) { // ts!
         return idata;
@@ -169,14 +169,14 @@ export async function readFileImageDataEx(filePath: string): Promise<ImageDataLi
 export async function readFileImageDataExOld(filePath: string): Promise<ImageDataLike> {
     let idata: ImageDataLike;
     if (filePath.endsWith(".jpg") || filePath.endsWith(".jpeg")) {
-        // console.time("parseJpeg");
-        idata = await parseJpeg(filePath);
-        // console.timeEnd("parseJpeg");
+        // console.time("JpegJs");
+        idata = await getImageDataForJpgWithJpegJs(filePath);
+        // console.timeEnd("JpegJs");
     }
     if (filePath.endsWith(".png")) {
-        // console.time("parsePngOld");
-        idata = await parsePngOld(filePath);
-        // console.timeEnd("parsePngOld");
+        // console.time("PngJs_Old");
+        idata = await getImageDataForPngWithPngJs_Old(filePath);
+        // console.timeEnd("PngJs_Old");
     }
     if (idata!) { // ts!
         return idata;
