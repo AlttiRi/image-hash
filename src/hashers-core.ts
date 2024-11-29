@@ -28,6 +28,11 @@ export function mHashCore({data, width, height}: GrayImageData): BiImageData {
     return new BiImageData(hash, width, height);
 }
 
+// todo: add tests
+/**
+ * Two conditions for the proper handling of images with extreme median values (~0 or ~255).
+ * Do not edit.
+ */
 function _mHashCore(data: Uint8Array, width: number, height: number): Uint8Array {
     const median = calculateMedian(data);
     const hash = new Uint8Array(width * height);
