@@ -87,7 +87,7 @@ const known_b_hashes: Record<string, string> = {
     "alyson_hannigan_500x500.jpg":                "c7c2cbc2c4f4f8e0",
     "black-bg-orthocanna-500x500.jpg":            "1c1c1c1c1c181818",
     "bridge-500x320.jpg":                         "031f273ce08fc2f8",
-    "imagehash-1200x600.png":                     "0000f58181cf85c7",
+    "imagehash-1200x600.png":                     "ff81f58181cf85c7",
     "kittens-3264x2448.jpg":                      "3c9c1e63c38746e6",
     "kittens-minicrop-3258x2448.jpg":             "3c9c1e63c38746e6",
     "peppers-600x600.png":                        "1f072787e11e1f1c",

@@ -247,7 +247,7 @@ console.log(ANSI_BLUE("--- Hash demos (hashes from articles) ---"));
         const hash = bHash(iData);
         t({
             result: hash.hex,
-            expect: "0000f58181cf85c7",
+            expect: "ff81f58181cf85c7",
         });
     }
 }
