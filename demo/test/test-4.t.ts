@@ -116,4 +116,9 @@ tt(a_hashes, known_a_hashes, "a");
 tt(m_hashes, known_m_hashes, "m");
 tt(d_hashes, known_d_hashes, "d");
 tt(b_hashes, known_b_hashes, "b");
-totalDiff && console.log(`(diff: ${totalDiff})`);
+
+t({
+    result: totalDiff,
+    expect: 0,
+    name: "total diff"
+});
