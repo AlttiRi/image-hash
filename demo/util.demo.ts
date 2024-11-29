@@ -80,7 +80,7 @@ export async function getImageDataWithGetPixels(filePath: string): Promise<Image
 }
 
 // "sharp"
-async function getImageDataWithSharp(imagePath: string) {
+export async function getImageDataWithSharp(imagePath: string) {
     // console.time("sharp");
     const imageData = await sharp(imagePath)
         .ensureAlpha()
