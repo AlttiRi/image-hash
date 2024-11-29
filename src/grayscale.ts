@@ -2,14 +2,16 @@ import {GrayImageData} from "./mono-image-data.js";
 import {GrayScalerGetter, ImageDataLike} from "./types.js";
 
 /**
- * Using of 1 `getUint32 is faster than 3 accesses by index (`array[N]`).
+ * Using of 1 `getUint32` is faster than 3 accesses by index (`array[N]`).
+ *
  * `getCalculateBT601` is faster than:
- *   array[i / 4] = data[i] * 0.299 + data[i + 1] * 0.587 + data[i + 2] * 0.114;
+ *   `array[i / 4] = data[i] * 0.299 + data[i + 1] * 0.587 + data[i + 2] * 0.114;`
  * or `getCalculateAverage` is faster than:
- *   array[i / 4] = (data[i] + data[i + 1] + data[i + 2]) / 3;
+ *   `array[i / 4] = (data[i] + data[i + 1] + data[i + 2]) / 3;`
  *
  * Using `dw.getUint32` inside the function is faster,
  *   than using `dw.getUint32` in a loop and passing `uint` directly to the function.
+ *
  * Do not change the get functions' signature.
  */
 export function getCalculateBT601(dw: DataView) {
@@ -37,6 +39,13 @@ export function getCalculateBT709(dw: DataView) {
     };
 }
 
+// todo: pass strings: "BT601", "Average", "BT709"
+/**
+ * `getFunc`:
+ * - `getCalculateBT601`
+ * - `getCalculateAverage`
+ * - `getCalculateBT709`
+ */
 export function getGrayData(imageData: ImageDataLike, getFunc: GrayScalerGetter = getCalculateBT601): GrayImageData {
     const {data, width, height, data: {length}} = imageData;
     const array = new Uint8Array(length / 4);
