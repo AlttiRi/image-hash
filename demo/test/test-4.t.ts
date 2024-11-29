@@ -55,28 +55,28 @@ const known_a_hashes: Record<string, string> = {
     "rabbit-320x192.png":                         "efcf8f8180427c04",
     "screenshot-dark-purple-flower-1353x851.png": "fff7ff000c080d01",
     "screenshot-magenta-dress-1898x946.png":      "ffefff04706000c2",
-    "wallpaper-dark-purple-2560x1600.jpg":        "003e1f0f0f0f0700",
+    "wallpaper-dark-purple-2560x1600.jpg":        "003e1f0f0f0f0f00",
 };
 const known_m_hashes: Record<string, string> = {
     "alyson_hannigan_500x500.jpg":                "e7c7ca80c4f4f8a0",
     "black-bg-orthocanna-500x500.jpg":            "1c1c1c1c1c181818",
-    "bridge-500x320.jpg":                         "0001063ce08ffffe",
+    "bridge-500x320.jpg":                         "0001273ce08ffffe",
     "imagehash-1200x600.png":                     "ffd391818181a5e7",
-    "kittens-3264x2448.jpg":                      "00981e634287fffe",
-    "kittens-minicrop-3258x2448.jpg":             "00981e634287fffe",
+    "kittens-3264x2448.jpg":                      "00980e634287fffe",
+    "kittens-minicrop-3258x2448.jpg":             "00980e634287fffe",
     "peppers-600x600.png":                        "9f1f2786e51f1e00",
     "rabbit-320x192.png":                         "efcf8f818042fc04",
     "screenshot-dark-purple-flower-1353x851.png": "ffffff000e080d01",
     "screenshot-magenta-dress-1898x946.png":      "ffefff04706000c2",
-    "wallpaper-dark-purple-2560x1600.jpg":        "643e1f0f0f0f0f02"
+    "wallpaper-dark-purple-2560x1600.jpg":        "643e1f1f1f0f0f02"
 };
 const known_d_hashes: Record<string, string> = {
     "alyson_hannigan_500x500.jpg":                "8f94b43434245452",
     "black-bg-orthocanna-500x500.jpg":            "1818181030303030",
     "bridge-500x320.jpg":                         "ffffeef0c07e96d2",
     "imagehash-1200x600.png":                     "002643332b15550c",
-    "kittens-3264x2448.jpg":                      "e020acce864cae8a",
-    "kittens-minicrop-3258x2448.jpg":             "e020acce864cae8a",
+    "kittens-3264x2448.jpg":                      "f020acce864cae8a",
+    "kittens-minicrop-3258x2448.jpg":             "f020acce864cae8a",
     "peppers-600x600.png":                        "ba7ece1cddf4fcb9",
     "rabbit-320x192.png":                         "0c1c383b3b8c88d5",
     "screenshot-dark-purple-flower-1353x851.png": "68d5ddccd8dc29a5",
@@ -86,7 +86,7 @@ const known_d_hashes: Record<string, string> = {
 const known_b_hashes: Record<string, string> = {
     "alyson_hannigan_500x500.jpg":                "c7c2cbc2c4f4f8e0",
     "black-bg-orthocanna-500x500.jpg":            "1c1c1c1c1c181818",
-    "bridge-500x320.jpg":                         "071f273ce08fc2f8",
+    "bridge-500x320.jpg":                         "031f273ce08fc2f8",
     "imagehash-1200x600.png":                     "0000f58181cf85c7",
     "kittens-3264x2448.jpg":                      "3c9c1e63c38746e6",
     "kittens-minicrop-3258x2448.jpg":             "3c9c1e63c38746e6",
@@ -116,13 +116,12 @@ tt(a_hashes, known_a_hashes, "a");
 tt(m_hashes, known_m_hashes, "m");
 tt(d_hashes, known_d_hashes, "d");
 tt(b_hashes, known_b_hashes, "b");
-
 t({
     result: totalDiff,
     expect: 0,
     name: "total diff"
 });
-
+console.log("---");
 
 //
 // "imagehash" python library with `ANTIALIAS = Image.Resampling.LANCZOS` (default)
@@ -150,15 +149,15 @@ const known_a_py_hashes: Record<string, [string, number]> = {
     "rabbit-320x192.png":                         ["efcf8f8180c67e00", 4],
     "screenshot-dark-purple-flower-1353x851.png": ["ffffef000c0c0d01", 3],
     "screenshot-magenta-dress-1898x946.png":      ["ffefef0c706006e2", 5],
-    "wallpaper-dark-purple-2560x1600.jpg":        ["203e1f0f0f0f0700", 1]
+    "wallpaper-dark-purple-2560x1600.jpg":        ["203e1f0f0f0f0700", 2]
 };
 const known_d_py_hashes: Record<string, [string, number]> = {
     "alyson_hannigan_500x500.jpg":                ["8f94b616b4245452", 4],
     "black-bg-orthocanna-500x500.jpg":            ["59593938b2b2b0b4", 15],
     "bridge-500x320.jpg":                         ["fdffeef0c03e96c0", 4],
     "imagehash-1200x600.png":                     ["0026273b2b19550e", 7],
-    "kittens-3264x2448.jpg":                      ["e030b8ce864c8e8e", 5],
-    "kittens-minicrop-3258x2448.jpg":             ["e030b8ce864cae8e", 4],
+    "kittens-3264x2448.jpg":                      ["e030b8ce864c8e8e", 6],
+    "kittens-minicrop-3258x2448.jpg":             ["e030b8ce864cae8e", 5],
     "peppers-600x600.png":                        ["3a7ece1c9df4fcb9", 2],
     "rabbit-320x192.png":                         ["0c18383b3b8cc858", 6],
     "screenshot-dark-purple-flower-1353x851.png": ["6a95cdccd8d839a9", 7],
@@ -169,7 +168,7 @@ const known_d_py_hashes: Record<string, [string, number]> = {
 
 tt_py(a_hashes, known_a_py_hashes, "a_py");
 tt_py(d_hashes, known_d_py_hashes, "d_py");
-const totalPyDiffExpect = 93;
+const totalPyDiffExpect = 96;
 const countPy = Object.keys(known_a_py_hashes).length + Object.keys(known_d_py_hashes).length;
 t({
     result: countPy,
@@ -212,15 +211,15 @@ const known_a_py_box_hashes: Record<string, [string, number]> = {
     "rabbit-320x192.png":                         ["efcf8f8180427c04", 0],
     "screenshot-dark-purple-flower-1353x851.png": ["fff7ff000c080d01", 0],
     "screenshot-magenta-dress-1898x946.png":      ["ffefff04f06000c2", 1],
-    "wallpaper-dark-purple-2560x1600.jpg":        ["003e1f0f0f0f0700", 0]
+    "wallpaper-dark-purple-2560x1600.jpg":        ["003e1f0f0f0f0700", 1]
 };
 const known_d_py_box_hashes: Record<string, [string, number]> = {
     "alyson_hannigan_500x500.jpg":                ["8f94b43434245452", 0],
     "black-bg-orthocanna-500x500.jpg":            ["1818181030303030", 0],
     "bridge-500x320.jpg":                         ["ffffeef0c07e96d2", 0],
     "imagehash-1200x600.png":                     ["002643332b15550c", 0],
-    "kittens-3264x2448.jpg":                      ["e020acce864cae8a", 0],
-    "kittens-minicrop-3258x2448.jpg":             ["e020acce864cae8a", 0],
+    "kittens-3264x2448.jpg":                      ["e020acce864cae8a", 1],
+    "kittens-minicrop-3258x2448.jpg":             ["e020acce864cae8a", 1],
     "peppers-600x600.png":                        ["ba7ece1cddf4fcb9", 0],
     "rabbit-320x192.png":                         ["0c1c383b3b8d88d5", 1],
     "screenshot-dark-purple-flower-1353x851.png": ["e8d5ddccd8dc29a5", 1],
@@ -232,7 +231,7 @@ const known_d_py_box_hashes: Record<string, [string, number]> = {
 tt_py_box(a_hashes, known_a_py_box_hashes, "a_py_box");
 tt_py_box(d_hashes, known_d_py_box_hashes, "d_py_box");
 
-const totalPyDiffExpectBox = 9;
+const totalPyDiffExpectBox = 12;
 const countPyBox = Object.keys(known_a_py_box_hashes).length + Object.keys(known_d_py_box_hashes).length;
 t({
     result: countPyBox,

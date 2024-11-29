@@ -65,17 +65,17 @@ console.log(ANSI_BLUE("--- Hash demos (hashes from articles) ---"));
         const hash = dHash(iData);
         t({
             result: hash.hex,
-            expect: "e020acce864cae8a",
+            expect: "f020acce864cae8a",
         });
         t({
             result: hash.bin,
-            expect: "1110000000100000101011001100111010000110010011001010111010001010",
+            expect: "1111000000100000101011001100111010000110010011001010111010001010",
         });
 
         const differenceBinFromSite = "1111000000110000101110001100111010000110010011001000111010001110";
         t({
             result: hash.diff(ImageHash.fromBin(differenceBinFromSite)),
-            expect: 6,
+            expect: 5,
         });
         t({
             result: ImageHash.fromBin(differenceBinFromSite).hex,
@@ -87,17 +87,17 @@ console.log(ANSI_BLUE("--- Hash demos (hashes from articles) ---"));
         const hash = mHash(iData);
         t({
             result: hash.hex,
-            expect: "00981e634287fffe",
+            expect: "00980e634287fffe",
         });
         t({
             result: hash.bin,
-            expect: "0000000010011000000111100110001101000010100001111111111111111110",
+            expect: "0000000010011000000011100110001101000010100001111111111111111110",
         });
 
         const medianBinFromSite = "0000000010011100000011000110001101000010100001111111111111111111";
         t({
             result: hash.diff(ImageHash.fromBin(medianBinFromSite)),
-            expect: 4,
+            expect: 3,
         });
         t({
             result: ImageHash.fromBin(medianBinFromSite).hex,
