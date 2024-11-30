@@ -31,7 +31,13 @@ export function mHashCore({data, width, height}: GrayImageData): BiImageData {
 // todo: add tests
 /**
  * Two conditions for the proper handling of images with extreme median values (~0 or ~255).
+ *
  * Do not edit.
+ *
+ * Check the "big" hashes for
+ * - `black-bg-orthocanna-500x500` and
+ * - `screenshot-dark-purple-flower-1353x851` (look at the text on the screenshot)
+ * images.
  */
 function _mHashCore(data: Uint8Array, width: number, height: number): Uint8Array {
     const median = calculateMedian(data);
