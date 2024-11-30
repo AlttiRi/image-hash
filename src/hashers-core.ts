@@ -52,31 +52,28 @@ function _mHashCore(data: Uint8Array, width: number, height: number): Uint8Array
     return hash;
 }
 
-export function bHashCore({data, width, height}: GrayImageData): BiImageData {
-    const bandHeight = 2;
-    const bandCount    = height / bandHeight;
-    const pixelsInBand = width  * bandHeight;
+export function bHashCore({data, width, height}: GrayImageData, bandCount?: number): BiImageData {
+    if (bandCount) {
+        bandCount = Math.min(height, bandCount);
+    } else {
+        bandCount = Math.ceil(height / 2);
+    }
+    const yScale = height / bandCount;
     const hashes: Uint8Array[] = [];
-
-    // console.log({bandCount, pixelsInBand});
-
-    for (let i = 0; i < bandCount; i++) {
-        const byteOffset = pixelsInBand * i;
-        let length = pixelsInBand * i + pixelsInBand - pixelsInBand * i;
-
-        if (byteOffset + length > data.length) { // when pixels count is even (like 9x9)
-            length = data.length - byteOffset;
-        }
-        const view = new Uint8Array(data.buffer, byteOffset, length);
+    for (let bandNum = 0, offset = 0; bandNum < bandCount; bandNum++) {
+        const fromY = Math.round(yScale *  bandNum);
+        const toY   = Math.round(yScale * (bandNum + 1));
+        const bandHeight = toY - fromY;
+        const pixelsInBand = bandHeight * width;
+        const view = new Uint8Array(data.buffer, offset, pixelsInBand);
         const hash = _mHashCore(view, width, bandHeight);
         hashes.push(hash);
+        offset += pixelsInBand;
     }
-
-    const hash = new Uint8Array(width * height);
-    for (let i = 0; i < bandCount; i++) {
-        for (let j = 0; j < hashes[i].length; j++) {
-            hash[i * hashes[i].length + j] = hashes[i][j];
-        }
+    const result = new Uint8Array(width * height);
+    for (let i = 0, offset = 0; i < hashes.length; i++) {
+        result.set(hashes[i], offset);
+        offset += hashes[i].length;
     }
-    return new BiImageData(hash, width, height);
+    return new BiImageData(result, width, height);
 }
