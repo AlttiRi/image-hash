@@ -53,7 +53,7 @@ export class ImageHash {
     diff(hash: ImageHash): number {
         return hammingDistanceBiUi8a(this.mono.data, hash.mono.data);
     }
-    diffHex(hex: string): number {
+    diffHex(hex: string): number { // todo: add sizes params
         return hammingDistanceBiUi8a(this.mono.data, ImageHash.fromHex(hex).mono.data);
     }
     diffBin(bin: string): number {
