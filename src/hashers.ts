@@ -1,7 +1,7 @@
 import {ImageHash} from "./image-hash.js";
 import {BiImageData, GrayImageData} from "./mono-image-data.js";
 import {GrayScalerGetter, ImageDataLike} from "./types.js";
-import {getCalculateBT601, getGrayData} from "./grayscale.js";
+import {getCalculateAverage, getCalculateBT601, getGrayData} from "./grayscale.js";
 import {scaleDownLinear, scaleUpNearestNeighbor} from "./resize.js";
 import {aHashCore, bHashCore, dHashCore, mHashCore} from "./hashers-core.js";
 
@@ -34,8 +34,15 @@ export const aHash: Hasher = (imageData: ImageDataLike, opts?: HashOpts) => hash
 /** median hash */
 export const mHash: Hasher = (imageData: ImageDataLike, opts?: HashOpts) => hash(mHashCore, imageData, opts);
 
-/** block hash */
+/** block hash (uses "BT601" for gray-scaling, and uses horizontal bands with 2 pixels height.) */
 export const bHash: Hasher = (imageData: ImageDataLike, opts?: HashOpts) => hash(bHashCore, imageData, opts);
+
+/** block hash "original-like" (uses "average" for gray-scaling, and uses 4 horizontal bands total) */
+export const bHashClassic: Hasher = (imageData: ImageDataLike, opts: HashOpts = {}) => {
+    opts.grayScaler = getCalculateAverage;
+    const bHashCoreWrapped = (gid: GrayImageData) => bHashCore(gid, /* bandCount */ 4);
+    return hash(bHashCoreWrapped, imageData, opts);
+};
 
 /**
  * When the input is lower than 8x8 (9x8) it uses a simple integer upscaler.
