@@ -6,13 +6,19 @@ import {scaleDownLinear, scaleUpNearestNeighbor} from "./resize.js";
 import {aHashCore, bHashCore, dHashCore, mHashCore} from "./hashers-core.js";
 
 type HashOpts = {
-    width?:  number
-    height?: number
     grayData?: GrayImageData
     grayDataScaled?: GrayImageData
     ignore?: boolean
     grayScaler?: GrayScalerGetter
-};
+} & ({
+    width?:  number
+    height?: number
+    size?:   void
+} | {
+    width?:  void
+    height?: void
+    size?:   number
+});
 type HashOptsPrivate = {
     scaleWidth?:  number
     scaleHeight?: number
@@ -24,7 +30,7 @@ const defaultSize = 8;
 
 /** difference hash */
 export const dHash: Hasher = (imageData: ImageDataLike, opts: HashOpts = {}) => {
-    const {width = defaultSize} = opts;
+    const width = opts.width || opts.size || defaultSize;
     return hash(dHashCore, imageData, {...opts, scaleWidth: width + 1});
 };
 
@@ -49,8 +55,8 @@ export const bHashClassic: Hasher = (imageData: ImageDataLike, opts: HashOpts = 
  * @see `scaleUpIntegerTwice`
  */
 function hash(hash: HasherCore, imageData: ImageDataLike, opts: HashOpts & HashOptsPrivate = {}): ImageHash {
-    const hashWidth  = opts.width  || defaultSize;
-    const hashHeight = opts.height || defaultSize;
+    const hashWidth  = opts.size || opts.width  || defaultSize;
+    const hashHeight = opts.size || opts.height || defaultSize;
     let scaleWidth  = opts.scaleWidth  || hashWidth;
     let scaleHeight = opts.scaleHeight || hashHeight;
     let grayScaler  = opts.grayScaler || getCalculateBT601;
