@@ -34,13 +34,14 @@ export function scaleDownLinearAverage(orig: GrayImageData, newWidth: number, ne
     const dest = new Uint8Array(newWidth * newHeight);
     const xScale = width  / newWidth;
     const yScale = height / newHeight;
+    const near: (n: number) => number = Math.trunc; // todo: test `ceil` / `round` // and check `count`
 
     for (let newY = 0; newY < newHeight; newY++) {
         for (let newX = 0; newX < newWidth; newX++) {
-            const fromY = Math.trunc(yScale * newY); // todo: test `ceil` / `round` // and check `count`
-            const fromX = Math.trunc(xScale * newX);
-            const toY   = Math.trunc(yScale * (newY + 1));
-            const toX   = Math.trunc(xScale * (newX + 1));
+            const fromY = near(yScale * newY);
+            const fromX = near(xScale * newX);
+            const toY   = near(yScale * (newY + 1));
+            const toX   = near(xScale * (newX + 1));
             const count = (toY - fromY) * (toX - fromX);
 
             let value = 0;
