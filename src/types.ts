@@ -9,8 +9,8 @@ export type ImageDataLike = {
 export type ImageDataLikeEx = {
     data:   Uint8ClampedArray | Uint8Array
     width:  number
-    height: number,
-    channels?: 4 | 1 | 2 | 3,
+    height: number
+    channels?: 4 | 1 | 2 | 3
 };
 export type GrayScalerGetter = (dw: DataView) => (i: number) => number;
 
@@ -28,11 +28,13 @@ export type ScaleOpts = {
     size?:   number
 });
 
+export type GrayScalingType = "bt601" | "average" | "bt709";
+export type GrayScalingOpt = GrayScalingType | GrayScalerGetter;
 
 export type HashOpts = ScaleOpts & {
     grayData?:       GrayImageData
     grayDataScaled?: GrayImageData
-    grayScaler?:     GrayScalerGetter
+    grayScaler?:     GrayScalingOpt
 };
 export type Hasher     = (imageData: ImageDataLike, opts?: HashOpts) => ImageHash;
 export type HasherCore = (grayImageData: GrayImageData) => BiImageData;

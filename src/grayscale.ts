@@ -1,5 +1,6 @@
 import {GrayImageData} from "./mono-image-data.js";
-import {GrayScalerGetter, ImageDataLike} from "./types.js";
+import {GrayScalerGetter, GrayScalingOpt, GrayScalingType, ImageDataLike} from "./types.js";
+import {isString} from "@alttiri/util-js";
 
 /**
  * Using of 1 `getUint32` is faster than 3 accesses by index (`array[N]`).
@@ -39,14 +40,28 @@ export function getCalculateBT709(dw: DataView) {
     };
 }
 
-// todo: pass strings: "BT601", "Average", "BT709"
+const grayScalerMap: Record<GrayScalingType, GrayScalerGetter> = {
+    "bt601":   getCalculateBT601,
+    "average": getCalculateAverage,
+    "bt709":   getCalculateBT709,
+};
+function getGrayScalerGetter(grayScaler: GrayScalingOpt): GrayScalerGetter {
+    if (isString(grayScaler)) {
+        return  grayScalerMap[grayScaler];
+    }
+    return grayScaler;
+}
+
 /**
  * `getFunc`:
  * - `getCalculateBT601`
  * - `getCalculateAverage`
  * - `getCalculateBT709`
  */
-export function getGrayData(imageData: ImageDataLike, getFunc: GrayScalerGetter = getCalculateBT601): GrayImageData {
+export function getGrayData(imageData: ImageDataLike, getFunc: GrayScalingOpt = getCalculateBT601): GrayImageData {
+    if (isString(getFunc)) {
+        getFunc = getGrayScalerGetter(getFunc);
+    }
     const {data, width, height, data: {length}} = imageData;
     const array = new Uint8Array(length / 4);
 

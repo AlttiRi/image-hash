@@ -1,6 +1,6 @@
 import {ImageHash} from "./image-hash.js";
 import {BiImageData, GrayImageData} from "./mono-image-data.js";
-import {GrayScalerGetter, Hasher, HasherCore, HashOpts, ImageDataLike} from "./types.js";
+import {Hasher, HasherCore, HashOpts, ImageDataLike} from "./types.js";
 import {getCalculateAverage, getCalculateBT601, getGrayData} from "./grayscale.js";
 import {scaleDownLinear, scaleUpNearestNeighbor} from "./resize.js";
 import {aHashCore, bHashCore, dHashCore, mHashCore} from "./hashers-core.js";

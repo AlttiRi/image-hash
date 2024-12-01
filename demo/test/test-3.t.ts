@@ -3,7 +3,7 @@ import {getImageDataFromFS} from "../util.demo.ts";
 import path from "node:path";
 import {getCalculateAverage, getCalculateBT601, getCalculateBT709, getGrayData} from "@/grayscale.ts";
 import {scaleDownLinear} from "@/resize.ts";
-import {GrayScalerGetter, ImageDataLike} from "@/types.ts";
+import {GrayScalingOpt, ImageDataLike} from "@/types.ts";
 function resolve(...strs: string[]) {
     return path.resolve(import.meta.dirname, ...strs);
 }
@@ -11,7 +11,7 @@ function resolve(...strs: string[]) {
 console.log(ANSI_BLUE("--- Tests compare luminance value before and after down-scaling ---"));
 
 type Opts = {
-    getFunc?: GrayScalerGetter
+    getFunc?: GrayScalingOpt
     median?: boolean
     width?: number
     height?: number
@@ -88,7 +88,7 @@ async function getLumus(imgPath: string, opts: Opts = {}) {
     }
     {
         const {avgLuminanceOrig, avgLuminanceScaled} = await getLumus(`../img/alyson_hannigan_500x500.jpg`, {
-            getFunc: getCalculateBT601, iData,
+            getFunc: "bt601", iData,
         });
         t({
             result: avgLuminanceOrig,
@@ -140,7 +140,7 @@ async function getLumus(imgPath: string, opts: Opts = {}) {
     }
     {
         const {avgLuminanceOrig, avgLuminanceScaled} = await getLumus(`../img/alyson_hannigan_500x500.jpg`, {
-            getFunc: getCalculateAverage, iData, median: true,
+            getFunc: "average", iData, median: true,
         });
         t({
             result: avgLuminanceOrig,
@@ -153,7 +153,7 @@ async function getLumus(imgPath: string, opts: Opts = {}) {
     }
     {
         const {avgLuminanceOrig, avgLuminanceScaled} = await getLumus(`../img/alyson_hannigan_500x500.jpg`, {
-            getFunc: getCalculateBT709, iData, median: true,
+            getFunc: "bt709", iData, median: true,
         });
         t({
             result: avgLuminanceOrig,

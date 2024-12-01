@@ -50,5 +50,8 @@
     "typescript": "5.5.4",
     "@types/node": "20.12.12",
     "tsx": "4.19.2"
+  },
+  "dependencies": {
+    "@alttiri/util-js": "1.14.1-20240908"
   }
 }
