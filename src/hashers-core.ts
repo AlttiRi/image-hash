@@ -52,7 +52,7 @@ export function mHashCore({data, width, height}: GrayImageData): BiImageData {
  * - `black-bg-orthocanna-500x500`
  * - `screenshot-dark-purple-flower-1353x851` (look at the text on the screenshot)
  */
-function _mHashCore(data: Uint8Array, width: number, height: number): Uint8Array {
+export function _mHashCore(data: Uint8Array, width: number, height: number): Uint8Array {
     const median = calculateMedian(data);
     const hash = new Uint8Array(width * height);
     if (median < 128) { // if value === median -> 0

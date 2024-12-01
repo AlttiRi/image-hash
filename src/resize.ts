@@ -7,6 +7,7 @@ type ScaleOpts = {
     median?: boolean
     ignore?: boolean
 }
+// todo: add "size" opt
 
 export function scaleDownLinear(orig: GrayImageData, opts: ScaleOpts = {}): GrayImageData {
     const {width = 8, height = 8, median = false, ignore = false} = opts;
