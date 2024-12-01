@@ -22,4 +22,6 @@ screenshot-dark-purple-flower-1353x851.png
 screenshot-magenta-dress-1898x946.png
 https://github.com/image-rs/image/issues/598#issuecomment-271402798
 
+saint-stephen-150x200.png
+https://github.com/commonsmachinery/blockhash-js/issues/7
 
