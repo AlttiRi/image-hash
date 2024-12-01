@@ -3,7 +3,7 @@ import {BiImageData, GrayImageData} from "./mono-image-data.js";
 import {Hasher, HasherCore, HashOpts, ImageDataLike} from "./types.js";
 import {getCalculateAverage, getCalculateBT601, getGrayData} from "./grayscale.js";
 import {scaleDownLinear, scaleUpNearestNeighbor} from "./resize.js";
-import {aHashCore, bHashCore, dHashCore, mHashCore} from "./hashers-core.js";
+import {aHashCore, bHashCore, dHashCore, mHashCore, mHashCoreClassic} from "./hashers-core.js";
 
 
 type HashOptsPrivate = {
@@ -23,13 +23,28 @@ export const dHash: Hasher = (imageData: ImageDataLike, opts: HashOpts = {}) => 
 export const aHash: Hasher = (imageData: ImageDataLike, opts?: HashOpts) => hash(aHashCore, imageData, opts);
 
 /** median hash */
-export const mHash: Hasher = (imageData: ImageDataLike, opts?: HashOpts) => hash(mHashCore, imageData, opts);
+export const mHash: Hasher = (imageData: ImageDataLike, opts: HashOpts = {}) => {
+    if (opts.classic) {
+        return hash(mHashCoreClassic, imageData, opts);
+    }
+    return hash(mHashCore, imageData, opts);
+};
 
-/** block hash (uses "BT601" for gray-scaling, and uses horizontal bands with 2 pixels height.) */
-export const bHash: Hasher = (imageData: ImageDataLike, opts?: HashOpts) => hash(bHashCore, imageData, opts);
+/** block hash
+ *
+ * By default, it uses "BT601" for gray-scaling, and uses horizontal bands with 2 pixels height.
+ *
+ * With `classic` option — "original-like" block hash that uses "average" for gray-scaling,
+ * and uses 4 horizontal bands total.
+ * */
+export const bHash: Hasher = (imageData: ImageDataLike, opts: HashOpts = {}) => {
+    if (opts.classic) {
+        return bHashClassic(imageData, opts);
+    }
+    return hash(bHashCore, imageData, opts);
+};
 
-/** block hash "original-like" (uses "average" for gray-scaling, and uses 4 horizontal bands total) */
-export const bHashClassic: Hasher = (imageData: ImageDataLike, opts: HashOpts = {}) => {
+const bHashClassic: Hasher = (imageData: ImageDataLike, opts: HashOpts = {}) => {
     opts.grayScaler = getCalculateAverage;
     const bHashCoreWrapped = (gid: GrayImageData) => bHashCore(gid, /* bandCount */ 4);
     return hash(bHashCoreWrapped, imageData, opts);

@@ -23,7 +23,6 @@ export function aHashCore({data, width, height}: GrayImageData): BiImageData {
     return new BiImageData(hash, width, height);
 }
 
-// todo: use it optionally
 export function _mHashCoreClassic(data: Uint8Array, width: number, height: number): Uint8Array {
     const median = calculateMedian(data);
     const hash = new Uint8Array(width * height);
@@ -34,10 +33,12 @@ export function _mHashCoreClassic(data: Uint8Array, width: number, height: numbe
     }
     return hash;
 }
+export function mHashCoreClassic({data, width, height}: GrayImageData): BiImageData {
+    return new BiImageData(_mHashCoreClassic(data, width, height), width, height);
+}
 
 export function mHashCore({data, width, height}: GrayImageData): BiImageData {
-    const hash = _mHashCore(data, width, height);
-    return new BiImageData(hash, width, height);
+    return new BiImageData(_mHashCore(data, width, height), width, height);
 }
 
 /**
