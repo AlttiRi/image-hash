@@ -96,7 +96,6 @@ function hash(hash: HasherCore, imageData: ImageDataLike, opts: HashOpts & HashO
             }
         } else {
             grayData = getGrayData(imageData, grayScaler);
-            // console.log("getGrayData..."); // todo: add tests and delete
         }
         grayDataScaled = scaleDownLinear(grayData, {
             width:  scaleWidth,
@@ -104,7 +103,6 @@ function hash(hash: HasherCore, imageData: ImageDataLike, opts: HashOpts & HashO
             median: opts.median,
             ignore: opts.ignore,
         });
-        // console.log("scaleDownLinear...");
     }
 
     const biImageData = hash(grayDataScaled!); // ts! // stupid af
