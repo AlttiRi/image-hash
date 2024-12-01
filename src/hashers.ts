@@ -1,30 +1,15 @@
 import {ImageHash} from "./image-hash.js";
 import {BiImageData, GrayImageData} from "./mono-image-data.js";
-import {GrayScalerGetter, ImageDataLike} from "./types.js";
+import {GrayScalerGetter, Hasher, HasherCore, HashOpts, ImageDataLike} from "./types.js";
 import {getCalculateAverage, getCalculateBT601, getGrayData} from "./grayscale.js";
 import {scaleDownLinear, scaleUpNearestNeighbor} from "./resize.js";
 import {aHashCore, bHashCore, dHashCore, mHashCore} from "./hashers-core.js";
 
-type HashOpts = {
-    grayData?: GrayImageData
-    grayDataScaled?: GrayImageData
-    ignore?: boolean
-    grayScaler?: GrayScalerGetter
-} & ({
-    width?:  number
-    height?: number
-    size?:   void
-} | {
-    width?:  void
-    height?: void
-    size?:   number
-});
+
 type HashOptsPrivate = {
     scaleWidth?:  number
     scaleHeight?: number
-}
-type Hasher     = (imageData: ImageDataLike, opts?: HashOpts) => ImageHash;
-type HasherCore = (grayImageData: GrayImageData) => BiImageData;
+};
 
 const defaultSize = 8;
 
@@ -98,7 +83,12 @@ function hash(hash: HasherCore, imageData: ImageDataLike, opts: HashOpts & HashO
             grayData = getGrayData(imageData, grayScaler);
             // console.log("getGrayData..."); // todo: add tests and delete
         }
-        grayDataScaled = scaleDownLinear(grayData, {...opts, width: scaleWidth, height: scaleHeight});
+        grayDataScaled = scaleDownLinear(grayData, {
+            width:  scaleWidth,
+            height: scaleHeight,
+            median: opts.median,
+            ignore: opts.ignore,
+        });
         // console.log("scaleDownLinear...");
     }
 
