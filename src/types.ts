@@ -16,9 +16,12 @@ export type ImageDataLikeEx = {
 export type GrayScalerGetter = (dw: DataView) => (i: number) => number;
 
 
+export type Round = "round" | "trunc" | "ceil" | "floor";
+
 export type ScaleOpts = {
     median?: boolean
     ignore?: boolean
+    round?:  Round
 } & ({
     width?:  number
     height?: number

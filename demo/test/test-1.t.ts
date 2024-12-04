@@ -115,12 +115,12 @@ console.log(ANSI_BLUE("--- Hash demos (hashes from articles) ---"));
         const hash = aHash(iData);
         t({
             result: hash.hex,
-            expect: "0001063c608ffffe",
+            expect: "0001063c6087fffe",
         });
         const averageHexFromSite = "00010E3CE08FFFFE";
         t({
             result: hash.diff(ImageHash.fromHex(averageHexFromSite)),
-            expect: 2,
+            expect: 3,
         });
     }
 }

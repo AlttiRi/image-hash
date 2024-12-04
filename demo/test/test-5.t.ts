@@ -119,15 +119,15 @@ async function getValue(image: FilesArg) {
     });
     t({
         result: hash_classic.hex,
-        expect: "071f2e3ce08fc2f8",
+        expect: "071f2e3ce08fc0f8",
     });
     t({
         result: hash_alttiri.hex,
-        expect: "031f273ce08fc2f8",
+        expect: "071f273ce08fc0f8",
     });
     t({
         result: diff_c,
-        expect: 0,
+        expect: 1,
     });
     t({
         result: diff_a,
@@ -135,7 +135,7 @@ async function getValue(image: FilesArg) {
     });
     t({
         result: diff_n,
-        expect: 3,
+        expect: 2,
     });
 }
 {
@@ -443,7 +443,7 @@ async function getValue(image: FilesArg) {
     });
     t({
         result: hash_classic.hex,
-        expect: "3c3929ab3179b919",
+        expect: "3c3909ab3179b919",
     });
     t({
         result: hash_alttiri.hex,
@@ -451,7 +451,7 @@ async function getValue(image: FilesArg) {
     });
     t({
         result: diff_c,
-        expect: 0,
+        expect: 1,
     });
     t({
         result: diff_a,
@@ -459,7 +459,7 @@ async function getValue(image: FilesArg) {
     });
     t({
         result: diff_n,
-        expect: 1,
+        expect: 0,
     });
 }
 {
@@ -524,7 +524,7 @@ async function getValue(image: FilesArg) {
     });
     t({
         result: hash_classic.hex,
-        expect: "3f03ef04f17006f3",
+        expect: "7f03ef04f17006f3",
     });
     t({
         result: hash_alttiri.hex,
@@ -532,7 +532,7 @@ async function getValue(image: FilesArg) {
     });
     t({
         result: diff_c,
-        expect: 0,
+        expect: 1,
     });
     t({
         result: diff_a,
@@ -540,7 +540,7 @@ async function getValue(image: FilesArg) {
     });
     t({
         result: diff_n,
-        expect: 1,
+        expect: 0,
     });
 }
 {
@@ -613,11 +613,11 @@ async function getValue(image: FilesArg) {
 
     t({
         result: totalDiffClassic,
-        expect: 22,
+        expect: 25,
     });
     t({
         result: totalDiffClassic / onePercent,
-        expect: 1.6369047619047619,
+        expect: 1.8601190476190477,
         name: "totalDiffClassic",
     });
 
@@ -633,11 +633,11 @@ async function getValue(image: FilesArg) {
 
     t({
         result: totalDiffNonOrig,
-        expect: 34,
+        expect: 31,
     });
     t({
         result: totalDiffNonOrig / onePercent,
-        expect: 2.5297619047619047,
+        expect: 2.306547619047619,
         name: "totalDiffNonOrig",
     });
 }

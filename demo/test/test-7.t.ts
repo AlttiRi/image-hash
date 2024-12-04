@@ -144,7 +144,7 @@ const count = Object.keys(Files).length;
 
     t({
         result: aDiff,
-        expect: 61,
+        expect: 62,
         name: `${aDiff}`,
     });
     t({
@@ -156,7 +156,7 @@ const count = Object.keys(Files).length;
     const dDiffPercentage = dDiff / (size * size * count / 100);
     t({
         result: aDiffPercentage,
-        expect: 4.538690476190476,
+        expect: 4.613095238095238,
         name: `aDiff ${aDiffPercentage} %`,
     });
     t({
@@ -183,7 +183,7 @@ const count = Object.keys(Files).length;
 
     t({
         result: aDiff,
-        expect: 67,
+        expect: 68,
         name: `${aDiff}`,
     });
     t({
@@ -195,7 +195,7 @@ const count = Object.keys(Files).length;
     const dDiffPercentage = dDiff / (size * size * count / 100);
     t({
         result: aDiffPercentage,
-        expect: 4.9851190476190474,
+        expect: 5.059523809523809,
         name: `aDiff ${aDiffPercentage} %`,
     });
     t({

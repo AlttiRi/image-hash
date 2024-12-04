@@ -60,11 +60,11 @@ async function getValue(image: FilesArg) {
 
     t({
         result: totalDiffClassic,
-        expect: 22,
+        expect: 25,
     });
     t({
         result: totalDiffClassic / onePercent,
-        expect: 1.6369047619047619,
+        expect: 1.8601190476190477,
         name: "totalDiffClassic",
     });
 
@@ -80,11 +80,11 @@ async function getValue(image: FilesArg) {
 
     t({
         result: totalDiffNonOrig,
-        expect: 34,
+        expect: 31,
     });
     t({
         result: totalDiffNonOrig / onePercent,
-        expect: 2.5297619047619047,
+        expect: 2.306547619047619,
         name: "totalDiffNonOrig",
     });
 }
@@ -115,31 +115,31 @@ async function getValue(image: FilesArg) {
 
     t({
         result: totalDiffClassic,
-        expect: 86,
+        expect: 87,
     });
     t({
         result: totalDiffClassic / onePercent,
-        expect: 1.599702380952381,
+        expect: 1.6183035714285714,
         name: "totalDiffClassic",
     });
 
     t({
         result: totalDiffAlttiri,
-        expect: 579,
+        expect: 573,
     });
     t({
         result: totalDiffAlttiri / onePercent,
-        expect: 10.770089285714286,
+        expect: 10.658482142857144,
         name: "totalDiffAlttiri",
     });
 
     t({
         result: totalDiffNonOrig,
-        expect: 529,
+        expect: 520,
     });
     t({
         result: totalDiffNonOrig / onePercent,
-        expect: 9.840029761904763,
+        expect: 9.672619047619047,
         name: "totalDiffNonOrig",
     });
 }
@@ -170,31 +170,31 @@ async function getValue(image: FilesArg) {
 
     t({
         result: totalDiffClassic,
-        expect: 274,
+        expect: 248,
     });
     t({
         result: totalDiffClassic / onePercent,
-        expect: 1.2741815476190477,
+        expect: 1.1532738095238095,
         name: "totalDiffClassic",
     });
 
     t({
         result: totalDiffAlttiri,
-        expect: 1913,
+        expect: 1936,
     });
     t({
         result: totalDiffAlttiri / onePercent,
-        expect: 8.896019345238095,
+        expect: 9.002976190476192,
         name: "totalDiffAlttiri",
     });
 
     t({
         result: totalDiffNonOrig,
-        expect: 1781,
+        expect: 1818,
     });
     t({
         result: totalDiffNonOrig / onePercent,
-        expect: 8.28218005952381,
+        expect: 8.454241071428571,
         name: "totalDiffNonOrig",
     });
 }
@@ -224,31 +224,31 @@ async function getValue(image: FilesArg) {
 
     t({
         result: totalDiffClassic,
-        expect: 1229,
+        expect: 986,
     });
     t({
         result: totalDiffClassic / onePercent,
-        expect: 1.428803943452381,
+        expect: 1.1462983630952381,
         name: "totalDiffClassic",
     });
 
     t({
         result: totalDiffAlttiri,
-        expect: 7816,
+        expect: 7806,
     });
     t({
         result: totalDiffAlttiri / onePercent,
-        expect: 9.086681547619047,
+        expect: 9.075055803571429,
         name: "totalDiffAlttiri",
     });
 
     t({
         result: totalDiffNonOrig,
-        expect: 7289,
+        expect: 7356,
     });
     t({
         result: totalDiffNonOrig / onePercent,
-        expect: 8.474004836309524,
+        expect: 8.551897321428571,
         name: "totalDiffNonOrig",
     });
 }
@@ -278,31 +278,31 @@ async function getValue(image: FilesArg) {
 
     t({
         result: totalDiffClassic,
-        expect: 17999,
+        expect: 13384,
     });
     t({
         result: totalDiffClassic / onePercent,
-        expect: 1.4454891807154606,
+        expect: 1.0748612253289473,
         name: "totalDiffClassic",
     });
 
     t({
         result: totalDiffAlttiri,
-        expect: 93511,
+        expect: 92567,
     });
     t({
         result: totalDiffAlttiri / onePercent,
-        expect: 7.509813810649671,
+        expect: 7.434001721833882,
         name: "totalDiffAlttiri",
     });
 
     t({
         result: totalDiffNonOrig,
-        expect: 86936,
+        expect: 86423,
     });
     t({
         result: totalDiffNonOrig / onePercent,
-        expect: 6.981779399671052,
+        expect: 6.940580669202302,
         name: "totalDiffNonOrig",
     });
 }

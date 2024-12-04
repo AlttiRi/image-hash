@@ -67,7 +67,7 @@ async function getLumus(imgPath: string, opts: Opts = {}) {
     });
     t({
         result: avgLuminanceScaled,
-        expect: 60.9375,
+        expect: 61.015625,
     });
 }
 
@@ -83,7 +83,7 @@ async function getLumus(imgPath: string, opts: Opts = {}) {
         });
         t({
             result: avgLuminanceScaled,
-            expect: 161.7451171875,
+            expect: 161.6826171875,
         });
     }
     {
@@ -109,7 +109,7 @@ async function getLumus(imgPath: string, opts: Opts = {}) {
         });
         t({
             result: avgLuminanceScaled,
-            expect: 156.671875,
+            expect: 156.609375,
         });
     }
     {
@@ -122,7 +122,7 @@ async function getLumus(imgPath: string, opts: Opts = {}) {
         });
         t({
             result: avgLuminanceScaled,
-            expect: 160.359375,
+            expect: 160.328125,
         });
     }
     {
@@ -135,7 +135,7 @@ async function getLumus(imgPath: string, opts: Opts = {}) {
         });
         t({
             result: avgLuminanceScaled,
-            expect: 165.515625,
+            expect: 165.34375,
         });
     }
     {
@@ -148,7 +148,7 @@ async function getLumus(imgPath: string, opts: Opts = {}) {
         });
         t({
             result: avgLuminanceScaled,
-            expect: 160.171875,
+            expect: 160.03125,
         });
     }
     {
@@ -161,7 +161,7 @@ async function getLumus(imgPath: string, opts: Opts = {}) {
         });
         t({
             result: avgLuminanceScaled,
-            expect: 164.171875,
+            expect: 164,
         });
     }
 }

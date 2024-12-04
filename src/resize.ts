@@ -1,6 +1,6 @@
 import {calculateMedian} from "./median.js";
 import {GrayImageData, MonoImageData} from "./mono-image-data.js";
-import {ScaleOpts} from "./types.js";
+import {Round, ScaleOpts} from "./types.js";
 
 
 const defaultSize = 8;
@@ -8,6 +8,7 @@ const defaultSize = 8;
 export function scaleDownLinear(orig: GrayImageData, opts: ScaleOpts = {}): GrayImageData {
     const width  = opts.size || opts.width  || defaultSize;
     const height = opts.size || opts.height || defaultSize;
+    const round  = opts.round || "round";
     const {median = false, ignore = false} = opts;
     if (width === orig.width && height === orig.height) {
         return orig;
@@ -20,20 +21,21 @@ export function scaleDownLinear(orig: GrayImageData, opts: ScaleOpts = {}): Gray
     }
     let data: Uint8Array;
     if (median) {
-        data = scaleDownLinearMedian(orig, width, height);
+        data = scaleDownLinearMedian(orig, width, height, round);
     } else {
-        data = scaleDownLinearAverage(orig, width, height);
+        data = scaleDownLinearAverage(orig, width, height, round);
     }
     return new GrayImageData(data, width, height);
 }
 
-export function scaleDownLinearAverage(orig: GrayImageData, newWidth: number, newHeight: number): Uint8Array {
+
+export function scaleDownLinearAverage(orig: GrayImageData, newWidth: number, newHeight: number, round: Round = "round"): Uint8Array {
 
     const {data, width, height} = orig;
     const dest = new Uint8Array(newWidth * newHeight);
     const xScale = width  / newWidth;
     const yScale = height / newHeight;
-    const near: (n: number) => number = Math.trunc; // todo: test `ceil` / `round` // and check `count`
+    const near: (n: number) => number = Math[round];
 
     for (let newY = 0; newY < newHeight; newY++) {
         for (let newX = 0; newX < newWidth; newX++) {
@@ -57,20 +59,21 @@ export function scaleDownLinearAverage(orig: GrayImageData, newWidth: number, ne
     return dest;
 }
 
-export function scaleDownLinearMedian(orig: GrayImageData, newWidth: number, newHeight: number): Uint8Array {
+export function scaleDownLinearMedian(orig: GrayImageData, newWidth: number, newHeight: number, round: Round = "round"): Uint8Array {
 
     const {data, width, height} = orig;
     const dest = new Uint8Array(newWidth * newHeight);
     const xScale = width  / newWidth;
     const yScale = height / newHeight;
+    const near: (n: number) => number = Math[round];
 
     const cache = new Map();
     for (let newY = 0; newY < newHeight; newY++) {
         for (let newX = 0; newX < newWidth; newX++) {
-            const fromY = Math.trunc(yScale * newY);
-            const fromX = Math.trunc(xScale * newX);
-            const toY   = Math.trunc(yScale * (newY + 1));
-            const toX   = Math.trunc(xScale * (newX + 1));
+            const fromY = near(yScale * newY);
+            const fromX = near(xScale * newX);
+            const toY   = near(yScale * (newY + 1));
+            const toX   = near(xScale * (newX + 1));
             const count = (toY - fromY) * (toX - fromX);
 
             const value = cache.get(count);
