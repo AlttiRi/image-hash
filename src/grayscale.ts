@@ -1,6 +1,9 @@
 import {GrayImageData} from "./mono-image-data.js";
 import {GrayScalerGetter, GrayScalingOpt, GrayScalingType, ImageDataLike} from "./types.js";
-import {isString} from "@alttiri/util-js";
+
+function isString(value: unknown): value is string {
+    return typeof value === "string";
+}
 
 /**
  * Using of 1 `getUint32` is faster than 3 accesses by index (`array[N]`).
