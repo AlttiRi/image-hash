@@ -26,13 +26,6 @@ for (const filename of Object.values(Files)) {
     await saveImageDataWithSharp(b_hash.mono, getPath({filename, size, prefix: "blk"}));
 }
 
-
-function getPath({filename, prefix, size}: GetPathParams) {
+function getPath({filename, prefix, size}: {filename: string; prefix: string; size: number;}) {
     return path.join(dirPath,`${size}-${path.basename(filename)}-${prefix}.png`);
 }
-
-type GetPathParams = {
-    filename: string
-    prefix: string
-    size: number
-};
