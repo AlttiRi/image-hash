@@ -5,6 +5,7 @@ export type ImageDataLike = {
     data:   Uint8ClampedArray
     width:  number
     height: number
+ // colorSpace: "srgb" // todo?: add it
 };
 export type ImageDataLikeEx = {
     data:   Uint8ClampedArray | Uint8Array
