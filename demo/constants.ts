@@ -20,4 +20,4 @@ export const Files = {
     _19_dress:        "screenshot-magenta-dress-1898x946.png",
     _20_wallpaper:    "wallpaper-dark-purple-2560x1600.jpg",
     _21_wallpaper_2:  "wallpaper-dark-purple-2560x1600-reverse.jpg",
-};
+} as const;
