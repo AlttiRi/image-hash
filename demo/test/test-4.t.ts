@@ -14,6 +14,7 @@ const m_hashes: Record<string, string> = {};
 const d_hashes: Record<string, string> = {};
 const b_hashes: Record<string, string> = {};
 const b_hashes_classic: Record<string, string> = {};
+const m_hashes_classic: Record<string, string> = {};
 for (const filename of Object.values(Files)) {
     const iData = await getImageData(filename);
     const grayData       = getGrayData(iData);
@@ -23,8 +24,9 @@ for (const filename of Object.values(Files)) {
     d_hashes[filename] = dHash(iData, {grayData, grayDataScaled, ignore: true}).hex;
     b_hashes[filename] = bHash(iData, {grayData, grayDataScaled}).hex;
     b_hashes_classic[filename] = bHash(iData, {grayData, grayDataScaled, classic: true}).hex;
+    m_hashes_classic[filename] = mHash(iData, {grayData, grayDataScaled, classic: true}).hex;
 
-    // console.log(`"${filename}":${' '.repeat(36)} "${b_hashes_classic[filename]}",`);
+    // console.log(`"${filename}":${' '.repeat(36)} "${m_hashes_classic[filename]}",`);
 }
 
 const known_a_hashes: Record<string, string> = {
@@ -59,6 +61,29 @@ const known_m_hashes: Record<string, string> = {
     "grey-dark-bg-2-600x600.png":                         "e00e0e0000000060",
     "grey-light-bg-600x600.png":                          "ff8ff1f1ffffffef",
     "grey-light-bg-2-600x600.png":                        "9f97f1fffffffefc",
+    "imagehash-1200x600.png":                             "ffd391818181a5e7",
+    "imagehash-1200x600-reverse.png":                     "002c6e7e7e7e5a18",
+    "kittens-3264x2448.jpg":                              "00980e634287fffe",
+    "kittens-minicrop-3258x2448.jpg":                     "00980e634287fffe",
+    "peppers-600x600.png":                                "9f1f2786e51f1e00",
+    "peppers-minicrop-599x599.png":                       "9f1f2786e51f1e00",
+    "rabbit-320x192.png":                                 "efcf8f818042fc04",
+    "saint-stephen-150x200.png":                          "3c010101fbfff919",
+    "screenshot-dark-purple-flower-1353x851.png":         "ffffff000e080d01",
+    "screenshot-dark-purple-flower-1353x851-reverse.png": "000000fff1f7f2fe",
+    "screenshot-magenta-dress-1898x946.png":              "ffefff04706000c2",
+    "wallpaper-dark-purple-2560x1600.jpg":                "643e1f1f1f0f0f02",
+    "wallpaper-dark-purple-2560x1600-reverse.jpg":        "9bc1e0e0e0f0f0fd",
+};
+const known_m_hashes_classic: Record<string, string> = {     // todo: use it
+    "alyson_hannigan_500x500.jpg":                        "e7c7ca80c4f4f8a0",
+    "black-bg-orthocanna-500x500.jpg":                    "1c1c1c1c1c181818",
+    "black-bg-orthocanna-500x500-reverse.jpg":            "0000000000000000",
+    "bridge-500x320.jpg":                                 "0001273ce08ffffe",
+    "grey-dark-bg-600x600.png":                           "0000000070700ec0",
+    "grey-dark-bg-2-600x600.png":                         "e00e0e0000000060",
+    "grey-light-bg-600x600.png":                          "0000000000700e00",
+    "grey-light-bg-2-600x600.png":                        "0e06700000000000",
     "imagehash-1200x600.png":                             "ffd391818181a5e7",
     "imagehash-1200x600-reverse.png":                     "002c6e7e7e7e5a18",
     "kittens-3264x2448.jpg":                              "00980e634287fffe",
