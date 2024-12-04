@@ -10,6 +10,8 @@
     "sharp": "0.33.5",
     "get-pixels": "3.3.3",
     "@types/get-pixels": "3.3.4",
-    "blockhash-core": "0.1.0"
+    "blockhash-core": "0.1.0",
+    "pica": "9.0.1",
+    "@types/pica": "9.0.4"
   }
 }

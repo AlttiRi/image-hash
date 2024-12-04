@@ -44,14 +44,24 @@ function saveImageDataWithCanvas(imageData: ImageDataLikeEx, outputFilePath: str
 }
 export function toImageDataFromMono(imageData: MonoImageData): ImageData {
     const array = imageData.data;
-    const data = new Uint8ClampedArray(array.length * 4);
-    for (let i = 0; i < array.length; i++) {
+    const length = array.length;
+    const data = new Uint8ClampedArray(length * 4);
+    for (let i = 0; i < length; i++) {
         data[i * 4] = array[i];
         data[i * 4 + 1] = array[i];
         data[i * 4 + 2] = array[i];
         data[i * 4 + 3] = 255;
     }
     return new ImageData(data, imageData.width, imageData.height);
+}
+export function toMonoFromImageData(imageData: ImageDataLikeEx): MonoImageData {
+    const array = imageData.data;
+    const length = array.length / 4;
+    const data = new Uint8Array(length);
+    for (let i = 0; i < length; i++) {
+        data[i] = array[i * 4];
+    }
+    return new MonoImageData(data, imageData.width, imageData.height);
 }
 
 
