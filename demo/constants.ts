@@ -1,3 +1,7 @@
+import {ImageDataLike} from "@/types.ts";
+import {getImageDataFromFS} from "./util.demo.ts";
+import path from "node:path";
+
 export const Files = {
     _1_alyson:        "alyson_hannigan_500x500.jpg",
     _2_orthocanna:    "black-bg-orthocanna-500x500.jpg",
@@ -21,3 +25,20 @@ export const Files = {
     _20_wallpaper:    "wallpaper-dark-purple-2560x1600.jpg",
     _21_wallpaper_2:  "wallpaper-dark-purple-2560x1600-reverse.jpg",
 } as const;
+
+function resolve(...strs: string[]) {
+    return path.resolve(import.meta.dirname, ...strs);
+}
+
+const cache = new Map();
+export type FilesArg = typeof Files[keyof typeof Files];
+export async function getImageData(image: FilesArg): Promise<ImageDataLike> {
+    let iData: ImageDataLike;
+    if (cache.has(image)) {
+        iData = cache.get(image);
+    } else {
+        iData = await getImageDataFromFS(resolve("./img", image));
+        cache.set(image, iData);
+    }
+    return iData;
+}

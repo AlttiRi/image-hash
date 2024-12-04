@@ -1,12 +1,7 @@
 import {bmvbhash} from "blockhash-core";
-import path from "node:path";
 import {ANSI_BLUE, t} from "../../test/tester.ts";
-import {getImageDataFromFS,} from "../util.demo.ts";
 import {bHash} from "@/hashers.ts";
-import {Files} from "../constants.ts";
-function resolve(...strs: string[]) {
-    return path.resolve(import.meta.dirname, ...strs);
-}
+import {Files, FilesArg, getImageData} from "../constants.ts";
 
 
 console.log(ANSI_BLUE("--- Tests 5 --- 8 bytes blockhash hashes ---"));
@@ -17,8 +12,8 @@ let totalDiffClassic = 0;
 let totalDiffAlttiri = 0;
 let totalDiffNonOrig = 0;
 
-async function getValue(image: string) {
-    const iData = await getImageDataFromFS(resolve("../img", image));
+async function getValue(image: FilesArg) {
+    const iData = await getImageData(image);
     const hash_orig    = bmvbhash(iData, size);
     const hash_classic = bHash(iData, {size, classic: true});
     const hash_alttiri = bHash(iData, {size});

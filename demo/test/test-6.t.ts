@@ -1,13 +1,7 @@
 import {bmvbhash} from "blockhash-core";
-import path from "node:path";
 import {ANSI_BLUE, t} from "../../test/tester.ts";
-import {getImageDataFromFS,} from "../util.demo.ts";
 import {bHash} from "@/hashers.ts";
-import {Files} from "../constants.ts";
-import {ImageDataLike} from "@/types.ts";
-function resolve(...strs: string[]) {
-    return path.resolve(import.meta.dirname, ...strs);
-}
+import {Files, FilesArg, getImageData} from "../constants.ts";
 
 
 console.log(ANSI_BLUE("--- Tests 5 --- different sizes blockhash hashes ---"));
@@ -19,15 +13,9 @@ let totalDiffAlttiri = 0;
 let totalDiffNonOrig = 0;
 
 const log = false;
-const cache = new Map();
-async function getValue(image: string) {
-    let iData: ImageDataLike;
-    if (cache.has(image)) {
-        iData = cache.get(image);
-    } else {
-        iData = await getImageDataFromFS(resolve("../img", image));
-        cache.set(image, iData);
-    }
+async function getValue(image: FilesArg) {
+    let iData = await getImageData(image);
+
     if (iData.height < size || iData.height < size) {
         return null;
     }
