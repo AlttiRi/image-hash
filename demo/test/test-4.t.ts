@@ -51,7 +51,7 @@ const known_a_hashes: Record<string, string> = {
     "screenshot-magenta-dress-1898x946.png":              "ffefff04706000c2",
     "wallpaper-dark-purple-2560x1600.jpg":                "003e1f0f0f0f0f00",
     "wallpaper-dark-purple-2560x1600-reverse.jpg":        "ffc1e0f0f0f0f0ff",
-};
+} as const;
 const known_m_hashes: Record<string, string> = {
     "alyson_hannigan_500x500.jpg":                        "e7c7cac0c4f4f8e0",
     "black-bg-orthocanna-500x500.jpg":                    "1c1c1c1c1c181818",
@@ -74,7 +74,7 @@ const known_m_hashes: Record<string, string> = {
     "screenshot-magenta-dress-1898x946.png":              "ffefff04706000c2",
     "wallpaper-dark-purple-2560x1600.jpg":                "643e1f1f1f0f0f02",
     "wallpaper-dark-purple-2560x1600-reverse.jpg":        "9bc1e0e0e0f0f0fd",
-};
+} as const;
 const known_m_hashes_classic: Record<string, string> = {     // todo: use it
     "alyson_hannigan_500x500.jpg":                        "e7c7ca80c4f4f8a0",
     "black-bg-orthocanna-500x500.jpg":                    "1c1c1c1c1c181818",
@@ -97,7 +97,7 @@ const known_m_hashes_classic: Record<string, string> = {     // todo: use it
     "screenshot-magenta-dress-1898x946.png":              "ffefff04706000c2",
     "wallpaper-dark-purple-2560x1600.jpg":                "643e1f1f1f0f0f02",
     "wallpaper-dark-purple-2560x1600-reverse.jpg":        "9bc1e0e0e0f0f0fd",
-};
+} as const;
 const known_d_hashes: Record<string, string> = {
     "alyson_hannigan_500x500.jpg":                        "8f94b43434245452",
     "black-bg-orthocanna-500x500.jpg":                    "1818181030303030",
@@ -120,7 +120,7 @@ const known_d_hashes: Record<string, string> = {
     "screenshot-magenta-dress-1898x946.png":              "d08c9899c3c22a42",
     "wallpaper-dark-purple-2560x1600.jpg":                "c4e4f05879797e3e",
     "wallpaper-dark-purple-2560x1600-reverse.jpg":        "3b1b0f27860601c1",
-};
+} as const;
 const known_b_hashes: Record<string, string> = {
     "alyson_hannigan_500x500.jpg":                        "c7c2cbc2c4f4f8e0",
     "black-bg-orthocanna-500x500.jpg":                    "1c1c1c1c1c181818",
@@ -143,7 +143,7 @@ const known_b_hashes: Record<string, string> = {
     "screenshot-magenta-dress-1898x946.png":              "7f03ef04f17006f3",
     "wallpaper-dark-purple-2560x1600.jpg":                "643e1f0e0f0f1f07",
     "wallpaper-dark-purple-2560x1600-reverse.jpg":        "9bc1e0f1f0f0e0f8",
-};
+} as const;
 const known_b_hashes_classic: Record<string, string> = {
     "alyson_hannigan_500x500.jpg":                        "c7c2cbc2c4f4f8e0",
     "black-bg-orthocanna-500x500.jpg":                    "1c1c1c1c1c181818",
@@ -166,7 +166,8 @@ const known_b_hashes_classic: Record<string, string> = {
     "screenshot-magenta-dress-1898x946.png":              "7f03ef04f17006f3",
     "wallpaper-dark-purple-2560x1600.jpg":                "643e1f0e0f0f1f07",
     "wallpaper-dark-purple-2560x1600-reverse.jpg":        "9bc1e0f1f0f0e0f8",
-};
+} as const;
+
 let totalDiff = 0;
 function tt(hashes: Record<string, string>,known_hashes: Record<string, string>, prefix: string) {
     for (const [filename, hash] of Object.entries(hashes)) {
@@ -234,8 +235,7 @@ const known_a_py_hashes: Record<string, [string, number]> = {
     "screenshot-magenta-dress-1898x946.png":              ["ffefef0c706006e2", 5],
     "wallpaper-dark-purple-2560x1600.jpg":                ["203e1f0f0f0f0700", 2],
     "wallpaper-dark-purple-2560x1600-reverse.jpg":        ["dfc1e0f0f0f0f8ff", 2],
-
-};
+} as const;
 const known_d_py_hashes: Record<string, [string, number]> = {
     "alyson_hannigan_500x500.jpg":                        ["8f94b616b4245452", 4],
     "black-bg-orthocanna-500x500.jpg":                    ["59593938b2b2b0b4", 15],
@@ -258,7 +258,7 @@ const known_d_py_hashes: Record<string, [string, number]> = {
     "screenshot-magenta-dress-1898x946.png":              ["d09c9dd9c3c22a82", 6],
     "wallpaper-dark-purple-2560x1600.jpg":                ["cce4f058797b7e3e", 2],
     "wallpaper-dark-purple-2560x1600-reverse.jpg":        ["331b0fa7860401c1", 3],
-};
+} as const;
 
 
 tt_py(a_hashes, known_a_py_hashes, "a_py");
@@ -321,7 +321,7 @@ const known_a_py_box_hashes: Record<string, [string, number]> = {
     "screenshot-magenta-dress-1898x946.png":              ["ffefff04f06000c2", 1],
     "wallpaper-dark-purple-2560x1600.jpg":                ["003e1f0f0f0f0700", 1],
     "wallpaper-dark-purple-2560x1600-reverse.jpg":        ["ffc1e0f0f0f0f8ff", 1],
-};
+} as const;
 const known_d_py_box_hashes: Record<string, [string, number]> = {
     "alyson_hannigan_500x500.jpg":                        ["8f94b43434245452", 0],
     "black-bg-orthocanna-500x500.jpg":                    ["1818181030303030", 0],
@@ -344,7 +344,7 @@ const known_d_py_box_hashes: Record<string, [string, number]> = {
     "screenshot-magenta-dress-1898x946.png":              ["d09c9999c3c22a02", 3],
     "wallpaper-dark-purple-2560x1600.jpg":                ["c4e4f05879797e3e", 0],
     "wallpaper-dark-purple-2560x1600-reverse.jpg":        ["3b1b0f2706060181", 2],
-};
+} as const;
 
 
 tt_py_box(a_hashes, known_a_py_box_hashes, "a_py_box");
