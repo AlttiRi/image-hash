@@ -166,4 +166,40 @@ t({
     expect: 85,
 });
 
+t({
+    result: calculateMedianByCountSorting(new Uint8Array(Array.from({length: 255}, () => 60))),
+    expect: 60,
+});
+t({
+    result: calculateMedianByCountSorting(new Uint8Array([...Array.from({length: 255}, () => 60), 61])),
+    expect: 60,
+    name: "256 values"
+});
+t({
+    result: calculateMedianByCountSorting(new Uint8Array(Array.from({length: 256}, () => 60))),
+    expect: 60,
+    name: "256 the same values"
+});
+t({
+    result: calculateMedianByCountSorting(new Uint8Array(Array.from({length: 257}, () => 60))),
+    expect: 60,
+});
 
+t({
+    result: calculateMedianByCountSorting(new Uint8Array(Array.from({length: 65535}, () => 60))),
+    expect: 60,
+});
+t({
+    result: calculateMedianByCountSorting(new Uint8Array([...Array.from({length: 65535}, () => 60), 61])),
+    expect: 60,
+    name: "65536 values"
+});
+t({
+    result: calculateMedianByCountSorting(new Uint8Array(Array.from({length: 65536}, () => 60))),
+    expect: 60,
+    name: "65536 the same values"
+});
+t({
+    result: calculateMedianByCountSorting(new Uint8Array(Array.from({length: 65537}, () => 60))),
+    expect: 60,
+});

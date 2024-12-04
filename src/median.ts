@@ -19,7 +19,7 @@ export function calculateMedianByCountSorting(ui8ca: Uint8Array): number {
     let counts: Uint8Array | Uint16Array | Uint32Array/* | number[] */;
     if (ui8ca.length > 256) {
         // counts = Array.from({length: 256}, () => 0);
-        if (ui8ca.length > 65535) {
+        if (ui8ca.length > 65536) {
             counts = new Uint32Array(256);
         } else {
             counts = new Uint16Array(256);
@@ -53,7 +53,9 @@ export function calculateMedianByCountSorting(ui8ca: Uint8Array): number {
         }
     }
 
-    throw new Error("Unreachable code was reached");
+    // If all values in the input array are the same and the input array length is 256 (or 65536).
+    // (256 incrementing of the same key of Uint8Array results in `0`.)
+    return ui8ca[0];
 }
 
 export function calculateAverage(ui8ca: Uint8Array): number {
