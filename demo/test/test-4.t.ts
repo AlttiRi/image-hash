@@ -258,7 +258,7 @@ const known_d_py_hashes: Record<string, [string, number]> = {
     "screenshot-magenta-dress-1898x946.png":              ["d09c9dd9c3c22a82", 6],
     "wallpaper-dark-purple-2560x1600.jpg":                ["cce4f058797b7e3e", 2],
     "wallpaper-dark-purple-2560x1600-reverse.jpg":        ["331b0fa7860401c1", 3],
-}
+};
 
 
 tt_py(a_hashes, known_a_py_hashes, "a_py");
