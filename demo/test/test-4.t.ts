@@ -173,6 +173,10 @@ const known_b_hashes_classic: Record<string, string> = {
 let totalDiff = 0;
 function tt(hashes: Record<string, string>,known_hashes: Record<string, string>, prefix: string) {
     for (const [filename, hash] of Object.entries(hashes)) {
+        if (!known_hashes[filename]) {
+            console.log("Missed", filename);
+            continue;
+        }
         let diff = 0 ;
         if (hash !== known_hashes[filename]) {
             diff = ImageHash.diffHex(hash, known_hashes[filename]);
@@ -206,6 +210,10 @@ console.log();
 let totalPyDiff = 0;
 function tt_py(hashes: Record<string, string>, known_hashes: Record<string, [string, number]>, prefix: string) {
     for (const [filename, hash] of Object.entries(hashes)) {
+        if (!known_hashes[filename]) {
+            console.log("Missed", filename);
+            continue;
+        }
         const diff = ImageHash.diffHex(hash, known_hashes[filename][0]);
         totalPyDiff += diff;
         t({
@@ -265,22 +273,22 @@ const known_d_py_hashes: Record<string, [string, number]> = {
 
 tt_py(a_hashes, known_a_py_hashes, "a_py");
 tt_py(d_hashes, known_d_py_hashes, "d_py");
-const totalPyDiffExpect = 218;
 const countPy = Object.keys(known_a_py_hashes).length + Object.keys(known_d_py_hashes).length;
 console.log("---");
 t({
     result: countPy,
     expect: 42,
+    name: "count of tests",
 });
 t({
     result: totalPyDiff,
-    expect: totalPyDiffExpect,
-    name: `total diff_py (${totalPyDiff})`
+    expect: 218,
+    name: `total diff_py (${totalPyDiff}) bits`,
 });
 t({
-    result: totalPyDiff / countPy,
-    expect: totalPyDiffExpect / countPy,
-    name: `total diff_py (${totalPyDiff / (countPy * bitsCount / 100)} %)`
+    result: totalPyDiff / (countPy * bitsCount / 100),
+    expect: 8.110119047619047,
+    name: `total diff_py (${totalPyDiff / (countPy * bitsCount / 100)} %)`,
 });
 console.log("---");
 console.log();
@@ -292,6 +300,10 @@ console.log("---");
 let totalPyBoxDiff = 0;
 function tt_py_box(hashes: Record<string, string>, known_hashes: Record<string, [string, number]>, prefix: string) {
     for (const [filename, hash] of Object.entries(hashes)) {
+        if (!known_hashes[filename]) {
+            console.log("Missed", filename);
+            continue;
+        }
         const diff = ImageHash.diffHex(hash, known_hashes[filename][0]);
         totalPyBoxDiff += diff;
         t({
@@ -352,21 +364,121 @@ const known_d_py_box_hashes: Record<string, [string, number]> = {
 tt_py_box(a_hashes, known_a_py_box_hashes, "a_py_box");
 tt_py_box(d_hashes, known_d_py_box_hashes, "d_py_box");
 
-const totalPyBoxDiffExpect = 17;
 const countPyBox = Object.keys(known_a_py_box_hashes).length + Object.keys(known_d_py_box_hashes).length;
 console.log("---");
 t({
     result: countPyBox,
     expect: 42,
+    name: "count of tests",
 });
 t({
     result: totalPyBoxDiff,
-    expect: totalPyBoxDiffExpect,
-    name: `total diff_py_box (${totalPyBoxDiff})`
+    expect: 17,
+    name: `total diff_py_box (${totalPyBoxDiff}) bits`,
 });
 t({
-    result: totalPyBoxDiff / countPyBox,
-    expect: totalPyBoxDiffExpect / countPyBox,
-    name: `total diff_py_box (${totalPyBoxDiff / (countPyBox * bitsCount / 100)} %)`
+    result: totalPyBoxDiff / (countPyBox * bitsCount / 100),
+    expect: 0.6324404761904762,
+    name: `total diff_py_box (${totalPyBoxDiff / (countPyBox * bitsCount / 100)} %)`,
 });
 
+{
+    //
+    // "imagehash" python library with `ANTIALIAS = Image.Resampling.BOX`
+    //
+    // AND fixed gray-scaling:
+    // 	# gray_image = image.convert('L') # how it was
+    //  # now:
+    // 	try:
+    // 		array = numpy.asarray(image)
+    // 		gray_array = 0.299 * array[:, :, 0] + 0.587 * array[:, :, 1] + 0.114 * array[:, :, 2]
+    // 		gray_array = gray_array.astype(numpy.uint8)
+    // 		gray_image = Image.fromarray(gray_array, mode="L")
+    // 	except IndexError:
+    // 		gray_image = image.convert("L")  # in case 2 channels image ("saint-stephen-150x200.png")
+    //
+    let totalPyBoxDiff = 0;
+    const tt_py_box = (hashes: Record<string, string>, known_hashes: Record<string, [string, number]>, prefix: string) => {
+        for (const [filename, hash] of Object.entries(hashes)) {
+            if (!known_hashes[filename]) {
+                console.log("Missed", filename);
+                continue;
+            }
+            const diff = ImageHash.diffHex(hash, known_hashes[filename][0]);
+            totalPyBoxDiff += diff;
+            t({
+                result: diff,
+                expect: known_hashes[filename][1],
+                name: `${prefix}: ` + filename + (diff ? ` (diff: ${diff})` : "")
+            });
+        }
+    }
+    const known_a_py_box_hashes: Record<string, [string, number]> = {
+        "alyson_hannigan_500x500.jpg":                        ["e7c7cbc2c4f4fae8", 0],
+        "black-bg-orthocanna-500x500.jpg":                    ["0c0c1c1c18181810", 0],
+        "black-bg-orthocanna-500x500-reverse.jpg":            ["f3f3e3e3e7e7e7ef", 0],
+        "bridge-500x320.jpg":                                 ["0001063c6087fffe", 0],
+        "grey-dark-bg-2-600x600.png":                         ["e00e0e0000000060", 0],
+        "grey-dark-bg-600x600.png":                           ["0000000070000ec0", 0],
+        "grey-light-bg-2-600x600.png":                        ["9f97f1fffffffefc", 0],
+        "grey-light-bg-600x600.png":                          ["ff8ff1f1ffffffef", 0],
+        "imagehash-1200x600.png":                             ["ffd7f58181c1ffff", 0],
+        "imagehash-1200x600-reverse.png":                     ["0028087e7e3a0000", 0],
+        "kittens-3264x2448.jpg":                              ["000000004286fefe", 0],
+        "kittens-minicrop-3258x2448.jpg":                     ["000000004286fefe", 0],
+        "peppers-600x600.png":                                ["9f170786e51f1e00", 0],
+        "peppers-minicrop-599x599.png":                       ["9f170786e51f1e00", 0],
+        "rabbit-320x192.png":                                 ["efcf8f8180427c04", 0],
+        "saint-stephen-150x200.png":                          ["3c000101fbffb919", 0], // 2 channels image in PIL
+        "screenshot-dark-purple-flower-1353x851.png":         ["fff7ff000c080d01", 0],
+        "screenshot-dark-purple-flower-1353x851-reverse.png": ["000800fff3f7f2fe", 0],
+        "screenshot-magenta-dress-1898x946.png":              ["ffefff04706000c2", 0],
+        "wallpaper-dark-purple-2560x1600.jpg":                ["003e1f0f0f0f0f00", 0],
+        "wallpaper-dark-purple-2560x1600-reverse.jpg":        ["ffc1e0f0f0f0f0ff", 0],
+    } as const;
+    const known_d_py_box_hashes: Record<string, [string, number]> = {
+        "alyson_hannigan_500x500.jpg":                        ["8f94b43434245452", 0],
+        "black-bg-orthocanna-500x500.jpg":                    ["1818181030303030", 0],
+        "black-bg-orthocanna-500x500-reverse.jpg":            ["0606060e0c0c0808", 1],
+        "bridge-500x320.jpg":                                 ["ffffeef0c07e96d2", 0],
+        "grey-dark-bg-2-600x600.png":                         ["8678180000000040", 0],
+        "grey-dark-bg-600x600.png":                           ["00300302c0604c00", 1],
+        "grey-light-bg-2-600x600.png":                        ["7c36660000000001", 0],
+        "grey-light-bg-600x600.png":                          ["0030030300c00c08", 0],
+        "imagehash-1200x600.png":                             ["002643332b15550c", 0],
+        "imagehash-1200x600-reverse.png":                     ["00d8bcc4d4eaaa60", 1],
+        "kittens-3264x2448.jpg":                              ["f020acce864cae8a", 0],
+        "kittens-minicrop-3258x2448.jpg":                     ["f020acce864cae8a", 0],
+        "peppers-600x600.png":                                ["ba7ece1cddf4fcb9", 0],
+        "peppers-minicrop-599x599.png":                       ["ba7ece1cddf4fcb9", 0],
+        "rabbit-320x192.png":                                 ["0c1c383b3b8c88d5", 0],
+        "saint-stephen-150x200.png":                          ["6171515363e373f1", 0],
+        "screenshot-dark-purple-flower-1353x851.png":         ["68d5ddccd8dc29a5", 1],
+        "screenshot-dark-purple-flower-1353x851-reverse.png": ["102a22332723d65a", 0],
+        "screenshot-magenta-dress-1898x946.png":              ["d09c9899c3c22a02", 0],
+        "wallpaper-dark-purple-2560x1600.jpg":                ["c4e4f05879797e3e", 0],
+        "wallpaper-dark-purple-2560x1600-reverse.jpg":        ["3b1b0f27860601c1", 0],
+    } as const;
+
+
+    tt_py_box(a_hashes, known_a_py_box_hashes, "a_py_box");
+    tt_py_box(d_hashes, known_d_py_box_hashes, "d_py_box");
+
+    const countPyBox = Object.keys(known_a_py_box_hashes).length + Object.keys(known_d_py_box_hashes).length;
+    console.log("---");
+    t({
+        result: countPyBox,
+        expect: 42,
+        name: "count of tests",
+    });
+    t({
+        result: totalPyBoxDiff,
+        expect: 4,
+        name: `total diff_py_box (${totalPyBoxDiff}) bits`,
+    });
+    t({
+        result: totalPyBoxDiff / (countPyBox * bitsCount / 100),
+        expect: 0.1488095238095238,
+        name: `total diff_py_box (${totalPyBoxDiff / (countPyBox * bitsCount / 100)} %)`,
+    });
+}
