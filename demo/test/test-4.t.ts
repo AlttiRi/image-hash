@@ -389,13 +389,10 @@ t({
     // AND fixed gray-scaling:
     // 	# gray_image = image.convert('L') # how it was
     //  # now:
-    // 	try:
-    // 		array = numpy.asarray(image)
-    // 		gray_array = 0.299 * array[:, :, 0] + 0.587 * array[:, :, 1] + 0.114 * array[:, :, 2]
-    // 		gray_array = gray_array.astype(numpy.uint8)
-    // 		gray_image = Image.fromarray(gray_array, mode="L")
-    // 	except IndexError:
-    // 		gray_image = image.convert("L")  # in case 2 channels image ("saint-stephen-150x200.png")
+    // 	array = numpy.asarray(image.convert("RGB"))
+    // 	gray_array = 0.299 * array[:, :, 0] + 0.587 * array[:, :, 1] + 0.114 * array[:, :, 2]
+    // 	gray_array = gray_array.astype(numpy.uint8)
+    // 	gray_image = Image.fromarray(gray_array, mode="L")
     //
     let totalPyBoxDiff = 0;
     const tt_py_box = (hashes: Record<string, string>, known_hashes: Record<string, [string, number]>, prefix: string) => {
