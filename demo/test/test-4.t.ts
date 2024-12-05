@@ -458,8 +458,8 @@ t({
     } as const;
 
 
-    tt_py_box(a_hashes, known_a_py_box_hashes, "a_py_box");
-    tt_py_box(d_hashes, known_d_py_box_hashes, "d_py_box");
+    tt_py_box(a_hashes, known_a_py_box_hashes, "a_py_box_gray");
+    tt_py_box(d_hashes, known_d_py_box_hashes, "d_py_box_gray");
 
     const countPyBox = Object.keys(known_a_py_box_hashes).length + Object.keys(known_d_py_box_hashes).length;
     console.log("---");
@@ -471,11 +471,11 @@ t({
     t({
         result: totalPyBoxDiff,
         expect: 4,
-        name: `total diff_py_box (${totalPyBoxDiff}) bits`,
+        name: `total diff_py_box_gray (${totalPyBoxDiff}) bits`,
     });
     t({
         result: totalPyBoxDiff / (countPyBox * bitsCount / 100),
         expect: 0.1488095238095238,
-        name: `total diff_py_box (${totalPyBoxDiff / (countPyBox * bitsCount / 100)} %)`,
+        name: `total diff_py_box_gray (${totalPyBoxDiff / (countPyBox * bitsCount / 100)} %)`,
     });
 }
