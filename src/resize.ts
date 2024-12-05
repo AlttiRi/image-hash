@@ -28,7 +28,7 @@ export function scaleDownLinear(orig: GrayImageData, opts: ScaleOpts = {}): Gray
     return new GrayImageData(data, width, height);
 }
 
-
+// todo: use (value + 0.5) << 0 — "Faster Math.round for positive numbers"
 export function scaleDownLinearAverage(orig: GrayImageData, newWidth: number, newHeight: number, round: Round = "round"): Uint8Array {
 
     const {data, width, height} = orig;
