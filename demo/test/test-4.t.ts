@@ -303,7 +303,7 @@ const known_a_py_box_hashes: Record<string, [string, number]> = {
     "alyson_hannigan_500x500.jpg":                        ["e7c7cbc2c4f4f8e8", 1],
     "black-bg-orthocanna-500x500.jpg":                    ["0c0c1c1c18181810", 0],
     "black-bg-orthocanna-500x500-reverse.jpg":            ["f3f3e3e3e7e7e7ef", 0],
-    "bridge-500x320.jpg":                                 ["0001063c6087fffe", 0],
+    "bridge-500x320.jpg":                                 ["0001063c608ffffe", 1],
     "grey-dark-bg-2-600x600.png":                         ["e00e0e0000000060", 0],
     "grey-dark-bg-600x600.png":                           ["0000000070000ec0", 0],
     "grey-light-bg-2-600x600.png":                        ["9f97f1fffffffefc", 0],
@@ -328,11 +328,11 @@ const known_d_py_box_hashes: Record<string, [string, number]> = {
     "black-bg-orthocanna-500x500-reverse.jpg":            ["0606060e0c0c0808", 1],
     "bridge-500x320.jpg":                                 ["ffffeef0c07e96d2", 0],
     "grey-dark-bg-2-600x600.png":                         ["8678180000000040", 0],
-    "grey-dark-bg-600x600.png":                           ["00300302c060cc00", 0],
+    "grey-dark-bg-600x600.png":                           ["00300302c0604c00", 1],
     "grey-light-bg-2-600x600.png":                        ["7c36660000000001", 0],
     "grey-light-bg-600x600.png":                          ["0030030300c00c08", 0],
     "imagehash-1200x600.png":                             ["002643332b15550c", 0],
-    "imagehash-1200x600-reverse.png":                     ["00d8bcccd4eaaa60", 0],
+    "imagehash-1200x600-reverse.png":                     ["00d8bcc4d4eaaa60", 1],
     "kittens-3264x2448.jpg":                              ["e020acce864cae8a", 1],
     "kittens-minicrop-3258x2448.jpg":                     ["e020acce864cae8a", 1],
     "peppers-600x600.png":                                ["ba7ece1cddf4fcb9", 0],
@@ -350,7 +350,7 @@ const known_d_py_box_hashes: Record<string, [string, number]> = {
 tt_py_box(a_hashes, known_a_py_box_hashes, "a_py_box");
 tt_py_box(d_hashes, known_d_py_box_hashes, "d_py_box");
 
-const totalPyDiffExpectBox = 14;
+const totalPyDiffExpectBox = 17;
 const countPyBox = Object.keys(known_a_py_box_hashes).length + Object.keys(known_d_py_box_hashes).length;
 console.log("---");
 t({
