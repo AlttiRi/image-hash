@@ -18,7 +18,8 @@ function isString(value: unknown): value is string {
  *
  * Do not change the get functions' signature.
  */
-export function getCalculateBT601(dw: DataView) {
+export const getCalculateBT601 = getCalculateBT601_Original;
+export function getCalculateBT601_Original(dw: DataView) {
     return function calculateBT601(i: number) {
         const uint = dw.getUint32(i);
         return ((uint >> 24) & 0xFF) * 0.299
@@ -26,13 +27,15 @@ export function getCalculateBT601(dw: DataView) {
             +  ((uint >>  8) & 0xFF) * 0.114;
     };
 }
-export function getCalculateBT601Rounded(dw: DataView) {
+// todo: use it
+/** Faster version of BT601 with very similar results. */
+export function getCalculateBT601_Optimized(dw: DataView) {
     return function calculateBT601(i: number) {
         const uint = dw.getUint32(i);
-        return ((uint >> 24) & 0xFF) * 0.299
-            +  ((uint >> 16) & 0xFF) * 0.587
-            +  ((uint >>  8) & 0xFF) * 0.114
-            + 0.5 << 0; // (value + 0.5) << 0 — "Faster Math.round for positive numbers"
+        return (((uint >> 24) & 0xFF) * 19595
+            +   ((uint >> 16) & 0xFF) * 38470
+            +   ((uint >>  8) & 0xFF) *  7471
+            + 0x8000) >> 16; // "0x8000" === "1 << 15" === 32768
     };
 }
 export function getCalculateAverage(dw: DataView) {
