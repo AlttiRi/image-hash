@@ -29,6 +29,8 @@ for (const filename of Object.values(Files)) {
     // console.log(`"${filename}":${' '.repeat(36)} "${m_hashes_classic[filename]}",`);
 }
 
+const bitsCount = 64;
+
 const known_a_hashes: Record<string, string> = {
     "alyson_hannigan_500x500.jpg":                        "e7c7cbc2c4f4fae8",
     "black-bg-orthocanna-500x500.jpg":                    "0c0c1c1c18181810",
@@ -273,12 +275,12 @@ t({
 t({
     result: totalPyDiff,
     expect: totalPyDiffExpect,
-    name: `total diff_py (${totalPyDiffExpect})`
+    name: `total diff_py (${totalPyDiff})`
 });
 t({
     result: totalPyDiff / countPy,
     expect: totalPyDiffExpect / countPy,
-    name: `total diff_py avg (${totalPyDiffExpect / countPy})`
+    name: `total diff_py (${totalPyDiff / (countPy * bitsCount / 100)} %)`
 });
 console.log("---");
 console.log();
@@ -287,11 +289,11 @@ console.log("---");
 //
 // "imagehash" python library with `ANTIALIAS = Image.Resampling.BOX`
 //
-let totalPyDiffBox = 0;
+let totalPyBoxDiff = 0;
 function tt_py_box(hashes: Record<string, string>, known_hashes: Record<string, [string, number]>, prefix: string) {
     for (const [filename, hash] of Object.entries(hashes)) {
         const diff = ImageHash.diffHex(hash, known_hashes[filename][0]);
-        totalPyDiffBox += diff;
+        totalPyBoxDiff += diff;
         t({
             result: diff,
             expect: known_hashes[filename][1],
@@ -350,7 +352,7 @@ const known_d_py_box_hashes: Record<string, [string, number]> = {
 tt_py_box(a_hashes, known_a_py_box_hashes, "a_py_box");
 tt_py_box(d_hashes, known_d_py_box_hashes, "d_py_box");
 
-const totalPyDiffExpectBox = 17;
+const totalPyBoxDiffExpect = 17;
 const countPyBox = Object.keys(known_a_py_box_hashes).length + Object.keys(known_d_py_box_hashes).length;
 console.log("---");
 t({
@@ -358,13 +360,13 @@ t({
     expect: 42,
 });
 t({
-    result: totalPyDiffBox,
-    expect: totalPyDiffExpectBox,
-    name: `total diff_py_box (${totalPyDiffExpectBox})`
+    result: totalPyBoxDiff,
+    expect: totalPyBoxDiffExpect,
+    name: `total diff_py_box (${totalPyBoxDiff})`
 });
 t({
-    result: totalPyDiffBox / countPyBox,
-    expect: totalPyDiffExpectBox / countPyBox,
-    name: `total diff_py_box avg (${totalPyDiffExpectBox / countPyBox})`
+    result: totalPyBoxDiff / countPyBox,
+    expect: totalPyBoxDiffExpect / countPyBox,
+    name: `total diff_py_box (${totalPyBoxDiff / (countPyBox * bitsCount / 100)} %)`
 });
 
