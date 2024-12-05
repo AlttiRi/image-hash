@@ -26,6 +26,15 @@ export function getCalculateBT601(dw: DataView) {
             +  ((uint >>  8) & 0xFF) * 0.114;
     };
 }
+export function getCalculateBT601Rounded(dw: DataView) {
+    return function calculateBT601(i: number) {
+        const uint = dw.getUint32(i);
+        return ((uint >> 24) & 0xFF) * 0.299
+            +  ((uint >> 16) & 0xFF) * 0.587
+            +  ((uint >>  8) & 0xFF) * 0.114
+            + 0.5 << 0; // (value + 0.5) << 0 — "Faster Math.round for positive numbers"
+    };
+}
 export function getCalculateAverage(dw: DataView) {
     return function calculateAverage(i: number) {
         const uint = dw.getUint32(i);
