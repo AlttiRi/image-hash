@@ -149,7 +149,7 @@ export function scaleDownLinearAverageX(source: GrayImageData, newWidth: number,
     const dest = new Uint8Array(newWidth * newHeight);
     const xScale = width  / newWidth;
     const yScale = height / newHeight;
-    let offsetSource = 0;
+    let offsetDest = 0;
     for (let newY = 0; newY < newHeight; newY++) {
         for (let newX = 0; newX < newWidth; newX++) {
             const fromY = yScale * newY + 0.5 << 0;
@@ -158,16 +158,16 @@ export function scaleDownLinearAverageX(source: GrayImageData, newWidth: number,
             const toX   = xScale * (newX + 1) + 0.5 << 0;
             const count = (toY - fromY) * (toX - fromX);
             let value = 0;
-            let offsetDest = fromY * width;
+            let offsetSource = fromY * width;
             for (let y = fromY; y < toY; y++) {
                 for (let x = fromX; x < toX; x++) {
-                    value += data[offsetDest + x];
+                    value += data[offsetSource + x];
                 }
-                offsetDest += width;
+                offsetSource += width;
             }
-            dest[newY * newWidth + newX] = (value / count) + 0.5 << 0;
+            dest[offsetDest + newX] = (value / count) + 0.5 << 0;
         }
-        offsetSource += newWidth;
+        offsetDest += newWidth;
     }
     return dest;
 }
