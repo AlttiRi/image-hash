@@ -95,10 +95,12 @@ function getInitPixelMedian(orig: GrayImageData, dest: Uint8Array, newWidth: num
         }
 
         let i = 0;
+        let offset = fromY * width;
         for (let y = fromY; y < toY; y++) {
             for (let x = fromX; x < toX; x++) {
-                medianArray[i++] = data[y * width + x];
+                medianArray[i++] = data[offset + x];
             }
+            offset += width;
         }
 
         const medianValue = calculateMedian(medianArray);
