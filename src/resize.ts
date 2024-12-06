@@ -165,7 +165,7 @@ export function scaleDownLinearAverageX(source: GrayImageData, newWidth: number,
                 }
                 offsetDest += width;
             }
-            dest[offsetDest + newX] = (value / count) + 0.5 << 0;
+            dest[newY * newWidth + newX] = (value / count) + 0.5 << 0;
         }
         offsetSource += newWidth;
     }
