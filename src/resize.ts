@@ -28,6 +28,17 @@ export function scaleDownLinear(orig: GrayImageData, opts: ScaleOpts = {}): Gray
     return new GrayImageData(data, width, height);
 }
 
+
+export function scaleDownLinearAverage(orig: GrayImageData, newWidth: number, newHeight: number, round: Round = "round"): Uint8Array {
+    const dest = new Uint8Array(newWidth * newHeight);
+    const initPixel = getInitPixel(orig, dest, newWidth, newHeight, round);
+    for (let newY = 0; newY < newHeight; newY++) {
+        for (let newX = 0; newX < newWidth; newX++) {
+            initPixel(newX, newY);
+        }
+    }
+    return dest;
+}
 // todo: use (value + 0.5) << 0 — "Faster Math.round for positive numbers"
 function getInitPixel(orig: GrayImageData, dest: Uint8Array, newWidth: number, newHeight: number, round: Round = "round") {
     const {data, width, height} = orig;
@@ -53,9 +64,10 @@ function getInitPixel(orig: GrayImageData, dest: Uint8Array, newWidth: number, n
         dest[newY * newWidth + newX] = Math.round(value / count); // do not return a value, init inside, it's faster
     }
 }
-export function scaleDownLinearAverage(orig: GrayImageData, newWidth: number, newHeight: number, round: Round = "round"): Uint8Array {
+
+export function scaleDownLinearMedian(orig: GrayImageData, newWidth: number, newHeight: number, round: Round = "round"): Uint8Array {
     const dest = new Uint8Array(newWidth * newHeight);
-    const initPixel = getInitPixel(orig, dest, newWidth, newHeight, round);
+    const initPixel = getInitPixelMedian(orig, dest, newWidth, newHeight, round);
     for (let newY = 0; newY < newHeight; newY++) {
         for (let newX = 0; newX < newWidth; newX++) {
             initPixel(newX, newY);
@@ -63,43 +75,35 @@ export function scaleDownLinearAverage(orig: GrayImageData, newWidth: number, ne
     }
     return dest;
 }
-
-export function scaleDownLinearMedian(orig: GrayImageData, newWidth: number, newHeight: number, round: Round = "round"): Uint8Array {
-
+function getInitPixelMedian(orig: GrayImageData, dest: Uint8Array, newWidth: number, newHeight: number, round: Round = "round") {
     const {data, width, height} = orig;
-    const dest = new Uint8Array(newWidth * newHeight);
     const xScale = width  / newWidth;
     const yScale = height / newHeight;
     const near: (n: number) => number = Math[round];
-
     const cache = new Map();
-    for (let newY = 0; newY < newHeight; newY++) {
-        for (let newX = 0; newX < newWidth; newX++) {
-            const fromY = near(yScale * newY);
-            const fromX = near(xScale * newX);
-            const toY   = near(yScale * (newY + 1));
-            const toX   = near(xScale * (newX + 1));
-            const count = (toY - fromY) * (toX - fromX);
+    return function foo(newX: number, newY: number) {
+        const fromY = near(yScale * newY);
+        const fromX = near(xScale * newX);
+        const toY   = near(yScale * (newY + 1));
+        const toX   = near(xScale * (newX + 1));
+        const count = (toY - fromY) * (toX - fromX);
 
-            const value = cache.get(count);
-            const medianArray = value || new Uint8Array(count);
-            if (!value) {
-                cache.set(count, medianArray);
-            }
-
-            let i = 0;
-            for (let y = fromY; y < toY; y++) {
-                for (let x = fromX; x < toX; x++) {
-                    medianArray[i++] = data[y * width + x];
-                }
-            }
-
-            const medianValue = calculateMedian(medianArray);
-            dest[newY * newWidth + newX] = Math.round(medianValue);
+        const value = cache.get(count);
+        const medianArray = value || new Uint8Array(count);
+        if (!value) {
+            cache.set(count, medianArray);
         }
-    }
 
-    return dest;
+        let i = 0;
+        for (let y = fromY; y < toY; y++) {
+            for (let x = fromX; x < toX; x++) {
+                medianArray[i++] = data[y * width + x];
+            }
+        }
+
+        const medianValue = calculateMedian(medianArray);
+        dest[newY * newWidth + newX] = Math.round(medianValue);
+    }
 }
 
 
