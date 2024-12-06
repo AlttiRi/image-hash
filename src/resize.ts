@@ -29,33 +29,38 @@ export function scaleDownLinear(orig: GrayImageData, opts: ScaleOpts = {}): Gray
 }
 
 // todo: use (value + 0.5) << 0 — "Faster Math.round for positive numbers"
-export function scaleDownLinearAverage(orig: GrayImageData, newWidth: number, newHeight: number, round: Round = "round"): Uint8Array {
-
+function getInitPixel(orig: GrayImageData, dest: Uint8Array, newWidth: number, newHeight: number, round: Round = "round") {
     const {data, width, height} = orig;
-    const dest = new Uint8Array(newWidth * newHeight);
     const xScale = width  / newWidth;
     const yScale = height / newHeight;
     const near: (n: number) => number = Math[round];
+    return function initPixel(newX: number, newY: number) {
+        const fromY = near(yScale * newY);
+        const fromX = near(xScale * newX);
+        const toY   = near(yScale * (newY + 1));
+        const toX   = near(xScale * (newX + 1));
+        const count = (toY - fromY) * (toX - fromX);
 
+        let value = 0;
+        let offset = fromY * width; // notable optimisation
+        for (let y = fromY; y < toY; y++) {
+            for (let x = fromX; x < toX; x++) {
+                value += data[offset + x];
+            }
+            offset += width;
+        }
+        // todo?: pass `newY * newWidth + newX` as initPixel param (`index: number`) — it's a bit faster
+        dest[newY * newWidth + newX] = Math.round(value / count); // do not return a value, init inside, it's faster
+    }
+}
+export function scaleDownLinearAverage(orig: GrayImageData, newWidth: number, newHeight: number, round: Round = "round"): Uint8Array {
+    const dest = new Uint8Array(newWidth * newHeight);
+    const initPixel = getInitPixel(orig, dest, newWidth, newHeight, round);
     for (let newY = 0; newY < newHeight; newY++) {
         for (let newX = 0; newX < newWidth; newX++) {
-            const fromY = near(yScale * newY);
-            const fromX = near(xScale * newX);
-            const toY   = near(yScale * (newY + 1));
-            const toX   = near(xScale * (newX + 1));
-            const count = (toY - fromY) * (toX - fromX);
-
-            let value = 0;
-            for (let y = fromY; y < toY; y++) {
-                for (let x = fromX; x < toX; x++) {
-                    value += data[y * width + x];
-                }
-            }
-
-            dest[newY * newWidth + newX] = Math.round(value / count);
+            initPixel(newX, newY);
         }
     }
-
     return dest;
 }
 
