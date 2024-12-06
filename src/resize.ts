@@ -143,3 +143,31 @@ export function scaleUpNearestNeighbor<T extends MonoImageData>(orig: T, newWidt
     }
     return orig.newInstance<T>(dest, newWidth, newHeight);
 }
+
+export function scaleDownLinearAverageX(source: GrayImageData, newWidth: number, newHeight: number, round: Round = "round"): Uint8Array {
+    const {data, width, height} = source;
+    const dest = new Uint8Array(newWidth * newHeight);
+    const xScale = width  / newWidth;
+    const yScale = height / newHeight;
+    let offsetSource = 0;
+    for (let newY = 0; newY < newHeight; newY++) {
+        for (let newX = 0; newX < newWidth; newX++) {
+            const fromY = yScale * newY + 0.5 << 0;
+            const fromX = xScale * newX + 0.5 << 0;
+            const toY   = yScale * (newY + 1) + 0.5 << 0;
+            const toX   = xScale * (newX + 1) + 0.5 << 0;
+            const count = (toY - fromY) * (toX - fromX);
+            let value = 0;
+            let offsetDest = fromY * width;
+            for (let y = fromY; y < toY; y++) {
+                for (let x = fromX; x < toX; x++) {
+                    value += data[offsetDest + x];
+                }
+                offsetDest += width;
+            }
+            dest[offsetDest + newX] = (value / count) + 0.5 << 0;
+        }
+        offsetSource += newWidth;
+    }
+    return dest;
+}
