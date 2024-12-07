@@ -19,93 +19,111 @@ export function scaleDownLinear(orig: GrayImageData, opts: ScaleOpts = {}): Gray
         }
         throw new Error("Up-scaling is not supported");
     }
-    let data: Uint8Array;
+    const dest = new GrayImageData(new Uint8Array(width * height), width, height);
     if (median) {
-        data = scaleDownLinearMedian(orig, width, height, round);
+        scaleDownLinearMedianEx(orig, dest);
     } else {
-        data = scaleDownLinearAverage(orig, width, height, round);
-    }
-    return new GrayImageData(data, width, height);
-}
-
-
-export function scaleDownLinearAverage(orig: GrayImageData, newWidth: number, newHeight: number, round: Round = "round"): Uint8Array {
-    const dest = new Uint8Array(newWidth * newHeight);
-    const initPixel = getInitPixel(orig, dest, newWidth, newHeight, round);
-    for (let newY = 0; newY < newHeight; newY++) {
-        for (let newX = 0; newX < newWidth; newX++) {
-            initPixel(newX, newY);
-        }
+        scaleDownLinearAverageEx(orig, dest);
     }
     return dest;
 }
-// todo: use (value + 0.5) << 0 — "Faster Math.round for positive numbers"
-function getInitPixel(orig: GrayImageData, dest: Uint8Array, newWidth: number, newHeight: number, round: Round = "round") {
-    const {data, width, height} = orig;
+
+
+type SingleChannelImageData = { data: Uint8Array; width: number; height: number; };
+
+function scaleDownLinearAverageEx(from: SingleChannelImageData, to: SingleChannelImageData, round: Round = "round") {
+    if (round === "round") {
+        return scaleDownLinearAverageRound(from, to);
+    }
+    const near: (n: number) => number = Math[round];
+    const {data: orig, width, height} = from;
+    const {data: dest, width: newWidth, height: newHeight} = to;
     const xScale = width  / newWidth;
     const yScale = height / newHeight;
-    const near: (n: number) => number = Math[round];
-    return function initPixel(newX: number, newY: number) {
-        const fromY = near(yScale * newY);
-        const fromX = near(xScale * newX);
-        const toY   = near(yScale * (newY + 1));
-        const toX   = near(xScale * (newX + 1));
-        const count = (toY - fromY) * (toX - fromX);
-
-        let value = 0;
-        let offset = fromY * width; // notable optimisation
-        for (let y = fromY; y < toY; y++) {
-            for (let x = fromX; x < toX; x++) {
-                value += data[offset + x];
-            }
-            offset += width;
-        }
-        // todo?: pass `newY * newWidth + newX` as initPixel param (`index: number`) — it's a bit faster
-        dest[newY * newWidth + newX] = Math.round(value / count); // do not return a value, init inside, it's faster
-    }
-}
-
-export function scaleDownLinearMedian(orig: GrayImageData, newWidth: number, newHeight: number, round: Round = "round"): Uint8Array {
-    const dest = new Uint8Array(newWidth * newHeight);
-    const initPixel = getInitPixelMedian(orig, dest, newWidth, newHeight, round);
     for (let newY = 0; newY < newHeight; newY++) {
         for (let newX = 0; newX < newWidth; newX++) {
-            initPixel(newX, newY);
+            const fromY = near(yScale * newY);
+            const fromX = near(xScale * newX);
+            const toY   = near(yScale * (newY + 1));
+            const toX   = near(xScale * (newX + 1));
+            const count = (toY - fromY) * (toX - fromX);
+            let value = 0;
+            for (let y = fromY; y < toY; y++) {
+                for (let x = fromX; x < toX; x++) {
+                    value += orig[y * width + x];
+                }
+            }
+            dest[newY * newWidth + newX] = value / count + 0.5 << 0;
         }
     }
-    return dest;
 }
-function getInitPixelMedian(orig: GrayImageData, dest: Uint8Array, newWidth: number, newHeight: number, round: Round = "round") {
-    const {data, width, height} = orig;
+// todo: remove multiplications
+function scaleDownLinearAverageRound(from: SingleChannelImageData, to: SingleChannelImageData) {
+    const {data: orig, width, height} = from;
+    const {data: dest, width: newWidth, height: newHeight} = to;
+    const xScale = width  / newWidth;
+    const yScale = height / newHeight;
+    for (let newY = 0; newY < newHeight; newY++) {
+        for (let newX = 0; newX < newWidth; newX++) {
+            const fromY = yScale * newY       + 0.5 << 0;
+            const fromX = xScale * newX       + 0.5 << 0;
+            const toY   = yScale * (newY + 1) + 0.5 << 0;
+            const toX   = xScale * (newX + 1) + 0.5 << 0;
+            const count = (toY - fromY) * (toX - fromX);
+            let value = 0;
+            for (let y = fromY; y < toY; y++) {
+                for (let x = fromX; x < toX; x++) {
+                    value += orig[y * width + x];
+                }
+            }
+            dest[newY * newWidth + newX] = value / count + 0.5 << 0;
+        }
+    }
+}
+
+function scaleDownLinearMedianEx(from: SingleChannelImageData, to: SingleChannelImageData, round: Round = "round") {
+    const {data: orig, width, height} = from;
+    const {data: dest, width: newWidth, height: newHeight} = to;
     const xScale = width  / newWidth;
     const yScale = height / newHeight;
     const near: (n: number) => number = Math[round];
     const cache = new Map();
-    return function foo(newX: number, newY: number) {
-        const fromY = near(yScale * newY);
-        const fromX = near(xScale * newX);
-        const toY   = near(yScale * (newY + 1));
-        const toX   = near(xScale * (newX + 1));
-        const count = (toY - fromY) * (toX - fromX);
-
-        const value = cache.get(count);
-        const medianArray = value || new Uint8Array(count);
-        if (!value) {
-            cache.set(count, medianArray);
-        }
-
-        let i = 0;
-        let offset = fromY * width;
-        for (let y = fromY; y < toY; y++) {
-            for (let x = fromX; x < toX; x++) {
-                medianArray[i++] = data[offset + x];
+    for (let newY = 0; newY < newHeight; newY++) {
+        for (let newX = 0; newX < newWidth; newX++) {
+            const fromY = near(yScale * newY);
+            const fromX = near(xScale * newX);
+            const toY   = near(yScale * (newY + 1));
+            const toX   = near(xScale * (newX + 1));
+            const count = (toY - fromY) * (toX - fromX);
+            const value = cache.get(count);
+            const medianArray = value || new Uint8Array(count);
+            if (!value) {
+                cache.set(count, medianArray);
             }
-            offset += width;
+            let i = 0;
+            let offset = fromY * width;
+            for (let y = fromY; y < toY; y++) {
+                for (let x = fromX; x < toX; x++) {
+                    medianArray[i++] = orig[offset + x];
+                }
+                offset += width;
+            }
+            const medianValue = calculateMedian(medianArray);
+            dest[newY * newWidth + newX] = Math.round(medianValue);
         }
-
-        const medianValue = calculateMedian(medianArray);
-        dest[newY * newWidth + newX] = Math.round(medianValue);
     }
+}
+
+
+export function scaleDownLinearAverage(orig: GrayImageData, width: number, height: number, round: Round = "round"): Uint8Array {
+    const data = new Uint8Array(width * height);
+    scaleDownLinearAverageEx(orig, {data, width, height}, round);
+    return data;
+}
+export function scaleDownLinearMedian(orig: GrayImageData, width: number, height: number, round: Round = "round"): Uint8Array {
+    const data = new Uint8Array(width * height);
+    scaleDownLinearMedianEx(orig, {data, width, height}, round);
+    return data;
 }
 
 
@@ -144,27 +162,3 @@ export function scaleUpNearestNeighbor<T extends MonoImageData>(orig: T, newWidt
     return orig.newInstance<T>(dest, newWidth, newHeight);
 }
 
-// todo: remove multiplications
-export function scaleDownLinearAverageX(source: GrayImageData, newWidth: number, newHeight: number, round: Round = "round"): Uint8Array {
-    const {data, width, height} = source;
-    const dest = new Uint8Array(newWidth * newHeight);
-    const xScale = width  / newWidth;
-    const yScale = height / newHeight;
-    for (let newY = 0; newY < newHeight; newY++) {
-        for (let newX = 0; newX < newWidth; newX++) {
-            const fromY = yScale * newY + 0.5 << 0;
-            const toY   = yScale * (newY + 1) + 0.5 << 0;
-            const fromX = xScale * newX + 0.5 << 0;
-            const toX   = xScale * (newX + 1) + 0.5 << 0;
-            const count = (toY - fromY) * (toX - fromX);
-            let value = 0;
-            for (let y = fromY; y < toY; y++) {
-                for (let x = fromX; x < toX; x++) {
-                    value += data[y * width + x];
-                }
-            }
-            dest[newY * newWidth + newX] = (value / count) + 0.5 << 0;
-        }
-    }
-    return dest;
-}
