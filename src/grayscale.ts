@@ -82,7 +82,8 @@ export function getGrayData(imageData: ImageDataLike, getFunc: GrayScalingOpt = 
     const {data, width, height, data: {length}} = imageData;
     const array = new Uint8Array(length / 4);
 
-    const dw = new DataView(data.buffer); // todo?: use Uint32Array // upd: seems there is no perf diff
+    // todo: use Uint32Array // (uint & 0xFF) * 0.299 + ((uint >> 8) & 0xFF) * 0.587 + ((uint >>  16) & 0xFF) * 0.114;
+    const dw = new DataView(data.buffer);
     const calculateLuminance = getFunc(dw);
 
     // It runs 25_000_000 iterations for 5000x5000 image,
