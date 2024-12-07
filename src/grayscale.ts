@@ -99,9 +99,8 @@ export function getGrayData(imageData: ImageDataLike, getFunc: GrayScalingOpt = 
 //     const l32 = u32.length;
 //     for (let i = 0; i < l32; i += 1) {
 //         const uint = u32[i];
-//         array[i] = (
-//                  (uint        & 0xFF) * 19595
-//             +   ((uint >>  8) & 0xFF) * 38470
-//             +   ((uint >> 16) & 0xFF) *  7471
-//             + 0x8000) >> 16;
+//         array[i] = ((uint        & 0xFF) * 19595
+//                +   ((uint >>  8) & 0xFF) * 38470
+//                +   ((uint >> 16) & 0xFF) *  7471
+//                + 0x8000) >> 16;
 //     }
