@@ -41,10 +41,10 @@ function scaleDownLinearAverageEx(from: SingleChannelImageData, to: SingleChanne
     const xScale = width  / newWidth;
     const yScale = height / newHeight;
     for (let newY = 0; newY < newHeight; newY++) {
+        const toY   = near(yScale * (newY + 1));
+        const fromY = near(yScale * newY);
         for (let newX = 0; newX < newWidth; newX++) {
-            const fromY = near(yScale * newY);
             const fromX = near(xScale * newX);
-            const toY   = near(yScale * (newY + 1));
             const toX   = near(xScale * (newX + 1));
             const count = (toY - fromY) * (toX - fromX);
             let value = 0;
@@ -64,10 +64,10 @@ function scaleDownLinearAverageRound(from: SingleChannelImageData, to: SingleCha
     const xScale = width  / newWidth;
     const yScale = height / newHeight;
     for (let newY = 0; newY < newHeight; newY++) {
+        const fromY = yScale * newY       + 0.5 << 0;
+        const toY   = yScale * (newY + 1) + 0.5 << 0;
         for (let newX = 0; newX < newWidth; newX++) {
-            const fromY = yScale * newY       + 0.5 << 0;
             const fromX = xScale * newX       + 0.5 << 0;
-            const toY   = yScale * (newY + 1) + 0.5 << 0;
             const toX   = xScale * (newX + 1) + 0.5 << 0;
             const count = (toY - fromY) * (toX - fromX);
             let value = 0;
@@ -89,10 +89,10 @@ function scaleDownLinearMedianEx(from: SingleChannelImageData, to: SingleChannel
     const near: (n: number) => number = Math[round];
     const cache = new Map();
     for (let newY = 0; newY < newHeight; newY++) {
+        const fromY = near(yScale * newY);
+        const toY   = near(yScale * (newY + 1));
         for (let newX = 0; newX < newWidth; newX++) {
-            const fromY = near(yScale * newY);
             const fromX = near(xScale * newX);
-            const toY   = near(yScale * (newY + 1));
             const toX   = near(xScale * (newX + 1));
             const count = (toY - fromY) * (toX - fromX);
             const value = cache.get(count);
