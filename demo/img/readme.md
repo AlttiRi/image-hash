@@ -25,3 +25,15 @@ https://github.com/image-rs/image/issues/598#issuecomment-271402798
 saint-stephen-150x200.png
 https://github.com/commonsmachinery/blockhash-js/issues/7
 
+
+
+
+extra/chess-10x10.png
+https://legacy.imagemagick.org/Usage/filter/#box
+Note: on the site the "Box-2" image is wrong.
+```bash
+convert extra/chess-10x10.png -filter box -resize 9x9 9.png
+convert extra/chess-10x10.png -filter box -resize 8x8 8.png
+convert extra/chess-10x10.png -filter box -resize 7x7 7.png
+convert extra/chess-10x10.png -filter box -resize 6x6 6.png
+```
