@@ -21,9 +21,9 @@ export function scaleDownLinear(orig: GrayImageData, opts: ScaleOpts = {}): Gray
     }
     const dest = new GrayImageData(new Uint8Array(width * height), width, height);
     if (median) {
-        scaleDownLinearMedianEx(orig, dest);
+        scaleDownLinearMedianEx(orig, dest, round);
     } else {
-        scaleDownLinearAverageEx(orig, dest);
+        scaleDownLinearAverageEx(orig, dest, round);
     }
     return dest;
 }
@@ -57,7 +57,6 @@ function scaleDownLinearAverageEx(from: SingleChannelImageData, to: SingleChanne
         }
     }
 }
-// todo: remove multiplications
 function scaleDownLinearAverageRound(from: SingleChannelImageData, to: SingleChannelImageData) {
     const {data: orig, width, height} = from;
     const {data: dest, width: newWidth, height: newHeight} = to;
