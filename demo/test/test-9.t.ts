@@ -7,7 +7,7 @@ import {ImageHash} from "@/image-hash.ts";
 import {getGrayDataScaledWithSharp, getGrayDataWithSharp, resizeGrayDataScaledWithPica} from "../util.demo.ts";
 
 
-console.log(ANSI_BLUE("--- Tests 9 - diffs between im-hash and sharp/pica ---"));
+console.log(ANSI_BLUE("--- Tests 9 - diffs between alt-image-hash and sharp/pica ---"));
 
 
 const size = 8;
@@ -32,7 +32,7 @@ for (const filename of Object.values(Files)) {
 }
 
 {
-    console.log("getGrayDataWithSharp vs im-hash");
+    console.log("getGrayDataWithSharp vs alt-image-hash");
 
     let a_hash_diff = 0;
     let m_hash_diff = 0;
@@ -92,7 +92,7 @@ for (const filename of Object.values(Files)) {
 }
 
 {
-    console.log("getGrayDataScaledWithSharp vs im-hash");
+    console.log("getGrayDataScaledWithSharp vs alt-image-hash");
 
     let a_hash_diff = 0;
     let m_hash_diff = 0;
@@ -153,7 +153,7 @@ for (const filename of Object.values(Files)) {
 }
 
 {
-    console.log("resizeGrayDataScaledWithPica (lanczos3) vs im-hash");
+    console.log("resizeGrayDataScaledWithPica (lanczos3) vs alt-image-hash");
 
     let a_hash_diff = 0;
     let m_hash_diff = 0;
@@ -214,7 +214,7 @@ for (const filename of Object.values(Files)) {
 }
 
 {
-    console.log("resizeGrayDataScaledWithPica (box) vs im-hash");
+    console.log("resizeGrayDataScaledWithPica (box) vs alt-image-hash");
 
     let a_hash_diff = 0;
     let m_hash_diff = 0;
