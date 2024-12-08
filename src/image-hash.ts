@@ -105,10 +105,11 @@ export function binToBiUi8a(bin: string): Uint8Array {
 }
 
 export function biUi8aToHex(biUi8a: Uint8Array): string {
-    const offset = biUi8a.length % 8;
-    if (offset) {
-        const _biUi8a = new Uint8Array(biUi8a.length + offset);
-        _biUi8a.set(biUi8a, offset);
+    const remainder = biUi8a.length % 8;
+    if (remainder) {
+        const extendedLength = biUi8a.length + 8 - remainder;
+        const _biUi8a = new Uint8Array(extendedLength);
+        _biUi8a.set(biUi8a, extendedLength - biUi8a.length);
         biUi8a = _biUi8a;
     }
     const byteArray: number[] = [];
@@ -127,9 +128,9 @@ export function biUi8aToHex(biUi8a: Uint8Array): string {
 
 export function biUi8aToBin(biUi8a: Uint8Array): string {
     const byteArray: string[] = [];
-    const offset = biUi8a.length % 8;
+    const offset = biUi8a.length % 8; // todo: test it. see `remainder` from the func above
     if (offset) {
-        byteArray.push("0".repeat(offset))
+        byteArray.push("0".repeat(offset));
     }
     for (const bitStr of biUi8a) {
         byteArray.push(bitStr ? "1" : "0");
