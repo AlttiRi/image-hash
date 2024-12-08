@@ -145,7 +145,14 @@ export function scaleUpIntegerTwice<T extends MonoImageData>(orig: T): T {
     return scaleUpNearestNeighbor(orig, orig.width * 2, orig.height * 2);
 }
 
-export function scaleUpNearestNeighbor<T extends MonoImageData>(orig: T, newWidth: number, newHeight: number): T {
+export function scaleUpNearestNeighbor<T extends MonoImageData>(
+    orig: T, newWidth: number, newHeight: number, integer = false
+): T {
+    if (integer) {
+        newWidth  = orig.width  * (newWidth  / orig.width  << 0); // "Math.trunc"
+        newHeight = orig.height * (newHeight / orig.height << 0);
+    }
+
     const {data, width, height} = orig;
     const dest = new Uint8Array(newWidth * newHeight);
     const xScale = width  / newWidth;

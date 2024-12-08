@@ -284,11 +284,11 @@ t({
 });
 
 t({
-    result: ImageHash.fromBin("0b 0000 0000 0000 0000").getMono(false).width,
+    result: ImageHash.fromBin("0b 0000 0000 0000 0000").getMono(true).width,
     expect: 4,
 });
 t({
-    result: ImageHash.fromBin("0b 0000 0000 0000 0000").getMono(false).height,
+    result: ImageHash.fromBin("0b 0000 0000 0000 0000").getMono(true).height,
     expect: 4,
 });
 
@@ -336,11 +336,11 @@ t({
 });
 
 t({
-    result: ImageHash.fromHex("0x 0000 0000 0000 0000").getMono(false).width,
+    result: ImageHash.fromHex("0x 0000 0000 0000 0000").getMono(true).width,
     expect: 8,
 });
 t({
-    result: ImageHash.fromHex("0x 0000 0000 0000 0000").getMono(false).height,
+    result: ImageHash.fromHex("0x 0000 0000 0000 0000").getMono(true).height,
     expect: 8,
 });
 

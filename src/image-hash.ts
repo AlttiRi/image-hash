@@ -9,10 +9,10 @@ export class ImageHash {
     static fromMono(mono: BiImageData) {
         return new ImageHash(mono);
     }
-    getMono(copy = true): BiImageData {
+    getMono(copy = false): BiImageData {
         if (copy) {
             const {data, width, height} = this.mono;
-            return new BiImageData(data, width, height);
+            return new BiImageData(new Uint8Array(data), width, height);
         }
         return this.mono;
     }

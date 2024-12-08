@@ -14,8 +14,7 @@ const iData = await getImageDataFromFS(filename);
 const grayData = getGrayData(iData);
 for (let size = 1; size <= 10; size++) {
     const grayDataScaled = scaleDownLinear(grayData, {size});
-    const to = size * (320 / size << 0);
-    const upScaled = scaleUpNearestNeighbor(grayDataScaled, to, to);
+    const upScaled = scaleUpNearestNeighbor(grayDataScaled, 320, 320, true);
     await saveImageData(upScaled, path.join(dirPath, `from-10x10-to-${size}x${size}.png`));
 }
 
