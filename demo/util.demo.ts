@@ -72,6 +72,7 @@ function saveImageDataWithCanvas(imageData: ImageDataLikeEx, outputFilePath: str
 
 // ---
 
+// 1 channel gray-scaled image data common 3 channels ImageData
 export function toImageDataFromMono(imageData: MonoImageData): ImageData {
     const array = imageData.data;
     const length = array.length;
@@ -85,6 +86,7 @@ export function toImageDataFromMono(imageData: MonoImageData): ImageData {
     return new ImageData(data, imageData.width, imageData.height);
 }
 
+// expects the image was already gray-scaled
 export function toMonoFromImageData(imageData: ImageDataLikeEx): MonoImageData {
     const array = imageData.data;
     const length = array.length / 4;
