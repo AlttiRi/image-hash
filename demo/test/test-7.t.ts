@@ -2,7 +2,7 @@ import {Files, getImageData} from "../constants.ts";
 import {getGrayData} from "@/grayscale.ts";
 import {scaleDownLinear} from "@/resize.ts";
 import {aHash, dHash} from "@/hashers.ts";
-import {ANSI_BLUE, report, t} from "../tester.ts";;
+import {ANSI_BLUE, report, t} from "../tester.ts";
 import {GrayImageData} from "@/mono-image-data.ts";
 import {getGrayDataScaledWithSharp, getGrayDataWithSharp, resizeGrayDataScaledWithPica} from "../util.demo.ts";
 
