@@ -1,4 +1,4 @@
-import {ANSI_BLUE, t} from "../../test/tester.ts";
+import {ANSI_BLUE, report, t} from "../tester.ts";
 import {getImageDataFromFS} from "../util.demo.ts";
 import path from "node:path";
 import {getCalculateAverage, getCalculateBT601, getCalculateBT709, getGrayData} from "@/grayscale.ts";
@@ -8,7 +8,8 @@ function resolve(...strs: string[]) {
     return path.resolve(import.meta.dirname, ...strs);
 }
 
-console.log(ANSI_BLUE("--- Tests compare luminance value before and after down-scaling ---"));
+
+console.log(ANSI_BLUE("--- Test 2 - Tests compare luminance value before and after down-scaling ---"));
 
 type Opts = {
     getFunc?: GrayScalingOpt
@@ -260,3 +261,5 @@ async function getLumus(imgPath: string, opts: Opts = {}) {
         });
     }
 }
+
+report();

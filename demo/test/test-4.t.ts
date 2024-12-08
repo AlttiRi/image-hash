@@ -1,4 +1,4 @@
-import {ANSI_BLUE, t} from "../../test/tester.ts";
+import {ANSI_BLUE, report, t} from "../tester.ts";
 import {aHash, bHash, dHash, mHash} from "@/hashers.ts";
 import {getGrayData} from "@/grayscale.ts";
 import {scaleDownLinear} from "@/resize.ts";
@@ -6,7 +6,7 @@ import {ImageHash} from "@/image-hash.ts";
 import {Files, getImageData} from "../constants.ts";
 
 
-console.log(ANSI_BLUE("--- Tests 4 ---"));
+console.log(ANSI_BLUE("--- Test 4 - Hash verification and comparison with PIL (default and box filter) ---"));
 
 
 const a_hashes: Record<string, string> = {};
@@ -479,3 +479,5 @@ t({
         name: `total diff_py_box_gray (${totalPyBoxDiff / (countPyBox * bitsCount / 100)} %)`,
     });
 }
+
+report();

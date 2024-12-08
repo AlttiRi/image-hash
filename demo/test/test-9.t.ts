@@ -1,4 +1,4 @@
-import {ANSI_BLUE, t} from "../../test/tester.ts";
+import {ANSI_BLUE, report, t} from "../tester.ts";
 import {aHash, bHash, dHash, mHash} from "@/hashers.ts";
 import {getGrayData} from "@/grayscale.ts";
 import {scaleDownLinear} from "@/resize.ts";
@@ -7,7 +7,7 @@ import {ImageHash} from "@/image-hash.ts";
 import {getGrayDataScaledWithSharp, getGrayDataWithSharp, resizeGrayDataScaledWithPica} from "../util.demo.ts";
 
 
-console.log(ANSI_BLUE("--- Tests 9 - diffs between alt-image-hash and sharp/pica ---"));
+console.log(ANSI_BLUE("--- Test 9 - Diffs between alt-image-hash and sharp/pica ---"));
 
 
 const size = 8;
@@ -273,3 +273,5 @@ for (const filename of Object.values(Files)) {
         name: `a_hash_diff (${12}) - ${m_hash_classic_diff / (bitCount / 100)} %`,
     });
 }
+
+report();

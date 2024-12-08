@@ -1,4 +1,4 @@
-import {ANSI_BLUE, t} from "../../test/tester.ts";
+import {ANSI_BLUE, report, t} from "../tester.ts";
 import {getImageDataFromFS} from "../util.demo.ts";
 import {aHash, bHash, dHash, mHash} from "@/hashers.ts";
 import {ImageHash} from "@/image-hash.ts";
@@ -10,7 +10,7 @@ function resolve(...strs: string[]) {
 }
 
 
-console.log(ANSI_BLUE("--- Hash demos (hashes from articles) ---"));
+console.log(ANSI_BLUE("--- Test 1 - Hash demos (hashes from articles) ---"));
 
 // https://content-blockchain.org/research/testing-different-image-hash-functions/
 {
@@ -251,3 +251,5 @@ console.log(ANSI_BLUE("--- Hash demos (hashes from articles) ---"));
         });
     }
 }
+
+report();

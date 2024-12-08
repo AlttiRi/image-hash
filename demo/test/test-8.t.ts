@@ -1,8 +1,9 @@
 import {scaleDownLinearAverage} from "@/resize.ts";
 import {GrayImageData} from "@/mono-image-data.ts";
-import {ANSI_BLUE, t} from "../../test/tester.ts";
+import {ANSI_BLUE, report, t} from "../tester.ts";
 
-console.log(ANSI_BLUE("--- PIL compare ---"));
+
+console.log(ANSI_BLUE("--- Test 8 - PIL compare ---"));
 
 /*
 from PIL import Image
@@ -316,3 +317,5 @@ print(",".join(map(str, image.getdata())))
     });
 }
 //
+
+report();

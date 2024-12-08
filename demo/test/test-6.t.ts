@@ -1,10 +1,10 @@
 import {bmvbhash} from "blockhash-core";
-import {ANSI_BLUE, t} from "../../test/tester.ts";
+import {ANSI_BLUE, report, t} from "../tester.ts";
 import {bHash} from "@/hashers.ts";
 import {Files, FilesArg, getImageData} from "../constants.ts";
 
 
-console.log(ANSI_BLUE("--- Tests 5 --- different sizes blockhash hashes ---"));
+console.log(ANSI_BLUE("--- Test 5 --- Different sizes blockhash hashes ---"));
 
 let size = 0;
 let testCount = 0;
@@ -306,3 +306,5 @@ async function getValue(image: FilesArg) {
         name: "totalDiffNonOrig",
     });
 }
+
+report();

@@ -2,12 +2,12 @@ import {Files, getImageData} from "../constants.ts";
 import {getGrayData} from "@/grayscale.ts";
 import {scaleDownLinear} from "@/resize.ts";
 import {aHash, dHash} from "@/hashers.ts";
-import {ANSI_BLUE, t} from "../../test/tester.ts";
+import {ANSI_BLUE, report, t} from "../tester.ts";;
 import {GrayImageData} from "@/mono-image-data.ts";
 import {getGrayDataScaledWithSharp, getGrayDataWithSharp, resizeGrayDataScaledWithPica} from "../util.demo.ts";
 
 
-console.log(ANSI_BLUE("--- Tests 7 - Sharp.js / Pica.js ---"));
+console.log(ANSI_BLUE("--- Test 7 - Sharp.js / Pica.js ---"));
 
 
 const known_a_py_hashes = {
@@ -311,3 +311,5 @@ const known_d_py_box_hashes: Record<string, string> = {
         name: `dDiff ${dDiffPercentage} %`,
     });
 }
+
+report();
