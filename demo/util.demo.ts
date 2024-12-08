@@ -5,6 +5,38 @@ import {ImageDataLike, ImageDataLikeEx} from "@/types.ts";
 import {GrayImageData, MonoImageData} from "@/mono-image-data.ts";
 import Pica from "pica";
 
+// getImageDataWithSharp getImageDataWithCanvas
+export const getImageDataFromFS = getImageDataWithSharp;
+
+// "sharp"
+export async function getImageDataWithSharp(imagePath: string): Promise<ImageDataLike> {
+    // console.time("sharp");
+    const imageData = await sharp(imagePath)
+        .ensureAlpha()
+        .raw()
+        .toBuffer({resolveWithObject: true});
+    // console.timeEnd("sharp");
+    const {data, info} = imageData;
+    return {
+        width: info.width,
+        height: info.height,
+        data: new Uint8ClampedArray(data),
+    };
+}
+
+// "canvas"
+export async function getImageDataWithCanvas(imagePath: string): Promise<ImageData> {
+    // console.time("canvas");
+    const image = await loadImage(imagePath);
+    const canvas = createCanvas(image.width, image.height);
+    const context = canvas.getContext("2d");
+    context.drawImage(image, 0, 0);
+    const idata = context.getImageData(0, 0, canvas.width, canvas.height);
+    // console.timeEnd("canvas");
+    return idata;
+}
+
+// ---
 
 // saveImageDataWithSharp saveImageDataWithCanvas
 export const saveImageData = saveImageDataWithSharp;
@@ -37,6 +69,9 @@ function saveImageDataWithCanvas(imageData: ImageDataLikeEx, outputFilePath: str
     const png = canvas.toBuffer();
     return fs.promises.writeFile(outputFilePath, png);
 }
+
+// ---
+
 export function toImageDataFromMono(imageData: MonoImageData): ImageData {
     const array = imageData.data;
     const length = array.length;
@@ -49,6 +84,7 @@ export function toImageDataFromMono(imageData: MonoImageData): ImageData {
     }
     return new ImageData(data, imageData.width, imageData.height);
 }
+
 export function toMonoFromImageData(imageData: ImageDataLikeEx): MonoImageData {
     const array = imageData.data;
     const length = array.length / 4;
@@ -57,38 +93,6 @@ export function toMonoFromImageData(imageData: ImageDataLikeEx): MonoImageData {
         data[i] = array[i * 4];
     }
     return new MonoImageData(data, imageData.width, imageData.height);
-}
-
-
-// getImageDataWithSharp getImageDataWithCanvas
-export const getImageDataFromFS = getImageDataWithSharp;
-
-// "sharp"
-export async function getImageDataWithSharp(imagePath: string): Promise<ImageDataLike> {
-    // console.time("sharp");
-    const imageData = await sharp(imagePath)
-        .ensureAlpha()
-        .raw()
-        .toBuffer({resolveWithObject: true});
-    // console.timeEnd("sharp");
-    const {data, info} = imageData;
-    return {
-        width: info.width,
-        height: info.height,
-        data: new Uint8ClampedArray(data),
-    };
-}
-
-// "canvas"
-export async function getImageDataWithCanvas(imagePath: string): Promise<ImageData> {
-    // console.time("canvas");
-    const image = await loadImage(imagePath);
-    const canvas = createCanvas(image.width, image.height);
-    const context = canvas.getContext("2d");
-    context.drawImage(image, 0, 0);
-    const idata = context.getImageData(0, 0, canvas.width, canvas.height);
-    // console.timeEnd("canvas");
-    return idata;
 }
 
 // ---
@@ -128,6 +132,7 @@ export async function getGrayDataScaledWithSharp(iData: ImageDataLike, width = 8
 
     return new GrayImageData(sh.data, sh.info.width, sh.info.height);
 }
+
 export async function resizeGrayDataScaledWithPica(grayData: GrayImageData, toWidth = 8, toHeight = 8,
                                                    filter: "lanczos2" | "lanczos3" | "box" | "hamming" | "mks2013"
 ) {
