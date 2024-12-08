@@ -40,6 +40,7 @@ export type HashOpts = ScaleOpts & {
     grayDataScaled?: GrayImageData
     grayScaler?:     GrayScalingOpt
     classic?: boolean
+    // todo?: pass `imageData: grayImageData`
 };
 export type Hasher     = (imageData: ImageDataLike, opts?: HashOpts) => ImageHash;
 export type HasherCore = (grayImageData: GrayImageData) => BiImageData;
