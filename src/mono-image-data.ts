@@ -2,10 +2,10 @@ import {ImageDataLikeEx} from "./types.js";
 
 /** ImageData fot only one channel (luminance). */
 export class MonoImageData implements ImageDataLikeEx {
-    public data: Uint8Array;
-    public width:  number;
-    public height: number;
-    public channels: 1 = 1;
+    public readonly data: Uint8Array;
+    public readonly width:  number;
+    public readonly height: number;
+    public readonly channels: 1 = 1;
     constructor(data: Uint8Array, width: number, height: number) {
         const mult = width * height;
         if (mult !== data.length || !mult) {
@@ -23,10 +23,10 @@ export class MonoImageData implements ImageDataLikeEx {
 
 /** "binary"/"black-white" image pixels (`0` and `255` values) */
 export class BiImageData extends MonoImageData {
-    type: "binary" = "binary";
+    public readonly type = "binary";
 }
 
 /** "gray-scaled" image pixels (values from `0` up to `255`) */
 export class GrayImageData extends MonoImageData { // todo?: store `calculateLuminance.name` and verify it
-    type: "gray-scaled" = "gray-scaled";
+    public readonly type = "gray-scaled";
 }

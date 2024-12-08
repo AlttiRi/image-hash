@@ -1,7 +1,7 @@
 import {BiImageData} from "./mono-image-data.js";
 
 export class ImageHash {
-    public readonly mono: BiImageData;
+    public readonly mono: BiImageData; // todo: make private
     private constructor(mid: BiImageData) {
         this.mono = mid;
     }
