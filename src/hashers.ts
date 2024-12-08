@@ -55,11 +55,17 @@ const bHashClassic: Hasher = (imageData: ImageDataLike, opts: HashOpts = {}) => 
  * @see `scaleUpIntegerTwice`
  */
 function hash(hash: HasherCore, imageData: ImageDataLike, opts: HashOpts & HashOptsPrivate = {}): ImageHash {
+    if (opts.size === 0 || opts.width === 0 || opts.height === 0) {
+        throw new Error("Wrong hash size (0)");
+    }
     const hashWidth  = opts.size || opts.width  || defaultSize;
     const hashHeight = opts.size || opts.height || defaultSize;
+    if (hashWidth < 0 || hashHeight < 0) {
+        throw new Error("Wrong hash size (less than 0)");
+    }
     let scaleWidth  = opts.scaleWidth  || hashWidth;
     let scaleHeight = opts.scaleHeight || hashHeight;
-    let grayScaler  = opts.grayScaler || getCalculateBT601;
+    let grayScaler  = opts.grayScaler  || getCalculateBT601;
 
     const upScale: boolean = imageData.width < scaleWidth || imageData.height < scaleHeight;
     let origScales;
