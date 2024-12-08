@@ -2,7 +2,8 @@ import fs from "node:fs";
 import sharp from "sharp";
 import {createCanvas, ImageData, loadImage} from "canvas";
 import {ImageDataLike, ImageDataLikeEx} from "@/types.ts";
-import {MonoImageData} from "@/mono-image-data.ts";
+import {GrayImageData, MonoImageData} from "@/mono-image-data.ts";
+import Pica from "pica";
 
 
 // saveImageDataWithSharp saveImageDataWithCanvas
@@ -88,4 +89,64 @@ export async function getImageDataWithCanvas(imagePath: string): Promise<ImageDa
     const idata = context.getImageData(0, 0, canvas.width, canvas.height);
     // console.timeEnd("canvas");
     return idata;
+}
+
+// ---
+
+export async function getGrayDataWithSharp(iData: ImageDataLike) {
+    const {data, info: {width, height} } = await sharp(iData.data, {
+        raw: {
+            width: iData.width,
+            height: iData.height,
+            channels: 4,
+        }
+    }).grayscale()
+        .raw()
+        .toBuffer({resolveWithObject: true});
+
+    return new GrayImageData(data, width, height);
+}
+
+// very slow for every "kernel" mode except "nearest" (but it produces very bad result)
+export async function getGrayDataScaledWithSharp(iData: ImageDataLike, width = 8, height = 8,
+                                                 kernel: "nearest" | "cubic" | "mitchell" | "lanczos2" | "lanczos3") {
+    const sh = await sharp(iData.data, {
+        raw: {
+            width: iData.width,
+            height: iData.height,
+            channels: 4,
+        }
+    }).grayscale()
+        .resize({
+            fit: "fill",
+            kernel,
+            width,
+            height,
+        })
+        .raw()
+        .toBuffer({resolveWithObject: true});
+
+    return new GrayImageData(sh.data, sh.info.width, sh.info.height);
+}
+export async function resizeGrayDataScaledWithPica(grayData: GrayImageData, toWidth = 8, toHeight = 8,
+                                                   filter: "lanczos2" | "lanczos3" | "box" | "hamming" | "mks2013"
+) {
+    const pica = new Pica();
+    const data = new Uint8Array(toWidth * toHeight * 4);
+    await pica.resizeBuffer({
+        src: new Uint8Array(toImageDataFromMono(grayData).data),
+        dest: data,
+        width: grayData.width,
+        height: grayData.height,
+        toWidth,
+        toHeight,
+        filter,
+    });
+    const iData: ImageDataLikeEx = {
+        data,
+        width: toWidth,
+        height: toHeight,
+        channels: 4,
+    }
+    return new GrayImageData(toMonoFromImageData(iData).data, toWidth, toHeight);
 }

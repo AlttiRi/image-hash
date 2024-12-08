@@ -4,71 +4,10 @@ import {scaleDownLinear} from "@/resize.ts";
 import {aHash, dHash} from "@/hashers.ts";
 import {ANSI_BLUE, t} from "../../test/tester.ts";
 import {GrayImageData} from "@/mono-image-data.ts";
-import sharp from "sharp";
-import {ImageDataLike, ImageDataLikeEx} from "@/types.ts";
-import Pica from "pica";
-import {toImageDataFromMono, toMonoFromImageData} from "../util.demo.ts";
+import {getGrayDataScaledWithSharp, getGrayDataWithSharp, resizeGrayDataScaledWithPica} from "../util.demo.ts";
 
 
 console.log(ANSI_BLUE("--- Tests 7 - Sharp.js / Pica.js ---"));
-
-
-async function getGrayDataWithSharp(iData: ImageDataLike) {
-    const {data, info: {width, height} } = await sharp(iData.data, {
-        raw: {
-            width: iData.width,
-            height: iData.height,
-            channels: 4,
-        }
-    }).grayscale()
-        .raw()
-        .toBuffer({resolveWithObject: true});
-
-    return new GrayImageData(data, width, height);
-}
-
-// very slow for every "kernel" mode except "nearest" (but it produces very bad result)
-async function getGrayDataScaledWithSharp(iData: ImageDataLike, width = 8, height = 8) {
-    const sh = await sharp(iData.data, {
-        raw: {
-            width: iData.width,
-            height: iData.height,
-            channels: 4,
-        }
-    }).grayscale()
-        .resize({
-            fit: "fill",
-            kernel: "lanczos3",
-            width,
-            height,
-        })
-        .raw()
-        .toBuffer({resolveWithObject: true});
-
-    return new GrayImageData(sh.data, sh.info.width, sh.info.height);
-}
-async function resizeGrayDataScaledWithPica(grayData: GrayImageData, toWidth = 8, toHeight = 8,
-                                            filter: "lanczos2" | "lanczos3" | "box" | "hamming" | "mks2013"
-) {
-    const pica = new Pica();
-    const data = new Uint8Array(toWidth * toHeight * 4);
-    await pica.resizeBuffer({
-        src: new Uint8Array(toImageDataFromMono(grayData).data),
-        dest: data,
-        width: grayData.width,
-        height: grayData.height,
-        toWidth,
-        toHeight,
-        filter,
-    });
-    const iData: ImageDataLikeEx = {
-        data,
-        width: toWidth,
-        height: toHeight,
-        channels: 4,
-    }
-    return new GrayImageData(toMonoFromImageData(iData).data, toWidth, toHeight);
-}
 
 
 const known_a_py_hashes = {
@@ -211,8 +150,8 @@ const count = Object.keys(Files).length;
     console.time("getGrayDataScaledWithSharp");  // 3600 ms
     for (const filename of Object.values(Files)) {
         const iData = await getImageData(filename);
-        const gds1: GrayImageData = await getGrayDataScaledWithSharp(iData, 8, 8);
-        const gds2: GrayImageData = await getGrayDataScaledWithSharp(iData, 9, 8);
+        const gds1: GrayImageData = await getGrayDataScaledWithSharp(iData, 8, 8, "lanczos3");
+        const gds2: GrayImageData = await getGrayDataScaledWithSharp(iData, 9, 8, "lanczos3");
         const a = aHash(iData, {grayDataScaled: gds1});
         const d = dHash(iData, {grayDataScaled: gds2});
         aDiff += a.diffHex(known_a_py_hashes[filename]);
