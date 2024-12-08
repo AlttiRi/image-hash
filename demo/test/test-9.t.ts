@@ -11,7 +11,7 @@ console.log(ANSI_BLUE("--- Tests 9 - diffs between im-hash and sharp/pica ---"))
 
 
 const size = 8;
-const bitCount = size * size;
+const bitCount = size * size * Object.keys(Files).length;
 
 const a_hashes: Record<string, ImageHash> = {};
 const m_hashes: Record<string, ImageHash> = {};
@@ -62,32 +62,32 @@ for (const filename of Object.values(Files)) {
     t({
         result: a_hash_diff,
         expect: 12,
-        name: "a_hash_diff"
+        name: `a_hash_diff (${12}) - ${a_hash_diff / (bitCount / 100)} %`,
     });
     t({
         result: m_hash_diff,
         expect: 16,
-        name: "m_hash_diff"
+        name: `a_hash_diff (${12}) - ${m_hash_diff / (bitCount / 100)} %`,
     });
     t({
         result: d_hash_diff,
         expect: 10,
-        name: "d_hash_diff"
+        name: `a_hash_diff (${12}) - ${d_hash_diff / (bitCount / 100)} %`,
     });
     t({
         result: b_hash_diff,
         expect: 11,
-        name: "b_hash_diff"
+        name: `a_hash_diff (${12}) - ${b_hash_diff / (bitCount / 100)} %`,
     });
     t({
         result: b_hash_classic_diff,
         expect: 11,
-        name: "b_hash_classic_diff"
+        name: `a_hash_diff (${12}) - ${b_hash_classic_diff / (bitCount / 100)} %`,
     });
     t({
         result: m_hash_classic_diff,
         expect: 15,
-        name: "m_hash_classic_diff"
+        name: `a_hash_diff (${12}) - ${m_hash_classic_diff / (bitCount / 100)} %`,
     });
 }
 
@@ -123,32 +123,32 @@ for (const filename of Object.values(Files)) {
     t({
         result: a_hash_diff,
         expect: 66,
-        name: "a_hash_diff"
+        name: `a_hash_diff (${12}) - ${a_hash_diff / (bitCount / 100)} %`,
     });
     t({
         result: m_hash_diff,
         expect: 104,
-        name: "m_hash_diff"
+        name: `a_hash_diff (${12}) - ${m_hash_diff / (bitCount / 100)} %`,
     });
     t({
         result: d_hash_diff,
         expect: 170,
-        name: "d_hash_diff"
+        name: `a_hash_diff (${12}) - ${d_hash_diff / (bitCount / 100)} %`,
     });
     t({
         result: b_hash_diff,
         expect: 123,
-        name: "b_hash_diff"
+        name: `a_hash_diff (${12}) - ${b_hash_diff / (bitCount / 100)} %`,
     });
     t({
         result: b_hash_classic_diff,
         expect: 123,
-        name: "b_hash_classic_diff"
+        name: `a_hash_diff (${12}) - ${b_hash_classic_diff / (bitCount / 100)} %`,
     });
     t({
         result: m_hash_classic_diff,
         expect: 127,
-        name: "m_hash_classic_diff"
+        name: `a_hash_diff (${12}) - ${m_hash_classic_diff / (bitCount / 100)} %`,
     });
 }
 
@@ -184,32 +184,32 @@ for (const filename of Object.values(Files)) {
     t({
         result: a_hash_diff,
         expect: 65,
-        name: "a_hash_diff"
+        name: `a_hash_diff (${12}) - ${a_hash_diff / (bitCount / 100)} %`,
     });
     t({
         result: m_hash_diff,
         expect: 118,
-        name: "m_hash_diff"
+        name: `a_hash_diff (${12}) - ${m_hash_diff / (bitCount / 100)} %`,
     });
     t({
         result: d_hash_diff,
         expect: 159,
-        name: "d_hash_diff"
+        name: `a_hash_diff (${12}) - ${d_hash_diff / (bitCount / 100)} %`,
     });
     t({
         result: b_hash_diff,
         expect: 115,
-        name: "b_hash_diff"
+        name: `a_hash_diff (${12}) - ${b_hash_diff / (bitCount / 100)} %`,
     });
     t({
         result: b_hash_classic_diff,
         expect: 115,
-        name: "b_hash_classic_diff"
+        name: `a_hash_diff (${12}) - ${b_hash_classic_diff / (bitCount / 100)} %`,
     });
     t({
         result: m_hash_classic_diff,
         expect: 138,
-        name: "m_hash_classic_diff"
+        name: `a_hash_diff (${12}) - ${m_hash_classic_diff / (bitCount / 100)} %`,
     });
 }
 
@@ -245,31 +245,31 @@ for (const filename of Object.values(Files)) {
     t({
         result: a_hash_diff,
         expect: 2,
-        name: "a_hash_diff"
+        name: `a_hash_diff (${12}) - ${a_hash_diff / (bitCount / 100)} %`,
     });
     t({
         result: m_hash_diff,
         expect: 6,
-        name: "m_hash_diff"
+        name: `a_hash_diff (${12}) - ${m_hash_diff / (bitCount / 100)} %`,
     });
     t({
         result: d_hash_diff,
         expect: 50,
-        name: "d_hash_diff"
+        name: `a_hash_diff (${12}) - ${d_hash_diff / (bitCount / 100)} %`,
     });
     t({
         result: b_hash_diff,
         expect: 6,
-        name: "b_hash_diff"
+        name: `a_hash_diff (${12}) - ${b_hash_diff / (bitCount / 100)} %`,
     });
     t({
         result: b_hash_classic_diff,
         expect: 6,
-        name: "b_hash_classic_diff"
+        name: `a_hash_diff (${12}) - ${b_hash_classic_diff / (bitCount / 100)} %`,
     });
     t({
         result: m_hash_classic_diff,
         expect: 35,
-        name: "m_hash_classic_diff"
+        name: `a_hash_diff (${12}) - ${m_hash_classic_diff / (bitCount / 100)} %`,
     });
 }
