@@ -98,7 +98,7 @@ export function toMonoFromImageData(imageData: ImageDataLikeEx): MonoImageData {
 // ---
 
 export async function getGrayDataWithSharp(iData: ImageDataLike) {
-    const {data, info: {width, height} } = await sharp(iData.data, {
+    const {data, info: {width, height}} = await sharp(iData.data, {
         raw: {
             width: iData.width,
             height: iData.height,
