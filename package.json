@@ -1,16 +1,22 @@
 {
   "name": "@alttiri/image-hash",
   "version": "0.0.0-20241116",
-  "description": "Image hashing functions library",
+  "description": "Im-Hash. Image hashing library.",
   "homepage": "https://github.com/AlttiRi/image-hash",
   "keywords": [
     "image-hash",
+    "im-hash",
     "pixels-hash",
+    "perceptual-hash",
     "hash",
-    "aHash",
-    "mHash",
-    "dHash",
-    "bHash"
+    "a-hash",
+    "m-hash",
+    "d-hash",
+    "b-hash",
+    "average-hash",
+    "median-hash",
+    "difference-hash",
+    "block-hash"
   ],
   "license": "MIT",
   "type": "module",
