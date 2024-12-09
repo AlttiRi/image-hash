@@ -1,4 +1,4 @@
-import fs from "node:fs";
+import path from "node:path";
 import sharp from "sharp";
 import {ImageDataLike, ImageDataLikeEx} from "@/types.ts";
 import {GrayImageData, MonoImageData} from "@/mono-image-data.ts";
@@ -8,11 +8,9 @@ import Pica from "pica";
 export const getImageDataFromFS = getImageDataWithSharp;
 export const saveImageData = saveImageDataWithSharp;
 
-// `useFs` is to add support of long paths
-export async function getImageDataWithSharp(imagePath: string, useFs = true): Promise<ImageDataLike> {
-    let inputData: string | ArrayBufferLike = imagePath;
-    if (useFs) {
-        inputData = fs.readFileSync(imagePath).buffer;
+export async function getImageDataWithSharp(inputData: string | ArrayBufferLike, longPathFix = true): Promise<ImageDataLike> {
+    if (longPathFix && typeof inputData === "string") {
+        inputData = path.toNamespacedPath(inputData);
     }
     const imageData = await sharp(inputData)
         .ensureAlpha()
