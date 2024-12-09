@@ -12,7 +12,7 @@ export class ImageHash {
     getMono(copy = false): BiImageData {
         if (copy) {
             const {data, width, height} = this.mono;
-            return new BiImageData(new Uint8Array(data), width, height);
+            return new BiImageData(new Uint8Array(data.buffer), width, height);
         }
         return this.mono;
     }

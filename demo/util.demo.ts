@@ -20,7 +20,7 @@ export async function getImageDataWithSharp(imagePath: string): Promise<ImageDat
     return {
         width: info.width,
         height: info.height,
-        data: new Uint8ClampedArray(data),
+        data: new Uint8ClampedArray(data.buffer),
     };
 }
 
@@ -63,7 +63,7 @@ function saveImageDataWithCanvas(imageData: ImageDataLikeEx, outputFilePath: str
         if (imageData.channels) {
             throw new Error("Unsupported transform");
         }
-        iData = new ImageData(new Uint8ClampedArray(imageData.data), imageData.width, imageData.height);
+        iData = new ImageData(new Uint8ClampedArray(imageData.data.buffer), imageData.width, imageData.height);
     }
     ctx.putImageData(iData, 0, 0);
     const png = canvas.toBuffer();
@@ -141,7 +141,7 @@ export async function resizeGrayDataWithPica(grayData: GrayImageData, toWidth = 
     const pica = new Pica();
     const data = new Uint8Array(toWidth * toHeight * 4);
     await pica.resizeBuffer({
-        src: new Uint8Array(toImageDataFromMono(grayData).data),
+        src: new Uint8Array(toImageDataFromMono(grayData).data.buffer),
         dest: data,
         width: grayData.width,
         height: grayData.height,
