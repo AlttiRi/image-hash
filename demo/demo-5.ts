@@ -17,3 +17,11 @@ console.log();
 console.log(ImageHash.fromHex("1122334455", 6, 6).hex);   // 0122334455
 console.log(ImageHash.fromHex("0122334455", 6, 6).hex);   // 0122334455
 console.log(ImageHash.fromHex( "122334455", 6, 6).hex);   // 0122334455
+
+console.log();
+
+console.log(dHash(imageData, {size: 3}).bin);             // 0000000110001010
+console.log(dHash(imageData, {size: 2}).bin);             // 00001001
+console.log(dHash(imageData, {width: 2, height: 1}).bin); // 00000001
+console.log(dHash(imageData, {width: 1, height: 2}).bin); // 00000010
+console.log(dHash(imageData, {size: 1}).bin);             // 00000001

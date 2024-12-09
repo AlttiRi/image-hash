@@ -496,7 +496,7 @@ console.log(ANSI_BLUE("--- Test 10 - Different hash sizes ---"));
     t({
         result: (function() {
             try {
-                const a_hash = aHash(imageData, {width: 0, height: 1}).hex;
+                aHash(imageData, {width: 0, height: 1}).hex;
             } catch {
                 return "error";
             }
@@ -506,7 +506,7 @@ console.log(ANSI_BLUE("--- Test 10 - Different hash sizes ---"));
     t({
         result: (function() {
             try {
-                const a_hash = aHash(imageData, {width: 1, height: 0}).hex;
+                aHash(imageData, {width: 1, height: 0}).hex;
             } catch {
                 return "error";
             }
@@ -516,7 +516,7 @@ console.log(ANSI_BLUE("--- Test 10 - Different hash sizes ---"));
     t({
         result: (function() {
             try {
-                const a_hash = aHash(imageData, {width: 0, height: 0}).hex;
+                aHash(imageData, {width: 0, height: 0}).hex;
             } catch {
                 return "error";
             }
@@ -526,7 +526,7 @@ console.log(ANSI_BLUE("--- Test 10 - Different hash sizes ---"));
     t({
         result: (function() {
             try {
-                const a_hash = aHash(imageData, {width: -1, height: 0}).hex;
+                aHash(imageData, {width: -1, height: 0}).hex;
             } catch {
                 return "error";
             }
@@ -536,7 +536,7 @@ console.log(ANSI_BLUE("--- Test 10 - Different hash sizes ---"));
     t({
         result: (function() {
             try {
-                const a_hash = aHash(imageData, {width: -1, height: -1}).hex;
+                aHash(imageData, {width: -1, height: -1}).hex;
             } catch {
                 return "error";
             }
@@ -546,7 +546,7 @@ console.log(ANSI_BLUE("--- Test 10 - Different hash sizes ---"));
     t({
         result: (function() {
             try {
-                const a_hash = aHash(imageData, {size: 0}).hex;
+                aHash(imageData, {size: 0}).hex;
             } catch {
                 return "error";
             }
@@ -556,7 +556,7 @@ console.log(ANSI_BLUE("--- Test 10 - Different hash sizes ---"));
     t({
         result: (function() {
             try {
-                const a_hash = aHash(imageData, {size: -8}).hex;
+                aHash(imageData, {size: -8}).hex;
             } catch {
                 return "error";
             }
