@@ -2,7 +2,6 @@
   "name": "@alttiri/image-hash-demo",
   "type": "module",
   "devDependencies": {
-    "canvas": "2.11.2",
     "sharp": "0.33.5",
     "blockhash-core": "0.1.0",
     "pica": "9.0.1",

@@ -1,12 +1,12 @@
 import fs from "node:fs";
 import sharp from "sharp";
-import {createCanvas, ImageData, loadImage} from "canvas";
 import {ImageDataLike, ImageDataLikeEx} from "@/types.ts";
 import {GrayImageData, MonoImageData} from "@/mono-image-data.ts";
 import Pica from "pica";
 
-// getImageDataWithSharp getImageDataWithCanvas
+
 export const getImageDataFromFS = getImageDataWithSharp;
+export const saveImageData = saveImageDataWithSharp;
 
 // `useFs` is to add support of long paths
 export async function getImageDataWithSharp(imagePath: string, useFs = true): Promise<ImageDataLike> {
@@ -14,12 +14,10 @@ export async function getImageDataWithSharp(imagePath: string, useFs = true): Pr
     if (useFs) {
         inputData = fs.readFileSync(imagePath).buffer;
     }
-    // console.time("sharp");
     const imageData = await sharp(inputData)
         .ensureAlpha()
         .raw()
         .toBuffer({resolveWithObject: true});
-    // console.timeEnd("sharp");
     const {data, info} = imageData;
     return {
         width: info.width,
@@ -27,24 +25,6 @@ export async function getImageDataWithSharp(imagePath: string, useFs = true): Pr
         data: new Uint8ClampedArray(data.buffer),
     };
 }
-
-// "canvas"
-export async function getImageDataWithCanvas(imagePath: string): Promise<ImageData> {
-    // console.time("canvas");
-    const image = await loadImage(imagePath);
-    const canvas = createCanvas(image.width, image.height);
-    const context = canvas.getContext("2d");
-    context.drawImage(image, 0, 0);
-    const idata = context.getImageData(0, 0, canvas.width, canvas.height);
-    // console.timeEnd("canvas");
-    return idata;
-}
-
-// ---
-
-// saveImageDataWithSharp saveImageDataWithCanvas
-export const saveImageData = saveImageDataWithSharp;
-
 export function saveImageDataWithSharp(imageData: ImageDataLikeEx, outputFilePath: string): Promise<sharp.OutputInfo> {
     const image: sharp.Sharp = sharp(imageData.data, {
         raw: {
@@ -56,28 +36,10 @@ export function saveImageDataWithSharp(imageData: ImageDataLikeEx, outputFilePat
     return image.toFile(outputFilePath);
 }
 
-// very slow ~5 secs vs ~1.2 (sharp)
-function saveImageDataWithCanvas(imageData: ImageDataLikeEx, outputFilePath: string) {
-    const canvas = createCanvas(imageData.width, imageData.height);
-    const ctx = canvas.getContext("2d");
-    let iData: ImageData;
-    if (imageData.channels === 1) {
-        iData = toImageDataFromMono(imageData as MonoImageData); // todo?: add `isMono` guard function
-    } else {
-        if (imageData.channels) {
-            throw new Error("Unsupported transform");
-        }
-        iData = new ImageData(new Uint8ClampedArray(imageData.data.buffer), imageData.width, imageData.height);
-    }
-    ctx.putImageData(iData, 0, 0);
-    const png = canvas.toBuffer();
-    return fs.promises.writeFile(outputFilePath, png);
-}
-
 // ---
 
 // 1 channel gray-scaled image data common 3 channels ImageData
-export function toImageDataFromMono(imageData: MonoImageData): ImageData {
+export function toImageDataFromMono(imageData: MonoImageData): ImageDataLike {
     const array = imageData.data;
     const length = array.length;
     const data = new Uint8ClampedArray(length * 4);
@@ -87,9 +49,8 @@ export function toImageDataFromMono(imageData: MonoImageData): ImageData {
         data[i * 4 + 2] = array[i];
         data[i * 4 + 3] = 255;
     }
-    return new ImageData(data, imageData.width, imageData.height);
+    return {data, width: imageData.width, height: imageData.height};
 }
-
 // expects the image was already gray-scaled
 export function toMonoFromImageData(imageData: ImageDataLikeEx): MonoImageData {
     const array = imageData.data;
