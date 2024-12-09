@@ -8,10 +8,14 @@ import Pica from "pica";
 // getImageDataWithSharp getImageDataWithCanvas
 export const getImageDataFromFS = getImageDataWithSharp;
 
-// "sharp"
-export async function getImageDataWithSharp(imagePath: string): Promise<ImageDataLike> {
+// `useFs` is to add support of long paths
+export async function getImageDataWithSharp(imagePath: string, useFs = true): Promise<ImageDataLike> {
+    let inputData: string | ArrayBufferLike = imagePath;
+    if (useFs) {
+        inputData = fs.readFileSync(imagePath).buffer;
+    }
     // console.time("sharp");
-    const imageData = await sharp(imagePath)
+    const imageData = await sharp(inputData)
         .ensureAlpha()
         .raw()
         .toBuffer({resolveWithObject: true});
