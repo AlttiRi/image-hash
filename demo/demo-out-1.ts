@@ -6,7 +6,7 @@ import {scaleDownLinear} from "@/resize.ts";
 import {aHash, bHash, dHash, mHash} from "@/hashers.ts";
 import {Files, getImageData} from "./constants.ts";
 
-const dirPath = "./demo-img-out/demo-2";
+const dirPath = "./demo-img-out/demo-1";
 await fs.mkdir(dirPath, {recursive: true});
 
 const size = 256;

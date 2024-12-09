@@ -8,11 +8,11 @@ import {ImageHash} from "@/image-hash.ts";
 import {scaleUpNearestNeighbor} from "@/resize.ts";
 import {BiImageData} from "@/mono-image-data.ts";
 
-const dirPath = "./demo-img-out/demo-4";
+const dirPath = "./demo-img-out/demo-2";
 await fs.mkdir(dirPath, {recursive: true});
 
 // feel free to edit //
-const size = 512; // 512 // 120 // 8
+const size = 502; // 512 // 120 // 8
 
 // For example these images contain visual artifacts:
 // "480-screenshot-dark-purple-flower-1353x851-reverse.png-1-blk-orig.png"
