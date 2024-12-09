@@ -447,7 +447,7 @@ async function getValue(image: FilesArg) {
     });
     t({
         result: hash_alttiri.hex,
-        expect: "3c3909ab3179b919",
+        expect: "3c3929ab3179b919",
     });
     t({
         result: diff_c,
@@ -455,11 +455,11 @@ async function getValue(image: FilesArg) {
     });
     t({
         result: diff_a,
-        expect: 1,
+        expect: 0,
     });
     t({
         result: diff_n,
-        expect: 0,
+        expect: 1,
     });
 }
 {
@@ -623,21 +623,21 @@ async function getValue(image: FilesArg) {
 
     t({
         result: totalDiffAlttiri,
-        expect: 52,
+        expect: 51,
     });
     t({
         result: totalDiffAlttiri / onePercent,
-        expect: 3.869047619047619,
+        expect: 3.794642857142857,
         name: "totalDiffAlttiri",
     });
 
     t({
         result: totalDiffNonOrig,
-        expect: 31,
+        expect: 32,
     });
     t({
         result: totalDiffNonOrig / onePercent,
-        expect: 2.306547619047619,
+        expect: 2.380952380952381,
         name: "totalDiffNonOrig",
     });
 }

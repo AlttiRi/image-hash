@@ -70,21 +70,21 @@ async function getValue(image: FilesArg) {
 
     t({
         result: totalDiffAlttiri,
-        expect: 52,
+        expect: 51,
     });
     t({
         result: totalDiffAlttiri / onePercent,
-        expect: 3.869047619047619,
+        expect: 3.794642857142857,
         name: "totalDiffAlttiri",
     });
 
     t({
         result: totalDiffNonOrig,
-        expect: 31,
+        expect: 32,
     });
     t({
         result: totalDiffNonOrig / onePercent,
-        expect: 2.306547619047619,
+        expect: 2.380952380952381,
         name: "totalDiffNonOrig",
     });
 }
@@ -125,21 +125,21 @@ async function getValue(image: FilesArg) {
 
     t({
         result: totalDiffAlttiri,
-        expect: 573,
+        expect: 571,
     });
     t({
         result: totalDiffAlttiri / onePercent,
-        expect: 10.658482142857144,
+        expect: 10.621279761904763,
         name: "totalDiffAlttiri",
     });
 
     t({
         result: totalDiffNonOrig,
-        expect: 520,
+        expect: 518,
     });
     t({
         result: totalDiffNonOrig / onePercent,
-        expect: 9.672619047619047,
+        expect: 9.635416666666668,
         name: "totalDiffNonOrig",
     });
 }
@@ -180,21 +180,21 @@ async function getValue(image: FilesArg) {
 
     t({
         result: totalDiffAlttiri,
-        expect: 1936,
+        expect: 1941,
     });
     t({
         result: totalDiffAlttiri / onePercent,
-        expect: 9.002976190476192,
+        expect: 9.026227678571429,
         name: "totalDiffAlttiri",
     });
 
     t({
         result: totalDiffNonOrig,
-        expect: 1818,
+        expect: 1807,
     });
     t({
         result: totalDiffNonOrig / onePercent,
-        expect: 8.454241071428571,
+        expect: 8.403087797619047,
         name: "totalDiffNonOrig",
     });
 }
@@ -234,21 +234,21 @@ async function getValue(image: FilesArg) {
 
     t({
         result: totalDiffAlttiri,
-        expect: 7806,
+        expect: 7763,
     });
     t({
         result: totalDiffAlttiri / onePercent,
-        expect: 9.075055803571429,
+        expect: 9.025065104166668,
         name: "totalDiffAlttiri",
     });
 
     t({
         result: totalDiffNonOrig,
-        expect: 7356,
+        expect: 7293,
     });
     t({
         result: totalDiffNonOrig / onePercent,
-        expect: 8.551897321428571,
+        expect: 8.478655133928571,
         name: "totalDiffNonOrig",
     });
 }
@@ -288,21 +288,21 @@ async function getValue(image: FilesArg) {
 
     t({
         result: totalDiffAlttiri,
-        expect: 92567,
+        expect: 92417,
     });
     t({
         result: totalDiffAlttiri / onePercent,
-        expect: 7.434001721833882,
+        expect: 7.421955309416118,
         name: "totalDiffAlttiri",
     });
 
     t({
         result: totalDiffNonOrig,
-        expect: 86423,
+        expect: 86167,
     });
     t({
         result: totalDiffNonOrig / onePercent,
-        expect: 6.940580669202302,
+        expect: 6.920021458675987,
         name: "totalDiffNonOrig",
     });
 }

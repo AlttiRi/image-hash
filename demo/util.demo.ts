@@ -135,8 +135,8 @@ export async function getGrayDataScaledWithSharp(iData: ImageDataLike, width = 8
     return new GrayImageData(sh.data, sh.info.width, sh.info.height);
 }
 
-export async function resizeGrayDataScaledWithPica(grayData: GrayImageData, toWidth = 8, toHeight = 8,
-                                                   filter: "lanczos2" | "lanczos3" | "box" | "hamming" | "mks2013"
+export async function resizeGrayDataWithPica(grayData: GrayImageData, toWidth = 8, toHeight = 8,
+                                             filter: "lanczos2" | "lanczos3" | "box" | "hamming" | "mks2013"
 ) {
     const pica = new Pica();
     const data = new Uint8Array(toWidth * toHeight * 4);

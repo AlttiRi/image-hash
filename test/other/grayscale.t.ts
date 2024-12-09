@@ -37,7 +37,7 @@ t({
             50,100,200,255, 200,0,100,255,
         ])
     }).data.toString(),
-    expect: "60,81,96,71",
+    expect: "60,82,96,71",
 });
 t({
     result: getGrayData({
@@ -48,7 +48,7 @@ t({
             50,100,200,255, 200,0,100,255,
         ])
     }, getCalculateBT601).data.toString(),
-    expect: "60,81,96,71",
+    expect: "60,82,96,71",
 });
 t({
     result: getGrayData({

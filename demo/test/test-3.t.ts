@@ -31,44 +31,44 @@ async function getLumus(imgPath: string, opts: Opts = {}) {
     const {avgLuminanceOrig, avgLuminanceScaled} = await getLumus(`../img/kittens-3264x2448.jpg`);
     t({
         result: avgLuminanceOrig,
-        expect: 88.69448311646963,
+        expect: 89.19265939882898,
     });
     t({
         result: avgLuminanceScaled,
-        expect: 88.671875,
+        expect: 89.203125,
     });
 }
 {
     const {avgLuminanceOrig, avgLuminanceScaled} = await getLumus(`../img/kittens-minicrop-3258x2448.jpg`);
     t({
         result: avgLuminanceOrig,
-        expect: 88.73086861100077,
+        expect: 89.23587589322612,
     });
     t({
         result: avgLuminanceScaled,
-        expect: 88.78125,
+        expect: 89.125,
     });
 }
 {
     const {avgLuminanceOrig, avgLuminanceScaled} = await getLumus(`../img/peppers-600x600.png`);
     t({
         result: avgLuminanceOrig,
-        expect: 103.20869166666667,
+        expect: 103.70579444444445,
     });
     t({
         result: avgLuminanceScaled,
-        expect: 103.203125,
+        expect: 103.6875,
     });
 }
 {
     const {avgLuminanceOrig, avgLuminanceScaled} = await getLumus(`../img/bridge-500x320.jpg`);
     t({
         result: avgLuminanceOrig,
-        expect: 61.01254375,
+        expect: 61.54680625,
     });
     t({
         result: avgLuminanceScaled,
-        expect: 61.015625,
+        expect: 61.46875,
     });
 }
 
@@ -80,11 +80,11 @@ async function getLumus(imgPath: string, opts: Opts = {}) {
         });
         t({
             result: avgLuminanceOrig,
-            expect: 161.695484,
+            expect: 162.248832,
         });
         t({
             result: avgLuminanceScaled,
-            expect: 161.6826171875,
+            expect: 162.2158203125,
         });
     }
     {
@@ -93,11 +93,11 @@ async function getLumus(imgPath: string, opts: Opts = {}) {
         });
         t({
             result: avgLuminanceOrig,
-            expect: 161.695484,
+            expect: 162.248832,
         });
         t({
             result: avgLuminanceScaled,
-            expect: 161.625,
+            expect: 162.234375,
         });
     }
     {
@@ -132,11 +132,11 @@ async function getLumus(imgPath: string, opts: Opts = {}) {
         });
         t({
             result: avgLuminanceOrig,
-            expect: 161.695484,
+            expect: 162.248832,
         });
         t({
             result: avgLuminanceScaled,
-            expect: 165.34375,
+            expect: 165.921875,
         });
     }
     {
@@ -175,11 +175,11 @@ async function getLumus(imgPath: string, opts: Opts = {}) {
         });
         t({
             result: avgLuminanceOrig,
-            expect: 118.81228841145834,
+            expect: 119.32757161458333,
         });
         t({
             result: avgLuminanceScaled,
-            expect: 118.8271484375,
+            expect: 119.3349609375,
         });
     }
     {
@@ -188,11 +188,11 @@ async function getLumus(imgPath: string, opts: Opts = {}) {
         });
         t({
             result: avgLuminanceOrig,
-            expect: 118.81228841145834,
+            expect: 119.32757161458333,
         });
         t({
             result: avgLuminanceScaled,
-            expect: 118.8125,
+            expect: 119.3125,
         });
     }
     {
@@ -227,11 +227,11 @@ async function getLumus(imgPath: string, opts: Opts = {}) {
         });
         t({
             result: avgLuminanceOrig,
-            expect: 118.81228841145834,
+            expect: 119.32757161458333,
         });
         t({
             result: avgLuminanceScaled,
-            expect: 118.265625,
+            expect: 118.828125,
         });
     }
     {

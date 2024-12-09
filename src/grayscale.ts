@@ -18,17 +18,17 @@ function isString(value: unknown): value is string {
  *
  * Do not change the get functions' signature.
  */
-export const getCalculateBT601 = getCalculateBT601_Original;
+export const getCalculateBT601 = getCalculateBT601_Optimized;
+/** Note: It's without rounding. It works as with Math.trunc/Math.floor. */
 export function getCalculateBT601_Original(dw: DataView) {
     return function calculateBT601(i: number) {
         const uint = dw.getUint32(i, true);
         return ( uint        & 0xFF) * 0.299
             +  ((uint >>  8) & 0xFF) * 0.587
             +  ((uint >> 16) & 0xFF) * 0.114;
-         // + 0.5 << 0; // round
+         // + 0.5 << 0; // (Math.round) // Add it for rounding.
     };
 }
-// todo: use it
 /** Faster version of BT601 with very similar results
  * (only 0.05 % difference no more than by 1 in comparison with the rounded version). */
 export function getCalculateBT601_Optimized(dw: DataView) {

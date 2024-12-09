@@ -3,7 +3,7 @@ import {GrayImageData} from "@/mono-image-data.ts";
 import {ANSI_BLUE, report, t} from "../tester.ts";
 
 
-console.log(ANSI_BLUE("--- Test 8 - PIL compare ---"));
+console.log(ANSI_BLUE("--- Test 8 - PIL box down-sampling compare ---"));
 
 /*
 from PIL import Image

@@ -15,7 +15,7 @@ t({
 });
 t({
     result: mHash(imageData).hex,
-    expect: "00980e634287fffe"
+    expect: "00981e634287fffe"
 });
 t({
     result: bHash(imageData).hex,
@@ -23,16 +23,16 @@ t({
 });
 t({
     result: dHash(imageData).hex,
-    expect: "f020acce864cae8a"
+    expect: "e020acce864cae8a"
 });
 
 t({
     result: mHash(imageData, {classic: true}).hex,
-    expect: "00980e634287fffe"
+    expect: "00981e634287fffe"
 });
 t({
     result: dHash(imageData, {classic: true}).hex,
-    expect: "f020acce864cae8a"
+    expect: "e020acce864cae8a"
 });
 
 
@@ -43,7 +43,7 @@ console.log(ANSI_BLUE("--- Test 0 - Tests for demo 5 ---"));
     const imageData = await getImageData(Files._11_kittens);
     t({
         result: dHash(imageData, {size: 8}).hex,
-        expect: "f020acce864cae8a",
+        expect: "e020acce864cae8a",
     });
     t({
         result: dHash(imageData, {size: 7}).hex,
@@ -89,7 +89,7 @@ console.log(ANSI_BLUE("--- Test 0 - Tests for demo 5 ---"));
     });
     t({
         result: dHash(imageData, {width: 1, height: 2}).bin,
-        expect: "00000010",
+        expect: "00000011",
     });
     t({
         result: dHash(imageData, {size: 1}).bin,

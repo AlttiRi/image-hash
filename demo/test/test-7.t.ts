@@ -4,12 +4,12 @@ import {scaleDownLinear} from "@/resize.ts";
 import {aHash, dHash} from "@/hashers.ts";
 import {ANSI_BLUE, report, t} from "../tester.ts";
 import {GrayImageData} from "@/mono-image-data.ts";
-import {getGrayDataScaledWithSharp, getGrayDataWithSharp, resizeGrayDataScaledWithPica} from "../util.demo.ts";
+import {getGrayDataScaledWithSharp, getGrayDataWithSharp, resizeGrayDataWithPica} from "../util.demo.ts";
 
 
-console.log(ANSI_BLUE("--- Test 7 - Sharp.js / Pica.js ---"));
+console.log(ANSI_BLUE("--- Test 7 - Alt / Sharp.js / Pica.js vs Python hashes ---"));
 
-
+console.log(ANSI_BLUE("--- Compare with known_a_py_hashes ---"));
 const known_a_py_hashes = {
     "alyson_hannigan_500x500.jpg":                        "e7c7dac2c6fcfae8",
     "black-bg-orthocanna-500x500.jpg":                    "0c0c1c1c18181810",
@@ -84,12 +84,12 @@ const count = Object.keys(Files).length;
     t({
         result: aDiff,
         expect: 62,
-        name: `${aDiff}`,
+        name: `aDiff ${aDiff}`,
     });
     t({
         result: dDiff,
-        expect: 156,
-        name: `${dDiff}`,
+        expect: 154,
+        name: `dDiff ${dDiff}`,
     });
     const aDiffPercentage = aDiff / (size * size * count / 100);
     const dDiffPercentage = dDiff / (size * size * count / 100);
@@ -100,7 +100,7 @@ const count = Object.keys(Files).length;
     });
     t({
         result: dDiff / (size * size * count / 100),
-        expect: 11.607142857142858,
+        expect: 11.458333333333334,
         name: `dDiff ${dDiffPercentage} %`,
     });
 }
@@ -123,12 +123,12 @@ const count = Object.keys(Files).length;
     t({
         result: aDiff,
         expect: 68,
-        name: `${aDiff}`,
+        name: `aDiff ${aDiff}`,
     });
     t({
         result: dDiff,
         expect: 158,
-        name: `${dDiff}`,
+        name: `dDiff ${dDiff}`,
     });
     const aDiffPercentage = aDiff / (size * size * count / 100);
     const dDiffPercentage = dDiff / (size * size * count / 100);
@@ -147,7 +147,7 @@ const count = Object.keys(Files).length;
 {
     let aDiff = 0;
     let dDiff = 0;
-    console.time("getGrayDataScaledWithSharp");  // 3600 ms
+    console.time("getGrayDataScaledWithSharp (lanczos3)");  // 3600 ms
     for (const filename of Object.values(Files)) {
         const iData = await getImageData(filename);
         const gds1: GrayImageData = await getGrayDataScaledWithSharp(iData, 8, 8, "lanczos3");
@@ -157,17 +157,17 @@ const count = Object.keys(Files).length;
         aDiff += a.diffHex(known_a_py_hashes[filename]);
         dDiff += d.diffHex(known_d_py_hashes[filename]);
     }
-    console.timeEnd("getGrayDataScaledWithSharp");
+    console.timeEnd("getGrayDataScaledWithSharp (lanczos3)");
 
     t({
         result: aDiff,
         expect: 22,
-        name: `${aDiff}`,
+        name: `aDiff ${aDiff}`,
     });
     t({
         result: dDiff,
         expect: 60,
-        name: `${dDiff}`,
+        name: `dDiff ${dDiff}`,
     });
     const aDiffPercentage = aDiff / (size * size * count / 100);
     const dDiffPercentage = dDiff / (size * size * count / 100);
@@ -190,9 +190,9 @@ const count = Object.keys(Files).length;
     console.time("getGrayData + resizeGrayDataWithPica (lanczos3)"); // 1600 ms
     for (const filename of Object.values(Files)) {
         const iData = await getImageData(filename);
-        const grayData:       GrayImageData = getGrayData(iData);
-        const gds1: GrayImageData = await resizeGrayDataScaledWithPica(grayData, 8, 8, "lanczos3");
-        const gds2: GrayImageData = await resizeGrayDataScaledWithPica(grayData, 9, 8, "lanczos3");
+        const grayData:   GrayImageData = getGrayData(iData);
+        const gds1: GrayImageData = await resizeGrayDataWithPica(grayData, 8, 8, "lanczos3");
+        const gds2: GrayImageData = await resizeGrayDataWithPica(grayData, 9, 8, "lanczos3");
         const a = aHash(iData, {grayData, grayDataScaled: gds1});
         const d = dHash(iData, {grayData, grayDataScaled: gds2});
         aDiff += a.diffHex(known_a_py_hashes[filename]);
@@ -202,28 +202,29 @@ const count = Object.keys(Files).length;
 
     t({
         result: aDiff,
-        expect: 5,
-        name: `${aDiff}`,
+        expect: 1,
+        name: `aDiff ${aDiff}`,
     });
     t({
         result: dDiff,
-        expect: 13,
-        name: `${dDiff}`,
+        expect: 10,
+        name: `dDiff ${dDiff}`,
     });
     const aDiffPercentage = aDiff / (size * size * count / 100);
     const dDiffPercentage = dDiff / (size * size * count / 100);
     t({
         result: aDiffPercentage,
-        expect: 0.37202380952380953,
+        expect: 0.0744047619047619,
         name: `aDiff ${aDiffPercentage} %`,
     });
     t({
         result: dDiff / (size * size * count / 100),
-        expect: 0.9672619047619048,
+        expect: 0.7440476190476191,
         name: `dDiff ${dDiffPercentage} %`,
     });
 }
 
+console.log(ANSI_BLUE("--- Compare with known_a_py_box_hashes ---"));
 
 const known_a_py_box_hashes: Record<string, string> = {
     "alyson_hannigan_500x500.jpg":                        "e7c7cbc2c4f4f8e8",
@@ -275,12 +276,51 @@ const known_d_py_box_hashes: Record<string, string> = {
 {
     let aDiff = 0;
     let dDiff = 0;
+    console.time("getGrayData+scaleDownLinear"); // 300 ms
+    for (const filename of Object.values(Files)) {
+        const iData = await getImageData(filename);
+        const grayData       = getGrayData(iData);
+        const grayDataScaled = scaleDownLinear(grayData);
+        const a = aHash(iData, {grayData, grayDataScaled});
+        const d = dHash(iData, {grayData, grayDataScaled, ignore: true});
+        aDiff += a.diffHex(known_a_py_box_hashes[filename]);
+        dDiff += d.diffHex(known_d_py_box_hashes[filename]);
+    }
+    console.timeEnd("getGrayData+scaleDownLinear");
+
+    t({
+        result: aDiff,
+        expect: 0,
+        name: `aDiff ${aDiff}`,
+    });
+    t({
+        result: dDiff,
+        expect: 3,
+        name: `dDiff ${dDiff}`,
+    });
+    const aDiffPercentage = aDiff / (size * size * count / 100);
+    const dDiffPercentage = dDiff / (size * size * count / 100);
+    t({
+        result: aDiffPercentage,
+        expect: 0,
+        name: `aDiff ${aDiffPercentage} %`,
+    });
+    t({
+        result: dDiff / (size * size * count / 100),
+        expect: 0.22321428571428573,
+        name: `dDiff ${dDiffPercentage} %`,
+    });
+}
+
+{
+    let aDiff = 0;
+    let dDiff = 0;
     console.time("getGrayData + resizeGrayDataWithPica (box)"); // 1100 ms
     for (const filename of Object.values(Files)) {
         const iData = await getImageData(filename);
-        const grayData:       GrayImageData = getGrayData(iData);
-        const gds1: GrayImageData = await resizeGrayDataScaledWithPica(grayData, 8, 8, "box");
-        const gds2: GrayImageData = await resizeGrayDataScaledWithPica(grayData, 9, 8, "box");
+        const grayData:   GrayImageData = getGrayData(iData);
+        const gds1: GrayImageData = await resizeGrayDataWithPica(grayData, 8, 8, "box");
+        const gds2: GrayImageData = await resizeGrayDataWithPica(grayData, 9, 8, "box");
         const a = aHash(iData, {grayData, grayDataScaled: gds1});
         const d = dHash(iData, {grayData, grayDataScaled: gds2});
         aDiff += a.diffHex(known_a_py_box_hashes[filename]);
@@ -290,24 +330,24 @@ const known_d_py_box_hashes: Record<string, string> = {
 
     t({
         result: aDiff,
-        expect: 6,
-        name: `${aDiff}`,
+        expect: 7,
+        name: `aDiff ${aDiff}`,
     });
     t({
         result: dDiff,
-        expect: 51,
-        name: `${dDiff}`,
+        expect: 52,
+        name: `dDiff ${dDiff}`,
     });
     const aDiffPercentage = aDiff / (size * size * count / 100);
     const dDiffPercentage = dDiff / (size * size * count / 100);
     t({
         result: aDiffPercentage,
-        expect: 0.44642857142857145,
+        expect: 0.5208333333333334,
         name: `aDiff ${aDiffPercentage} %`,
     });
     t({
         result: dDiff / (size * size * count / 100),
-        expect: 3.794642857142857,
+        expect: 3.869047619047619,
         name: `dDiff ${dDiffPercentage} %`,
     });
 }

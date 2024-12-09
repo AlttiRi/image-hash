@@ -1,4 +1,4 @@
-import {ANSI_BLUE, t} from "../tester.ts";
+import {ANSI_BLUE, report, t} from "../tester.ts";
 import {Files, getImageData} from "../constants.ts";
 import {aHash} from "@/hashers.ts";
 import {ImageHash} from "@/image-hash.ts";
@@ -12,7 +12,7 @@ console.log(ANSI_BLUE("--- Test 10 - Different hash sizes ---"));
     const a_hash = aHash(imageData, {size});
     t({
         result: a_hash.hex,
-        expect: "ffd7f58181c1ffff",
+        expect: "ffd7f78181c1ffff",
     });
     t({
         result: a_hash.hex.length,
@@ -77,11 +77,11 @@ console.log(ANSI_BLUE("--- Test 10 - Different hash sizes ---"));
     });
     t({
         result: a_hash_2.hex,
-        expect: "ffefd80007ffff",
+        expect: "ffeff80007ffff",
     });
     t({
         result: a_hash_1.diff(a_hash_2),
-        expect: 23,
+        expect: 24,
     });
     t({
         result: ImageHash.fromHex(a_hash_1.hex, 7, 8).hex,
@@ -564,3 +564,5 @@ console.log(ANSI_BLUE("--- Test 10 - Different hash sizes ---"));
         expect: "error",
     });
 }
+
+report();
