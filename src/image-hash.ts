@@ -128,9 +128,9 @@ export function biUi8aToHex(biUi8a: Uint8Array): string {
 
 export function biUi8aToBin(biUi8a: Uint8Array): string {
     const byteArray: string[] = [];
-    const offset = biUi8a.length % 8; // todo: test it. see `remainder` from the func above
-    if (offset) {
-        byteArray.push("0".repeat(offset));
+    const remainder = biUi8a.length % 8;
+    if (remainder) {
+        byteArray.push("0".repeat(8 - remainder));
     }
     for (const bitStr of biUi8a) {
         byteArray.push(bitStr ? "1" : "0");

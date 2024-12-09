@@ -51,3 +51,46 @@ t({
     result: biUi8aToBin(new Uint8Array([1,1,1,1, 0,0,0,0, 1,1,1,1, 0,0,0,0])).toString(),
     expect: "1111000011110000",
 });
+
+
+t({
+    result: biUi8aToBin(new Uint8Array([0,0,0,1, 1,1,1,1])).toString(),
+    expect: "00011111",
+});
+t({
+    result: biUi8aToBin(new Uint8Array([0,0,0,0, 1,1,1,1])).toString(),
+    expect: "00001111",
+});
+t({
+    result: biUi8aToBin(new Uint8Array([0,0,0,0, 0,1,1,1])).toString(),
+    expect: "00000111",
+});
+t({
+    result: biUi8aToBin(new Uint8Array([0,0,0,0, 0,0,1,1])).toString(),
+    expect: "00000011",
+});
+t({
+    result: biUi8aToBin(new Uint8Array([0,0,0,0, 0,0,0,1])).toString(),
+    expect: "00000001",
+});
+
+t({
+    result: biUi8aToBin(new Uint8Array([1,1,1,1,1])).toString(),
+    expect: "00011111",
+});
+t({
+    result: biUi8aToBin(new Uint8Array([1,1,1,1])).toString(),
+    expect: "00001111",
+});
+t({
+    result: biUi8aToBin(new Uint8Array([1,1,1])).toString(),
+    expect: "00000111",
+});
+t({
+    result: biUi8aToBin(new Uint8Array([1,1])).toString(),
+    expect: "00000011",
+});
+t({
+    result: biUi8aToBin(new Uint8Array([1])).toString(),
+    expect: "00000001",
+});
