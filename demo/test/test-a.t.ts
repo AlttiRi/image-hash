@@ -389,6 +389,109 @@ console.log(ANSI_BLUE("--- Test 10 - Different hash sizes ---"));
 }
 
 {
+    t({
+        result: ImageHash.fromBin("1111_1111", 1, 1).hex,
+        expect: "01",
+    });
+    t({
+        result: ImageHash.fromBin("1111_1111", 2, 1).hex,
+        expect: "03",
+    });
+    t({
+        result: ImageHash.fromBin("1111_1111", 1, 2).hex,
+        expect: "03",
+    });
+    t({
+        result: ImageHash.fromBin("1111_1111", 2, 2).hex,
+        expect: "0f",
+    });
+    t({
+        result: ImageHash.fromBin("1111_1111", 2, 3).hex,
+        expect: "3f",
+    });
+    t({
+        result: ImageHash.fromBin("1111_1111_1111_1111", 3, 3).hex,
+        expect: "01ff",
+    });
+    t({
+        result: ImageHash.fromBin("1111_1111_1111_1111", 3, 4).hex,
+        expect: "0fff",
+    });
+    t({
+        result: ImageHash.fromBin("1111_1111_1111_1111", 4, 4).hex,
+        expect: "ffff",
+    });
+}
+
+{
+    t({
+        result: ImageHash.fromBin("1111_1111", 1, 1).bin,
+        expect: "00000001",
+    });
+    t({
+        result: ImageHash.fromBin("1111_1111", 2, 1).bin,
+        expect: "00000011",
+    });
+    t({
+        result: ImageHash.fromBin("1111_1111", 1, 2).bin,
+        expect: "00000011",
+    });
+    t({
+        result: ImageHash.fromBin("1111_1111", 2, 2).bin,
+        expect: "00001111",
+    });
+    t({
+        result: ImageHash.fromBin("1111_1111", 2, 3).bin,
+        expect: "00111111",
+    });
+    t({
+        result: ImageHash.fromBin("1111_1111_1111_1111", 3, 3).bin,
+        expect: "0000000111111111",
+    });
+    t({
+        result: ImageHash.fromBin("1111_1111_1111_1111", 3, 4).bin,
+        expect: "0000111111111111",
+    });
+    t({
+        result: ImageHash.fromBin("1111_1111_1111_1111", 4, 4).bin,
+        expect: "1111111111111111",
+    });
+}
+
+
+{
+    t({
+        result: ImageHash.fromBin("1111_1111", 1, 1).hex,
+        expect: "01",
+    });
+    t({
+        result: (function() {
+            try {
+                ImageHash.fromBin("1111_1111_1111_1111", 1, 1).hex;
+            } catch {
+                return "error";
+            }
+        })(),
+        expect: "error",
+    });
+
+    t({
+        result: ImageHash.fromHex("ff", 1, 1).hex,
+        expect: "01",
+    });
+    t({
+        result: (function() {
+            try {
+                ImageHash.fromHex("ffff", 1, 1).hex
+            } catch {
+                return "error";
+            }
+        })(),
+        expect: "error",
+    });
+}
+
+{
     const imageData = await getImageData(Files._9_imagehash);
     t({
         result: (function() {
