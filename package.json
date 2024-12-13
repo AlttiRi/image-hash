@@ -1,6 +1,6 @@
 {
   "name": "@alttiri/image-hash",
-  "version": "0.0.0-20241116",
+  "version": "0.0.1-20241213",
   "description": "Alt-Image-Hash. An alternative image hashing library.",
   "homepage": "https://github.com/AlttiRi/image-hash",
   "keywords": [
