@@ -1,9 +1,10 @@
 import path from "node:path";
-import fs from "node:fs/promises";
-import {saveImageData} from "./util.demo.ts";
-import {getGrayData} from "@/grayscale.ts";
-import {scaleDownLinear} from "@/resize.ts";
-import {aHash, bHash, dHash, mHash} from "@/hashers.ts";
+import fs   from "node:fs/promises";
+import {
+    getGrayData, scaleDownLinear,
+    aHash, bHash, dHash, mHash
+} from "../index.ts";
+import {saveImageData}       from "./util.demo.ts";
 import {Files, getImageData} from "./constants.ts";
 
 const dirPath = "./demo-img-out/demo-1";

@@ -1,7 +1,7 @@
 import {bmvbhash} from "blockhash-core";
-import {ANSI_BLUE, report, t} from "../tester.ts";
-import {bHash} from "@/hashers.ts";
+import {ANSI_BLUE, report, t}          from "../tester.ts";
 import {Files, FilesArg, getImageData} from "../constants.ts";
+import {bHash} from "@/hashers.ts";
 
 
 console.log(ANSI_BLUE("--- Test 5 --- 8 bytes blockhash hashes ---"));

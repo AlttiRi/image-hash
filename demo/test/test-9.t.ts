@@ -1,10 +1,12 @@
 import {ANSI_BLUE, report, t} from "../tester.ts";
+import {Files, getImageData}  from "../constants.ts";
+import {
+    getGrayDataScaledWithSharp, getGrayDataWithSharp, resizeGrayDataWithPica
+} from "../util.demo.ts";
 import {aHash, bHash, dHash, mHash} from "@/hashers.ts";
-import {getGrayData} from "@/grayscale.ts";
-import {scaleDownLinear} from "@/resize.ts";
-import {Files, getImageData} from "../constants.ts";
-import {ImageHash} from "@/image-hash.ts";
-import {getGrayDataScaledWithSharp, getGrayDataWithSharp, resizeGrayDataWithPica} from "../util.demo.ts";
+import {getGrayData}                from "@/grayscale.ts";
+import {scaleDownLinear}            from "@/resize.ts";
+import {ImageHash}                  from "@/image-hash.ts";
 
 
 console.log(ANSI_BLUE("--- Test 9 - Diffs between alt-image-hash and sharp/pica ---"));

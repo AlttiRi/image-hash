@@ -1,6 +1,7 @@
-import {ImageDataLike} from "@/types.ts";
-import {getImageDataFromFS} from "./util.demo.ts";
 import path from "node:path";
+import {getImageDataFromFS} from "./util.demo.ts";
+import {ImageDataLike} from "@/types.ts";
+
 
 export const Files = {
     _1_alyson:        "alyson_hannigan_500x500.jpg",

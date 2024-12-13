@@ -1,11 +1,12 @@
 import {ImageHash} from "./image-hash.js";
 import {BiImageData, GrayImageData} from "./mono-image-data.js";
-import {Hasher, HasherCore, HashOpts, ImageDataLike} from "./types.js";
+import {Hasher, HashOpts, ImageDataLike} from "./types.js";
 import {getCalculateAverage, getCalculateBT601, getGrayData} from "./grayscale.js";
 import {scaleDownLinear, scaleUpNearestNeighbor} from "./resize.js";
 import {aHashCore, bHashCore, dHashCore, mHashCore, mHashCoreClassic} from "./hashers-core.js";
 
 
+type HasherCore = (grayImageData: GrayImageData) => BiImageData;
 type HashOptsPrivate = {
     scaleWidth?:  number
     scaleHeight?: number
@@ -30,7 +31,8 @@ export const mHash: Hasher = (imageData: ImageDataLike, opts: HashOpts = {}) => 
     return hash(mHashCore, imageData, opts);
 };
 
-/** block hash
+/**
+ * block hash
  *
  * By default, it uses "BT601" for gray-scaling, and uses horizontal bands with 2 pixels height.
  *

@@ -1,12 +1,12 @@
-import fs from "node:fs";
-import path from "node:path";
+import fs     from "node:fs";
+import path   from "node:path";
 import crypto from "node:crypto";
-import {getGrayData} from "@/grayscale.js";
-import {scaleDownLinear} from "@/resize.js";
-import {aHash, bHash, dHash, mHash} from "@/hashers.js";
-import {Hasher, HashOpts, ImageDataLike} from "@/types.ts";
 import {getImageDataWithSharp} from "./util.demo.ts";
-
+import {
+    getGrayData, scaleDownLinear,
+    aHash, bHash, dHash, mHash,
+    Hasher, HashOpts, ImageDataLike,
+} from "../index.ts";
 
 const HashMaster = getHashMaster();
 const hashMasters = [
@@ -137,9 +137,9 @@ function getHashMaster() { // just for hoisting
 }
 
 // ---
-import {bmvbhash} from "blockhash-core";
-import {ImageHash} from "@/image-hash.ts";
+import {bmvbhash}      from "blockhash-core";
 import {ANSI_RED_BOLD} from "@alttiri/util-node-js";
+import {ImageHash}     from "../index.ts";
 function bmvb(imageData: ImageDataLike, opts: HashOpts = {}) {
     const size = opts.size || 8;
     const hash = bmvbhash(imageData, size);

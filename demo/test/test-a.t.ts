@@ -1,6 +1,6 @@
 import {ANSI_BLUE, report, t} from "../tester.ts";
-import {Files, getImageData} from "../constants.ts";
-import {aHash} from "@/hashers.ts";
+import {Files, getImageData}  from "../constants.ts";
+import {aHash}     from "@/hashers.ts";
 import {ImageHash} from "@/image-hash.ts";
 
 

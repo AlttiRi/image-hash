@@ -1,9 +1,9 @@
 import {ANSI_BLUE, report, t} from "../tester.ts";
-import {aHash, bHash, dHash, mHash} from "@/hashers.ts";
-import {getGrayData} from "@/grayscale.ts";
-import {scaleDownLinear} from "@/resize.ts";
-import {ImageHash} from "@/image-hash.ts";
 import {Files, getImageData} from "../constants.ts";
+import {aHash, bHash, dHash, mHash} from "@/hashers.ts";
+import {getGrayData}                from "@/grayscale.ts";
+import {scaleDownLinear}            from "@/resize.ts";
+import {ImageHash}                  from "@/image-hash.ts";
 
 
 console.log(ANSI_BLUE("--- Test 4 - Hash verification and comparison with PIL (default and box filter) ---"));

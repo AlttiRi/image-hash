@@ -1,8 +1,8 @@
-import path from "node:path";
+import path  from "node:path";
 import sharp from "sharp";
+import Pica  from "pica";
 import {ImageDataLike, ImageDataLikeEx} from "@/types.ts";
-import {GrayImageData, MonoImageData} from "@/mono-image-data.ts";
-import Pica from "pica";
+import {GrayImageData, MonoImageData}   from "@/mono-image-data.ts";
 
 
 export const getImageDataFromFS = getImageDataWithSharp;

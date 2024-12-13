@@ -1,6 +1,5 @@
-import {dHash} from "@/hashers.ts";
 import {Files, getImageData} from "./constants.ts";
-import {ImageHash} from "@/image-hash.ts";
+import {dHash, ImageHash} from "../index.ts";
 
 // Supports any hash size
 

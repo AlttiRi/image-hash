@@ -64,7 +64,7 @@ const grayScalerMap: Record<GrayScalingType, GrayScalerGetter> = {
 };
 function getGrayScalerGetter(grayScaler: GrayScalingOpt): GrayScalerGetter {
     if (isString(grayScaler)) {
-        return  grayScalerMap[grayScaler];
+        return grayScalerMap[grayScaler];
     }
     return grayScaler;
 }

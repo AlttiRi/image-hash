@@ -1,12 +1,13 @@
 import {bmvbhash} from "blockhash-core";
-import fs from "node:fs/promises";
+import fs   from "node:fs/promises";
 import path from "node:path";
 import {Files, getImageData} from "./constants.ts";
-import {saveImageData} from "./util.demo.ts";
-import {bHash} from "@/hashers.ts";
-import {ImageHash} from "@/image-hash.ts";
-import {scaleUpNearestNeighbor} from "@/resize.ts";
-import {BiImageData} from "@/mono-image-data.ts";
+import {saveImageData}       from "./util.demo.ts";
+import {
+    scaleUpNearestNeighbor,
+    bHash,
+    ImageHash, BiImageData,
+} from "../index.ts";
 
 const dirPath = "./demo-img-out/demo-2";
 await fs.mkdir(dirPath, {recursive: true});

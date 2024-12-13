@@ -1,7 +1,8 @@
-import {aHash, bHash, dHash, mHash} from "@/hashers.ts";
 import {Files, getImageData} from "./constants.ts";
-import {getGrayData} from "@/grayscale.ts";
-import {scaleDownLinear} from "@/resize.ts";
+import {
+    getGrayData, scaleDownLinear,
+    aHash, bHash, dHash, mHash,
+} from "../index.ts";
 
 
 for (const filename of Object.values(Files)) {

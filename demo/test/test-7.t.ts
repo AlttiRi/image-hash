@@ -1,10 +1,13 @@
 import {Files, getImageData} from "../constants.ts";
-import {getGrayData} from "@/grayscale.ts";
-import {scaleDownLinear} from "@/resize.ts";
-import {aHash, dHash} from "@/hashers.ts";
 import {ANSI_BLUE, report, t} from "../tester.ts";
-import {GrayImageData} from "@/mono-image-data.ts";
-import {getGrayDataScaledWithSharp, getGrayDataWithSharp, resizeGrayDataWithPica} from "../util.demo.ts";
+import {
+    getGrayDataScaledWithSharp, getGrayDataWithSharp, resizeGrayDataWithPica
+} from "../util.demo.ts";
+import {getGrayData}     from "@/grayscale.ts";
+import {scaleDownLinear} from "@/resize.ts";
+import {aHash, dHash}    from "@/hashers.ts";
+import {GrayImageData}   from "@/mono-image-data.ts";
+
 
 
 console.log(ANSI_BLUE("--- Test 7 - Alt / Sharp.js / Pica.js vs Python hashes ---"));

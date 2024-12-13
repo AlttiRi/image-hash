@@ -1,8 +1,8 @@
-import {ANSI_BLUE, report, t} from "../tester.ts";
-import {ImageHash} from "@/image-hash.ts";
-import {dHash} from "@/hashers.ts";
-import {getImageDataFromFS} from "../util.demo.ts";
 import path from "node:path";
+import {ANSI_BLUE, report, t} from "../tester.ts";
+import {getImageDataFromFS}   from "../util.demo.ts";
+import {ImageHash} from "@/image-hash.ts";
+import {dHash}     from "@/hashers.ts";
 import {getCalculateAverage, getCalculateBT601, getCalculateBT709} from "@/grayscale.ts";
 function resolve(...strs: string[]) {
     return path.resolve(import.meta.dirname, ...strs);

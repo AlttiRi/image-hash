@@ -1,8 +1,9 @@
 import path from "node:path";
-import fs from "node:fs/promises";
+import fs   from "node:fs/promises";
 import {getImageDataFromFS, saveImageData} from "./util.demo.ts";
-import {getGrayData} from "@/grayscale.ts";
-import {scaleDownLinear, scaleUpNearestNeighbor} from "@/resize.ts";
+import {
+    getGrayData, scaleDownLinear, scaleUpNearestNeighbor,
+} from "../index.ts";
 
 
 const dirPath = "./demo-img-out/demo-3";

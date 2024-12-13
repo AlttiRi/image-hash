@@ -1,8 +1,10 @@
-import {ANSI_BLUE, report, t} from "../tester.ts";
-import {getImageDataFromFS} from "../util.demo.ts";
 import path from "node:path";
-import {getCalculateAverage, getCalculateBT601, getCalculateBT709, getGrayData} from "@/grayscale.ts";
-import {scaleDownLinear} from "@/resize.ts";
+import {ANSI_BLUE, report, t} from "../tester.ts";
+import {getImageDataFromFS}   from "../util.demo.ts";
+import {
+    getCalculateAverage, getCalculateBT601, getCalculateBT709, getGrayData
+} from "@/grayscale.ts";
+import {scaleDownLinear}               from "@/resize.ts";
 import {GrayScalingOpt, ImageDataLike} from "@/types.ts";
 function resolve(...strs: string[]) {
     return path.resolve(import.meta.dirname, ...strs);

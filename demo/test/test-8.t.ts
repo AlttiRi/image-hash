@@ -1,6 +1,6 @@
-import {scaleDownLinearAverage} from "@/resize.ts";
-import {GrayImageData} from "@/mono-image-data.ts";
 import {ANSI_BLUE, report, t} from "../tester.ts";
+import {scaleDownLinearAverage} from "@/resize.ts";
+import {GrayImageData}          from "@/mono-image-data.ts";
 
 
 console.log(ANSI_BLUE("--- Test 8 - PIL box down-sampling compare ---"));

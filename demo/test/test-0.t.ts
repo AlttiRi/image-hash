@@ -1,7 +1,7 @@
 import {aHash, bHash, dHash, mHash} from "@/hashers.ts";
+import {ImageHash}                  from "@/image-hash.ts";
 import {t, report, ANSI_BLUE} from "../tester.ts";
 import {Files, getImageData} from "../constants.ts";
-import {ImageHash} from "@/image-hash.ts";
 
 
 

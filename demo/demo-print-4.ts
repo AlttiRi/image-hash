@@ -1,5 +1,11 @@
 import {getImageData} from "./constants.ts";
-import {aHash, bHash, dHash, mHash} from "@/hashers.ts";
+import {
+    getGrayData, scaleDownLinear, scaleUpNearestNeighbor,
+    aHash, bHash, dHash, mHash,
+    ImageHash, BiImageData,
+    Hasher, HashOpts, ImageDataLike,
+} from "../index.ts";
+
 
 // --- from readme --- //
 

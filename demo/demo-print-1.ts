@@ -1,5 +1,7 @@
 import {getImageDataFromFS} from "./util.demo.js";
-import {aHash, bHash, dHash, mHash} from "@/hashers.ts";
+import {
+    aHash, bHash, dHash, mHash,
+} from "../index.ts";
 
 
 const imageData = await getImageDataFromFS("./img/kittens-3264x2448.jpg");
