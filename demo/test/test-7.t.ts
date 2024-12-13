@@ -240,7 +240,7 @@ const known_a_py_box_hashes: Record<string, string> = {
     "kittens-3264x2448.jpg":                              "000000004286fefe",
     "kittens-minicrop-3258x2448.jpg":                     "000000004286fefe",
     "peppers-600x600.png":                                "9f1f0786e51f1e00",
-    "peppers-minicrop-599x599.png":                       "9f170786e51f1e00",
+    "peppers-minicrop-599x599.png":                       "9f170786e51f1e00", // diff hashes
     "rabbit-320x192.png":                                 "efcf8f8180427c04",
     "saint-stephen-150x200.png":                          "3c000101fbffb919",
     "screenshot-dark-purple-flower-1353x851.png":         "fff7ff000c080d01",
