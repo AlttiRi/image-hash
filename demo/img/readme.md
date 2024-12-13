@@ -26,6 +26,9 @@ saint-stephen-150x200.png
 https://github.com/commonsmachinery/blockhash-js/issues/7
 
 
+DR94LKg-1923x2533.jpg
+https://i.imgur.com/DR94LKg.jpeg
+https://stackoverflow.com/questions/18922880/html5-canvas-resize-downscale-image-high-quality
 
 
 extra/chess-10x10.png
