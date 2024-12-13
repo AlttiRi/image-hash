@@ -10,8 +10,8 @@ await fs.mkdir(dirPath, {recursive: true});
 
 
 const filename = "./img/extra/chess-10x10.png";
-const iData = await getImageDataFromFS(filename);
-const grayData = getGrayData(iData);
+const imageData = await getImageDataFromFS(filename);
+const grayData = getGrayData(imageData);
 for (let size = 1; size <= 10; size++) {
     const grayDataScaled = scaleDownLinear(grayData, {size});
     const upScaled = scaleUpNearestNeighbor(grayDataScaled, 320, 320, true);

@@ -12,13 +12,13 @@ await fs.mkdir(dirPath, {recursive: true});
 const size = 256;
 for (const filename of Object.values(Files)) {
 
-    const iData = await getImageData(filename);
-    const grayData       = getGrayData(iData);
+    const imageData = await getImageData(filename);
+    const grayData       = getGrayData(imageData);
     const grayDataScaled = scaleDownLinear(grayData, {size, ignore: true});
-    const a_hash = aHash(iData, {size, grayData, grayDataScaled});
-    const m_hash = mHash(iData, {size, grayData, grayDataScaled});
-    const d_hash = dHash(iData, {size, grayData, grayDataScaled, ignore: true});
-    const b_hash = bHash(iData, {size, grayData, grayDataScaled});
+    const a_hash = aHash(imageData, {size, grayData, grayDataScaled});
+    const m_hash = mHash(imageData, {size, grayData, grayDataScaled});
+    const d_hash = dHash(imageData, {size, grayData, grayDataScaled, ignore: true});
+    const b_hash = bHash(imageData, {size, grayData, grayDataScaled});
 
     await saveImageData(a_hash.mono, getPath({filename, size, prefix: "avg"}));
     await saveImageData(m_hash.mono, getPath({filename, size, prefix: "med"}));
