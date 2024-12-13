@@ -25,13 +25,20 @@ export const Files = {
     _20_wallpaper:    "wallpaper-dark-purple-2560x1600.jpg",
     _21_wallpaper_2:  "wallpaper-dark-purple-2560x1600-reverse.jpg",
 } as const;
+export const FilesNew = {
+    _22_kittens:      "kittens-160x120.jpg",
+    _23_kittens:      "kittens-960x720.jpg",
+    _24_heels:        "DR94LKg-1923x2533.jpg",
+} as const;
 
 function resolve(...strs: string[]) {
     return path.resolve(import.meta.dirname, ...strs);
 }
 
 const cache = new Map();
-export type FilesArg = typeof Files[keyof typeof Files];
+export type FilesArg1 = typeof Files[keyof typeof Files];
+export type FilesArg2 = typeof FilesNew[keyof typeof FilesNew];
+export type FilesArg = FilesArg1 | FilesArg2;
 export async function getImageData(image: FilesArg): Promise<ImageDataLike> {
     let iData: ImageDataLike;
     if (cache.has(image)) {
