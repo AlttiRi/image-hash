@@ -2,6 +2,10 @@
 
 Alternative JavaScript image hashing library.
 
+```bash
+npm i @alttiri/image-hash
+```
+
 Supported perceptual hashes:
 - `dHash` (difference hash)
 - `aHash` (average hash)
