@@ -1,4 +1,4 @@
-import {getImageData} from "./constants.ts";
+import {getImageDataWithSharp as _getImageData} from "@alttiri/get-image-data";
 import {
     getGrayData, scaleDownLinear, scaleUpNearestNeighbor,
     aHash, bHash, dHash, mHash,
@@ -6,8 +6,13 @@ import {
     Hasher, HashOpts, ImageDataLike,
 } from "../index.ts";
 
+const getImageData = (imgName: string) => _getImageData("./img/" + imgName);
+
 
 // --- from readme --- //
+
+// import {getImageDataWithSharp as getImageData} from "@alttiri/get-image-data";
+// import {dHash} from "@alttiri/image-hash";
 
 {
     const imagePath = "alyson_hannigan_500x500.jpg";

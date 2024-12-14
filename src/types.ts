@@ -1,11 +1,11 @@
-import {BiImageData, GrayImageData} from "./mono-image-data.js";
+import {GrayImageData} from "./mono-image-data.js";
 import {ImageHash} from "./image-hash.js";
 
 export type ImageDataLike = {
     data:   Uint8ClampedArray
     width:  number
     height: number
- // colorSpace: "srgb" // todo?: add it
+    colorSpace: "srgb" | "display-p3"
 };
 export type ImageDataLikeEx = {
     data:   Uint8ClampedArray | Uint8Array

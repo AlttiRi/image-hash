@@ -11,6 +11,9 @@ Supported perceptual hashes:
 ### Basic examples
 
 ```ts
+import {getImageDataWithSharp as getImageData} from "@alttiri/get-image-data";
+import {dHash} from "@alttiri/image-hash";
+
 const imagePath = "alyson_hannigan_500x500.jpg";
 const imageData = await getImageData(imagePath);
 const hash = dHash(imageData);

@@ -21,6 +21,7 @@ export async function getImageDataWithSharp(inputData: string | ArrayBufferLike,
         width: info.width,
         height: info.height,
         data: new Uint8ClampedArray(data.buffer),
+        colorSpace: "srgb",
     };
 }
 export function saveImageDataWithSharp(imageData: ImageDataLikeEx, outputFilePath: string): Promise<sharp.OutputInfo> {
@@ -47,7 +48,7 @@ export function toImageDataFromMono(imageData: MonoImageData): ImageDataLike {
         data[i * 4 + 2] = array[i];
         data[i * 4 + 3] = 255;
     }
-    return {data, width: imageData.width, height: imageData.height};
+    return {data, width: imageData.width, height: imageData.height, colorSpace: "srgb"};
 }
 // expects the image was already gray-scaled
 export function toMonoFromImageData(imageData: ImageDataLikeEx): MonoImageData {
