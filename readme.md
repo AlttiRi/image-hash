@@ -32,3 +32,4 @@ console.log(hash1.hex); // "e020acce864cae8a"
 console.log(hash2.hex); // "e020acce864cae8a"
 console.log(hash1.diff(hash2)); // 0
 ```
+
