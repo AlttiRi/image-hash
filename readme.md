@@ -6,6 +6,8 @@ Alternative JavaScript image hashing library.
 npm i @alttiri/image-hash
 ```
 
+The library to generate a perceptual hash for `ImageData` input.
+
 Supported perceptual hashes:
 - `dHash` (difference hash)
 - `aHash` (average hash)

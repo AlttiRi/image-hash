@@ -140,7 +140,7 @@ function getHashMaster() { // just for hoisting
 import {bmvbhash}      from "blockhash-core";
 import {ANSI_RED_BOLD} from "@alttiri/util-node-js";
 import {ImageHash}     from "../index.ts";
-function bmvb(imageData: ImageDataLike, opts: HashOpts = {}) {
+function bmvb(imageData: ImageDataLike, opts: HashOpts = {}) { // "Block Mean Value Based Image Perceptual Hashing"
     const size = opts.size || 8;
     const hash = bmvbhash(imageData, size);
     if (hash.includes("NaN")){ throw new Error("bmvb NaN"); } // when (size % 2 !== 0) // and not 1

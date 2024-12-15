@@ -83,7 +83,7 @@ export function bHashCore({data, width, height}: GrayImageData, bandCount?: numb
     for (let bandNum = 0, offset = 0; bandNum < bandCount; bandNum++) {
         const fromY = Math.round(yScale *  bandNum);
         const toY   = Math.round(yScale * (bandNum + 1));
-        const bandHeight = toY - fromY;
+        const bandHeight = toY - fromY; // for 7x7 size hash: 4 bands with: 2, 2, 1, 2 pixels heights
         const pixelsInBand = bandHeight * width;
         const view = new Uint8Array(data.buffer, offset, pixelsInBand);
         const hash = _mHashCore(view, width, bandHeight);
